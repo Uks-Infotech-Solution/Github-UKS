@@ -1,0 +1,81 @@
+.Section-1-Container{
+    padding: 20px;
+    background-color:#175493;
+    /* height: 598px; */
+    background-size: cover;
+    
+}
+.Section-1-Row{
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    /* border-style: solid; */
+    /* color: white !important; */
+}
+.Section-1-col-head{
+    font-size: 35px;
+    color: white;
+}
+.Section-1-image{
+    /* height: 400px; */
+    /* width: 500px; */
+}
+.Section-1-col-btn-div{
+    padding: 20px;
+}
+.Section-1-col-button-1{
+    margin: 5px;
+    width: 140px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border-radius: 1.5rem;
+    background-color: #793CFB;
+    border: none;
+}
+.Section-1-col-button-2{
+    margin: 5px;
+    width: 140px;
+    border-radius: 1.5rem;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    background-color: #3AB094;
+    border: none;
+}
+/* Section-1.css */
+.Section-1-Container {
+    position: relative;
+}
+
+.Section-1-Container.blur {
+    filter: blur(5px);
+}
+.index-customer-head{
+    font-size: 18px;
+    font-weight: 500;
+}
+
+
+.error{
+    width: 100% !important;
+    font-size: 12px;
+}
+.Section-1-dropdown{
+    width: 166px;
+    height: 28px;
+}
+
+@media(max-width:1024px){
+    .Section-1-image{
+        height: 400px;
+    }
+}
+@media(max-width:770px){
+    .Section-1-image{
+        height: 300px;
+    }
+}
+@media(max-width:330px){
+    .Section-1-image{
+        height: 250px;
+    }
+}

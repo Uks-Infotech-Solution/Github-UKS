@@ -1,0 +1,115 @@
+/* CSS for applied-first-div-container */
+.applied-first-div-container {
+    padding: 20px;
+  }
+  
+  /* CSS for applied-first-div-inner-container */
+  .applied-first-div-inner-container {
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* CSS for applied-first-div-header */
+  .applied-first-div-header {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+  
+  /* CSS for applied-first-div-filter-dropdown */
+  .applied-first-div-filter-dropdown {
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+  }
+  
+  /* CSS for applied-first-div-customer-list */
+  .applied-first-div-customer-list {
+    margin-top: 20px;
+  }
+/* CSS for applied-first-div-customer-item */
+.applied-first-div-customer-item {
+    display: flex;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    padding: 15px;
+    position: relative; /* Ensure the container is relative for absolute positioning */
+  }
+  
+  /* CSS for applied-first-div-customer-avatar */
+  .applied-first-div-customer-avatar {
+    position: absolute;
+    top: 0;
+    right: 0;
+    /* transform: translate(50%, -50%); */
+    width: 80px; /* Adjust width as needed */
+    height: 80px; /* Adjust height as needed */
+    overflow: hidden;
+    margin: 10px;
+    margin-top: 5px; /* Ensure image does not exceed border-radius */
+  }
+  
+  .applied-first-div-customer-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+     /* Maintain aspect ratio and cover entire container */
+  }
+  
+  /* CSS for applied-first-div-customer-info */
+  .applied-first-div-customer-info {
+    flex: 1;
+    padding-right: 100px; /* Provide space for the avatar on the right */
+  }
+  
+  .applied-first-div-customer-info div {
+    margin-bottom: 5px;
+  }
+  
+  /* CSS for applied-first-div-customer-actions */
+/* CSS for applied-first-div-customer-actions */
+.applied-first-div-customer-actions {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding-right: 18px; 
+    padding-bottom: 5px;
+     
+  }
+  
+  
+  /* CSS for applied-first-div-pagination-container */
+  .applied-first-div-pagination-container {
+    margin-top: 20px;
+  }
+  
+  /* CSS for applied-first-div-pagination */
+  .applied-first-div-pagination {
+    display: flex;
+    align-items: end !important;
+    text-align: end !important;
+    justify-content: end !important;
+    /* border: solid; */
+  }
+  
+  .applied-first-div-pagination span {
+    margin: 0 10px;
+  }
+  
+  /* CSS for applied-first-div-table-row-per-button */
+  .applied-first-div-table-row-per-button {
+    margin-right: 10px;
+  }
+  .custom-first-div-dropdown {
+    width: 150px !important; /* Adjust width as needed */
+    background-color: burlywood !important; /* Desired background color */
+  }
+  

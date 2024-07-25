@@ -1,0 +1,44 @@
+.pathname-url-path {
+    /* background-color: #f0f4f8; */
+    padding: 5px; /* Spacing around the text */
+    border-radius: 8px; /* Rounded corners */
+    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  */
+    margin: 0px 0; /* Spacing above and below */
+    display: flex; /* Flexbox for alignment */
+    align-items: center; /* Center vertically */
+    /* border-style: solid; */
+    border-width: thin;
+
+}
+
+.pathname-url-part {
+    color: #007BFF; /* Highlight color for the URL parts */
+    word-break: break-all; /* Prevent overflow for long URLs */
+    padding: 0 0px;
+    font-size: 18px; /* Padding around each URL part */
+}
+
+.pathname-url-separator {
+    color: #999; /* Different color for the separators */
+    padding: 0 5px; /* Padding around the separator */
+}
+
+.pathname-url-arrow {
+    color: #999; /* Arrow icon color */
+}
+
+.pathname-url-home {
+    color: #007BFF; /* Home icon color */
+    cursor: pointer; /* Pointer cursor on hover */
+}
+
+@media (max-width: 600px) {
+    .pathname-url-path {
+        padding: 8px 16px; /* Adjust padding for smaller screens */
+        font-size: 14px; /* Smaller font size for better readability */
+    }
+
+    .pathname-url-part, .pathname-url-separator {
+        padding: 0 2px; /* Adjust padding for smaller screens */
+    }
+}

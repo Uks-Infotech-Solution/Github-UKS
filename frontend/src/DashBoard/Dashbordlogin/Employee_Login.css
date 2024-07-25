@@ -1,0 +1,21 @@
+
+.uks-log{
+    /* background-image: url('../../Indexpage//Images/img123.png'); */
+    /* background-repeat: no-repeat; */
+    /* background-position: right; */
+    color: white;
+    justify-content: center;
+    align-items: center;
+    height: 600px;
+    background-color:#d1d2d3;  
+
+}
+.employe-login-div{
+    background-color: #175493;
+
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    height: 320px;
+    border-radius: 0.5rem;
+}

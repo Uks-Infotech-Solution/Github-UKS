@@ -1,0 +1,42 @@
+import React from 'react';
+import './Vertical_Box.css'; // Assuming you create a CSS file for styling
+import { useNavigate } from 'react-router-dom';
+
+const VerticalBoxes = () => {
+    const navigate = useNavigate();
+
+    const handleClick = (area) => {
+        // Navigate to a detail page or perform some action
+        // You can customize the navigation URL as per your routing setup
+        navigate(`/dsa/grid/view`);
+    };
+    
+
+    return (
+        <div className="left-sidebar">
+            <div className='Customer-dash-second' style={{ height: '800px' }}>
+                <h6>Your District DSA By Area</h6>
+                <div className="vertical-box">
+                    <div onClick={() => handleClick('PN Road')}>PN Road (4)</div>
+                    <div onClick={() => handleClick('K Nagar')}>K Nagar (2)</div>
+                    <div onClick={() => handleClick('Erode')}>Erode (2)</div>
+                    <div onClick={() => handleClick('Gochettipalayam')}>Gochettipalayam (9)</div>
+                    <div onClick={() => handleClick('Bus Stand')}>Bus Stand (4)</div>
+                </div>
+            </div>
+            <div className='Customer-dash-second'>
+                <h6>Top 5 DSA In Your Area</h6>
+                <div className="vertical-box">
+                    <div className='vertical-small-font' onClick={() => handleClick('Ruppee fincial Service')}>
+                        Ruppee fincial Service (4 Star)
+                    </div>
+                    <div className='vertical-small-font' onClick={() => handleClick('BaskarLoan Provider')}>
+                        BaskarLoan Provider (3 star)
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default VerticalBoxes;

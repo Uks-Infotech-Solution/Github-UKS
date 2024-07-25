@@ -1,0 +1,15 @@
+.card{
+    /* border: 1px solid white; */
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    /* height: 480px;   */
+    margin-top: 20%;
+    width: 100%;
+    margin: auto;
+
+}
+
+.card:hover{
+   transform: translateY(-4px);
+    border: 1px solid white;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;  
+}

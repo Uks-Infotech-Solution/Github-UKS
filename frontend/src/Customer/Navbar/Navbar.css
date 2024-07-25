@@ -1,0 +1,277 @@
+/* Navbar.css */
+
+.custom-navbar {
+  padding: 0.5rem 1rem;
+  background-color: #fff;
+  border-bottom: 1px solid #ddd;
+  box-shadow: 0 0.3rem 2rem rgba(162, 160, 162, 0.5);
+  transition: 0.5s;
+  z-index: 1000;
+}
+
+.brand-img {
+  height: 40px;
+  width: auto;
+}
+
+.Navi-First,
+.Navi-Second {
+  display: flex;
+  align-items: center;
+}
+
+.profile-container {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: 0.5rem;
+}
+
+.profile-container:hover {
+  background-color: #f0f0f0;
+}
+
+.customer-name-right {
+  color: black;
+  font-weight: 500;
+  display: inline-block;
+}
+
+.navbar-profile-hide {
+  display: inline-block;
+  margin-right: 10px;
+  color: #8c8c8c;
+}
+
+.navbar-profile-hide, .customer-name-right {
+  display: inline-block;
+}
+
+.navbar-profile-image {
+  width: 45px;
+  height: 45px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.navbar-profile-icon {
+  /* If you need to style the icon as well, you can add styles here */
+}
+
+.side-menu-icon {
+  cursor: pointer;
+  padding-top: 5px;
+}
+
+.side-menu {
+  position: fixed;
+  top: 0;
+  left: -250px;
+  height: 100%;
+  width: 250px;
+  background-color: #0c2a48;
+  overflow-x: hidden;
+  transition: left 0.5s;
+  z-index: 500; 
+  padding: 10px;
+}
+
+.side-menu.show {
+  left: 0;
+}
+
+.side-menu a {
+  padding: 10px 15px;
+  text-decoration: none;
+  font-size: 18px;
+  color: white;
+  display: block;
+  transition: 0.3s;
+}
+
+.side-menu a:hover {
+  color: #f1f1f1;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  /* transition: 0.3s; */
+  /* z-index: 450; */
+}
+
+.overlay.show {
+  /* visibility: visible; */
+  /* opacity: 0.5; */
+}
+
+.Side-navi-toggle {
+  text-align: end;
+  float: right;
+  padding: 5px;
+  margin-left: 60px;
+}
+
+.side-menu-head {
+  padding-left: 15px;
+  color: rgb(185, 179, 179);
+  font-size: 13px;
+}
+
+.side-menu-detail,
+.side-menu-sub-head {
+  font-size: 15px !important;
+}
+
+.side-menu-customer-clr {
+  color: white !important;
+  font-size: 15px !important;
+  text-align: left;
+}
+
+.customer-menu {
+  color: white;
+  padding: 10px;
+  border-radius: 0.3rem;
+  margin-bottom: 0px;
+  padding-left: 15px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.customer-menu:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.navbar-expanded {
+  margin-left: 250px;
+}
+
+.Customer-icon {
+  margin-right: 22px;
+}
+
+.navbar-profile-icon {
+  padding-left: 4px;
+  color: #8c8c8c;
+}
+
+.navbar-profile-div {
+  padding-top: 8px;
+}
+
+.navbar-profile-email {
+  font-weight: 500;
+  color: black;
+}
+
+.customer-menu-list-color {
+  color: white;
+  padding-left: 60px;
+  border-radius: 0.3rem;
+}
+
+.customer-menu-list-color:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.side-menu-customer-link {
+  color: white;
+  border-radius: 0.3rem;
+  padding-left: 45px;
+}
+.side-menu-customer-link li{
+  padding: 0px;
+  line-height: 0px;
+}
+
+.side-menu-customer-link:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.toggie {
+  display: block !important;
+  border: none !important;
+  padding: 5px !important;
+  padding-top: 7px !important;
+}
+
+.font-size-dropdown {
+  font-size: 13px !important;
+}
+
+.check-container {
+  transition: margin-left 0.5s ease;
+}
+
+.check-container.sidebar-expanded {
+  margin-left: 250px;
+}
+
+.profile-dropdown {
+  border-style: solid !important;
+}
+
+@media (max-width: 1025px) {
+  .Customer-icon {
+    margin-left: 0px !important;
+  }
+}
+
+@media (max-width: 992px) {
+  .Navi-First,
+  .Navi-Second {
+    flex-direction: row !important;
+  }
+
+  .side-menu {
+    /* width: 20%; */
+    left: -100%;
+  }
+
+  .side-menu.show {
+    left: 0;
+  }
+
+  .side-menu a {
+    font-size: 20px;
+  }
+
+  .Side-navi-toggle {
+    margin-left: auto;
+  }
+
+  .navbar-expanded {
+    margin-left: 50%;
+  }
+
+  .check-container.sidebar-expanded {
+    margin-left: 50%;
+  }
+}
+
+@media (max-width: 500px) {
+  .customer-menu-list-color {
+    /* padding-left: 20px; */
+  }
+
+  .Customer-icon {
+    margin: 10px;
+  }
+
+  .Navi-First {
+    display: none !important;
+  }
+
+  .navbar-profile-hide {
+    display: none;
+  }
+}

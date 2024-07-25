@@ -1,0 +1,48 @@
+.dsa-loan-customer-container {
+    background-color: #f9f9f9;
+    padding: 20px;
+}
+
+.dsa-loan-customer-content {
+    margin: 0 auto;
+    /* max-width: 800px; */
+}
+
+.section-title {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    text-align: center;
+    color: #333;
+}
+
+.table {
+    width: 100%;
+    /* margin-bottom: 20px; */
+    color: #333;
+}
+
+.table th,
+.table td {
+    text-align: center;
+    
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+.apply-loan-button {
+    /* margin-top: 10px; */
+    margin-bottom: 20px;
+    display: block;
+    /* width: 100%; */
+}
+
+.modal-dialog {
+    max-width: 600px;
+}
+
+.form-select,
+.form-control {
+    width: 100%;
+}

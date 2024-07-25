@@ -1,0 +1,42 @@
+.dsa-loan {
+    /* background-color: rgb(42, 42, 85); */
+    border-style: double;
+    /* border-width: thin; */
+    border-radius: 0.3rem;
+    /* padding: 30px; */
+    /* margin: 0,auto; */
+    margin-right: 10px;
+    background-image: url('../DSA/DSA_Images/dsa-login-5.jpg');
+    background-size: cover;
+    height: 300px;
+    background-repeat: no-repeat;
+    color: white;
+
+}
+
+.dsa-login-div {
+    background-color: #2492e8;
+    padding: 0px;
+    color: white;
+    height: 300px;
+    border-style: solid;
+    border-radius: 0.3rem;
+    margin-right: 10px;
+    height: 300px;
+    background-repeat: no-repeat;
+    padding: 10px;
+    /* border-color: black; */
+}
+.custom-modal {
+    position: fixed;
+    /* top: 10%; */
+    right: 1%;
+    width: 300px;
+    text-align: center;
+    z-index: 1050;
+}
+
+.custom-modal .modal-content {
+    border-radius: 10px;
+    padding: 10px;
+}

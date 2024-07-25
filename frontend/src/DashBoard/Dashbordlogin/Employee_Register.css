@@ -1,0 +1,35 @@
+
+.uksregisterimage{
+    /* background-image: url('../../Indexpage//Images/img123.png');
+    background-repeat: no-repeat; */
+   
+}
+.uks-reg{
+    background-color: #175493;
+    /* background-position: right; */
+    color: white;
+    justify-content: center;
+    align-items: center;
+    height: 600px;
+
+}
+.uks-h1 {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.uks-form {
+    margin-top: 30px;
+}
+
+.uks-routing {
+    text-align: center;
+    margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+    /* Add responsive styles here */
+    .uks-h1 {
+        font-size: 24px;
+    }
+}

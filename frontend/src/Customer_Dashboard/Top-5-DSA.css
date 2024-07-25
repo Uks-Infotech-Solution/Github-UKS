@@ -1,0 +1,18 @@
+/* Grid_Loan.css */
+.carousel-indicators li {
+    background-color: black; /* Blue color */
+}
+
+.carousel-indicators .active {
+    background-color: black; /* Darker blue color for the active indicator */
+}
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: #007bff; /* Blue color for the arrows */
+    border-radius: 50%;
+    padding: 10px;
+}
+.carousel-control-prev,.carousel-control-next{
+background-color: black;
+color: black;
+}

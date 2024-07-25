@@ -1,0 +1,55 @@
+.header-button{
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 2.2%;
+
+}
+
+.overview{
+    font-weight: 500;
+    font-size: 25px;
+    margin-left: 2.2%;
+}
+/* .dropdownbtn{
+ 
+} */
+
+.h-card{
+    display: flex ;
+    border: 1px solid white;
+    box-shadow: grey 0.2px 0px 2px 0px;
+}
+
+.h-people{
+margin: 7% 0% 0% 10%;
+}
+
+.h-section-2{
+    width: 98%;
+    margin-top: 1%;
+    margin-left: 1%;
+}
+.MdPeople{
+    background-color: rgb(200, 211, 211);
+    height: 50px;
+    padding: 5px;
+    width: 50px;
+    border-radius: 55% !important;
+}
+
+.MdPeople:hover{
+    background-color: rgb(169, 175, 175);
+    height: 50px;
+    padding: 5px;
+    width: 50px;
+    border-radius: 55% !important;
+}
+
+.h-amount{
+margin-left: 10%;
+
+}
+
+.h-amount h1 {
+   transform: translateY(10px);
+}

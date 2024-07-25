@@ -1,0 +1,12 @@
+.dsa-index-bg{
+    background-image: url('../DSA/DSA_Images/reg-dsa.jpg');
+    background-repeat: no-repeat;
+    height: 470px;
+    background-size: cover;
+    border-radius: 0.5rem;
+    /* margin-right: 10px; */
+}
+.dsa-login-container{
+    height: 605px;
+    align-items: center;
+}

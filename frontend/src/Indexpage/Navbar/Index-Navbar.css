@@ -1,0 +1,64 @@
+.index-navibar {
+    background-color: rgb(255, 255, 255);
+    margin-top: 0;
+    margin-bottom: 0px;
+}
+
+.index-img1 {
+    padding: 0;
+    height: 55px;
+}
+
+.index-navname {
+    font-size: 25px;
+    font-weight: 500;
+}
+
+.index-navmenu {
+    font-size: large;
+}
+
+.index-navbt {
+    color: #6a727d;
+    border-radius: 3rem;
+    font-size: 14px;
+    text-align: center;
+    text-decoration: none;
+    max-width: 300px;
+    width: 120px;
+}
+
+.index-navbt:hover {
+    background-color: #175493;
+    color: white;
+    text-decoration: none; 
+}
+
+.contact {
+    background-color: #2391e6;
+    color: white;
+    border: none;
+}
+
+/* Media Queries */
+@media (max-width: 800px) {
+    .index-navbt {
+        width: 25%;
+        margin-bottom: 5px;
+        text-align: end;
+    }
+}
+
+@media (min-width: 1000px) and (max-width: 1024px) {
+    .index-navbt {
+        width: 11%;
+        margin-bottom: 5px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .index-navmenu {
+        align-items: end;
+        justify-content: end;
+    }
+}

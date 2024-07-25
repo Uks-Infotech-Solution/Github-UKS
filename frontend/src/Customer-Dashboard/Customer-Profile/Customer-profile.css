@@ -1,0 +1,57 @@
+.Customer-profile-view-container {
+    padding-top: 70px;
+    background-color: rgb(241, 243, 248);
+    padding-bottom: 70px;
+    transition: margin-left 0.5s ease; /* Added transition property */
+  }
+  
+  .Customer-profile-view-col {
+    background-color: white !important;
+    border-radius: 0.5rem;
+    margin: 15px;
+    padding-top: 20px;
+  }
+  
+  .Customer-profile-main-row {}
+  
+  .Customer-profile-name-row {}
+  
+  .Customer-profile-name-col {
+    padding-top: 10px;
+    text-align: center;
+  }
+  
+  .Customer-profile-view-col div {
+    margin-bottom: 7px;
+  }
+  
+  .Customer-profile-view-div-first {
+    margin-right: 50px;
+    padding-right: 30px !important;
+  }
+  
+  .Customer-profile-view-div-second {
+    margin-right: 10px;
+  }
+  
+  .Customer-profile-row {
+    border-style: none none solid none;
+    border-width: thin;
+    border-color: rgb(204, 200, 200);
+  }
+  
+  .Customer-profile-download {
+    justify-content: center;
+    text-align: center;
+  }
+  
+  .Customer-profile-view-container.sidebar-expanded {
+    margin-left: 250px;
+  }
+  
+  @media (max-width: 992px) {
+    .Customer-profile-view-container.sidebar-expanded {
+      margin-left: 50%;
+    }
+  }
+  

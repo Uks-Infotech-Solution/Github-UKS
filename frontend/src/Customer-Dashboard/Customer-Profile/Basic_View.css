@@ -1,0 +1,359 @@
+/* Customize the success message */
+.react-message-popup.success {
+    background-color: #3ec608;
+    /* Background color for success message */
+    border: 1px solid #d0e9c6;
+    /* Border color for success message */
+    color: #332bd3;
+    margin-top: 100px !important;
+    padding-top: 100px !important;
+}
+
+div[style*="top: 100px"] {
+    margin-top: 150px !important;
+    padding-top: 100px !important;
+
+}
+
+.message-popup-container {
+    margin-top: 150px !important;
+    padding-top: 100px !important;
+
+}
+
+/* Customize the error message */
+.react-message-popup.error {
+    background-color: #f2dede;
+    /* Background color for error message */
+    border: 1px solid #ebccd1;
+    /* Border color for error message */
+    color: #a94442;
+    margin-top: 50px;
+    /* Text color for error message */
+}
+
+
+.box {
+    padding: 8px;
+    padding-left: 10px;
+    padding-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    display: inline-block;
+    min-width: 190px;
+    max-width: 100%;
+    /* Ensure it doesn't overflow the container */
+    word-wrap: break-word;
+    margin: 0px;
+    /* Handle long words or URLs */
+}
+
+.view-row-size {
+    row-gap: -5px !important;
+    /* border-style: solid; */
+    margin-bottom: 10px !important;
+    margin-top: 25px;
+    padding-left: 10px !important;
+}
+
+.view-row-size Col {
+    margin: 0px !important;
+    /* border-style: solid; */
+}
+
+.row {
+    padding-left: 0px;
+}
+
+.customer-data-font {
+    color: #a7a6a6;
+
+}
+
+.basic-col-width {
+    margin: 0px;
+    padding: 0px;
+    padding-top: 5px;
+}
+
+.input-box {
+    width: 100%;
+    border: none;
+    outline: none;
+    padding: 5px;
+    font-size: 14px;
+    background: transparent;
+}
+
+.basic-view-col {
+    background-color: white;
+    box-shadow: 0 0.3rem 2rem rgba(162, 160, 162, 0.5);
+}
+
+.basic-view-address-row {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    padding: 0px !important;
+    margin-left: 0px !important;
+
+}
+
+.basic-view-address-row .col {
+    cursor: pointer;
+    padding: 10px;
+    text-align: center;
+    width: 150px;
+    margin-bottom: 10px;
+    color: #9d9c9c;
+
+}
+
+.basic-view-address-row .col.active {
+    color: #007bff;
+    border-bottom: 2.5px solid #007bff;
+    /* border-style: solid; */
+    /* padding: 0px;     */
+
+}
+
+.profile-address-col {
+    /* border-style: solid; */
+    border-width: thin;
+    margin: 10px;
+    margin: 0, auto;
+    margin-left: 0px !important;
+}
+
+.basic-view-head {
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.customer-sentence {
+    /* color: #ccc; */
+    font-weight: 400;
+
+}
+
+.input-box-address {
+    padding: 5px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+
+}
+
+.profile-aadhar-per-head {
+    color: #9d9c9c;
+    margin-left: 10px;
+
+}
+
+.profile-address-single-row {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+/* Styles for the dropdown */
+.custom-dropdown {
+    position: relative;
+    display: inline-block;
+    width: 150px;
+}
+
+.custom-dropdown .form-control {
+    appearance: none;
+    /* Remove default arrow */
+    padding-right: 30px;
+    /* Space for custom arrow */
+}
+
+.custom-dropdown::after {
+    content: '▼';
+    /* Unicode for the arrow */
+    font-size: 12px;
+    /* Size of the arrow */
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.profile-finance {
+    font-weight: 500;
+}
+
+.check-bounds-loan {
+    width: 195px !important;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 8px;
+    padding-left: 10px;
+    padding-top: 5px;
+}
+
+.it-returns {
+   
+    width: 195px;   
+    /* max-width: 100%; */
+}
+
+.Upload-profile-row {
+    position: absolute;
+    justify-content: end !important;
+    width: 16%;
+    /* border-style: solid !important; */
+    align-items: end !important;
+    margin-left: 1150px !important;
+    /* text-align: end; */
+    margin: 0, auto;
+
+}
+
+.Upload-pdf-row {
+    position: absolute;
+    justify-content: end !important;
+    width: 20%;
+    /* border-style: solid !important; */
+    align-items: end !important;
+    margin-left: 1100px !important;
+    /* text-align: end; */
+    margin-top: 0px !important;
+
+}
+.Upload-pdf-row.sidebar-expanded{
+    margin-left: 760px !important;
+}
+
+.file-input {
+    display: flex;
+    margin: 10px 0;
+    /* background-color: #007bff; */
+    word-wrap: break-word !important;
+    width: 230px;
+    margin: 0, auto;
+}
+
+.file-name {
+    margin-top: 10px;
+    color: #555;
+    /* Adjust color as needed */
+    font-size: 14px;
+    /* Adjust font size as needed */
+}
+
+.upload-button {
+    margin-top: 10px;
+    /* Add any additional styling you need for the button */
+}
+
+.upload-cibil-pdf {
+    /* position: absolute; */
+    /* justify-content: end !important; */
+    /* border-style: solid !important; */
+    /* align-items: end !important; */
+    /* margin-left: 1000px !important; */
+    /* padding: 10px; */
+    /* text-align: end; */
+
+
+}
+
+.three-tab-margin {
+    padding-left: 0px !important;
+    /* border-style: solid; */
+}
+
+.Customer-basic-view-container {
+    transition: margin-left 0.5s ease;
+    font-weight: 480 !important;
+    font-size: 15px;
+
+}
+
+.Customer-basic-view-container.sidebar-expanded {
+    /* margin-left: 250px;  */
+    padding-left: 250px;
+}
+
+.Upload-profile-row.sidebar-expanded {
+    margin-left: 800px !important;
+    /* border-style: solid !important; */
+}
+.Edit-button{
+margin-left: 1300px;
+position: absolute;
+width: 100px;
+/* border-style: solid; */
+}
+.Edit-button.sidebar-expanded{
+    margin-left: 900px;
+}
+
+@media (max-width: 992px) {
+    .Customer-basic-view-container.sidebar-expanded {
+        margin-left: 50px;
+    }
+}
+@media  (min-width:1050px) {
+.Upload-profile-row{
+    margin-left: 1030px !important;
+}
+.Upload-pdf-row{
+    margin-left: 990px !important;
+
+}
+.Edit-button{
+    margin-left: 1150px;
+}
+.Upload-profile-div {
+    justify-content: end;
+    /* border-style: double; */
+    /* border-width: thin; */
+    background-color: #f0efef;
+    width: 250px;
+    /* height: 250px; */
+    border-radius: 0.3rem;
+    text-align: center;
+    padding: 10px;
+    border-color: #9d9c9c;
+    word-wrap: break-word !important;
+}
+}
+
+@media(min-width:1440px) {
+    .Edit-button.sidebar-expanded{
+        margin-left: 1000px;
+    }
+    .Upload-profile-row.sidebar-expanded {
+        margin-left: 875px !important;
+        /* border-style: solid !important; */
+    }
+    .Upload-profile-row{
+        margin-left: 1110px !important;
+    }
+    .Edit-button{
+        margin-left: 1250px;
+    }
+    .basic-col-width {
+        width: 13%;
+    }
+
+    .Upload-profile-div {
+        justify-content: end;
+        /* border-style: double; */
+        /* border-width: thin; */
+        background-color: #f0efef;
+        width: 250px;
+        /* height: 250px; */
+        border-radius: 0.3rem;
+        text-align: center;
+        padding: 10px;
+        border-color: #9d9c9c;
+        word-wrap: break-word !important;
+    }
+
+}

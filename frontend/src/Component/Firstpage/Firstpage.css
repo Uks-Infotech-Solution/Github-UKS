@@ -1,0 +1,60 @@
+.firstpageh1{
+    margin-top: 15%;
+}
+
+.firstpageh1 h1{
+    width: 90%;
+    margin-left: 6%;
+    font-weight: 700;
+}
+.firstpageh1 p{
+    width: 90%;
+    margin-top: 4%;
+    margin-left: 6%;
+}
+
+.firstpageh1 img{
+    width: 5%;
+    margin-top: 5%;
+    margin-left: 6%;
+}
+.firstpageh1 Button{
+    /* width: 20%; */
+    padding: 18px;
+    padding-left: 30px;
+    padding-right: 30px;
+    margin-top: 4%;
+    margin-left: 6%;
+}
+
+.firstpage{
+    background-color: #175493;
+    margin-top: 3%;
+    /* height: 750px;    */
+    width: 100%;
+    height: auto;
+    /* margin: auto; */
+    padding: 0px !important;
+    margin: 0px !important;
+    align-items: center;
+    color: white;
+}
+
+.firstpage2{
+    /* border-radius: 50% 50% 0% 0%; */
+    /* background-image: url('./loan-5.webp'); */
+    background-repeat: no-repeat;
+    /* height: 500px; */
+    background-size: cover;
+}
+
+.firsthimg{
+      /* height: 500px;   */
+      width: 90%;
+}
+
+@media(min-width:1024px){
+    .firstpage{
+        height: 600px;
+    }
+}

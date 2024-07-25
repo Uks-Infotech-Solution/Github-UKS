@@ -1,0 +1,72 @@
+.Customer-login-container{
+    /* border-style: solid; */
+    background-color:#175493;  
+    height: 695px;  
+    margin: 0px;
+}
+.Customer-login-row{
+    text-align: center;
+    justify-content: center;
+    /* border-style: solid; */
+    align-items: center;
+    margin: 0,auto;
+    height: 600px;
+}
+.Customer-login-col{
+    border-style: double; 
+    /* border-width: thin; */
+    border-radius: 0.3rem;
+    background-color: white;
+    padding: 23px;
+    /* margin: 0,auto; */
+    margin-right: 10px;
+}
+.Customer-login-div{
+    padding: 20px;
+}
+
+.Customer-login-button{
+    margin: 20px;
+    /* justify-content: left !important;
+    align-items: start !important;
+    text-align: left !important; */
+    /* margin-left: -100px; */
+}
+.Customer-login-loan-img{
+    height: 240px;
+}
+.customer-loan{
+    /* background-color: rgb(42, 42, 85); */
+    border-style: double; 
+    /* border-width: thin; */
+    border-radius: 0.3rem;
+    /* padding: 30px; */
+    /* margin: 0,auto; */
+    margin-right: 10px;
+    background-image: url('../images/loan-2.jpg');
+    background-size: cover;
+    height: 300px;
+    background-repeat: no-repeat;
+}
+.login-input{
+    background-color: transparent;
+    border-width: thin;
+    border-radius: 0.2rem;
+    
+}
+.success-message {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: #d4edda;
+    color: #155724;
+    padding: 10px 20px;
+    border: 1px solid #c3e6cb;
+    border-radius: 5px;
+    z-index: 1000;
+    font-size: 16px;
+}
+.login-forget-password{
+    text-align: start;
+    font-size: 13px;
+}
