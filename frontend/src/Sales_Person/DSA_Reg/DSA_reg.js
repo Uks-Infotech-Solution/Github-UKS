@@ -45,7 +45,7 @@ function DSA_reg({ onSuccess }) {
         if (!validate()) return;
     
         try {
-            const response = await axios.post('http://localhost:8000/api/dsa/register', formData);
+            const response = await axios.post('http://148.251.230.14:8000/api/dsa/register', formData);
             const dsaDetails = response.data.dsa;    
             setShowPopup(true);
             alert("DSA Registered Successfully")

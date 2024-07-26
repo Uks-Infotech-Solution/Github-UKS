@@ -79,7 +79,7 @@ function Address({ onSuccess, customerId }) {
             return;
         }
         try {
-            await axios.post(`http://localhost:8000/add-address`, {
+            await axios.post(`http://148.251.230.14:8000/add-address`, {
                 customerId: customerId, // Replace with actual customerId logic
                 address: addressDetails,
             });

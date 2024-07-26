@@ -16,7 +16,7 @@ const DSA_VerticalBoxes = () => {
 
     const fetchCustomers = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/'); // Adjust the URL as needed
+            const response = await axios.get('http://148.251.230.14:8000/'); // Adjust the URL as needed
             setCustomers(response.data);
             await fetchAddresses(response.data);
         } 
@@ -30,7 +30,7 @@ const DSA_VerticalBoxes = () => {
         const newAddresses = {};
         for (let customer of customers) {
             try {
-                const response = await axios.get('http://localhost:8000/view-address', {
+                const response = await axios.get('http://148.251.230.14:8000/view-address', {
                     params: { customerId: customer._id },
                 });
                 if (response.status === 200) {

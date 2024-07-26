@@ -33,7 +33,7 @@ function DSA_Packager_View() {
     useEffect(() => {
         const fetchSalesPersons = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/sales/person/list');
+                const response = await axios.get('http://148.251.230.14:8000/sales/person/list');
                 setSalesPersons(response.data);
             } catch (err) {
                 // setError(err.message);
@@ -48,7 +48,7 @@ function DSA_Packager_View() {
     useEffect(() => {
         const fetchUksdetails = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/uks/details', {
+                const response = await axios.get('http://148.251.230.14:8000/uks/details', {
                     params: {
                         uksId: uksId
                     }
@@ -67,7 +67,7 @@ function DSA_Packager_View() {
     useEffect(() => {
         const fetchPackages = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/api/package/details?pkgId=${pkgId}`);
+                const response = await axios.get(`http://148.251.230.14:8000/api/package/details?pkgId=${pkgId}`);
                 const packageData = response.data.data;
                 setPackage(packageData);
                 setDsaId(packageData.dsaId);
@@ -85,7 +85,7 @@ function DSA_Packager_View() {
         const fetchDSADetails = async () => {
             try {
                 if (dsaId) {
-                    const response = await axios.get(`http://localhost:8000/api/dsa?dsaId=${dsaId}`);
+                    const response = await axios.get(`http://148.251.230.14:8000/api/dsa?dsaId=${dsaId}`);
                     const dsaDetails = response.data;
 
                     setFormData({
@@ -112,7 +112,7 @@ function DSA_Packager_View() {
         const fetchAddressDetails = async () => {
             try {
                 if (dsaId) {
-                    const response = await axios.get(`http://localhost:8000/api/dsa/address?dsaId=${dsaId}`);
+                    const response = await axios.get(`http://148.251.230.14:8000/api/dsa/address?dsaId=${dsaId}`);
                     const fetchedAddress = response.data;
 
                     setAddressDetails({
@@ -157,7 +157,7 @@ function DSA_Packager_View() {
         };
 
         try {
-            const response = await axios.post('http://localhost:8000/api/dsa/packager/activation', data);
+            const response = await axios.post('http://148.251.230.14:8000/api/dsa/packager/activation', data);
             console.log('Activation successful:', response.data);
             navigate('/uks/dashboard', { state: { uksId } });
             // Handle success, e.g., show a success message or navigate to another page

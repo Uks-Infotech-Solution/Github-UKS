@@ -23,7 +23,7 @@ function Location({ onSuccess,customerId, customerNo }) {
     useEffect(() => {
         const fetchCustomerDetails = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/customer-details',{
+                const response = await axios.get('http://148.251.230.14:8000/customer-details',{
                     params: { customerId: customerId }
                 });
                 setCustomerDetails(response.data)
@@ -39,7 +39,7 @@ function Location({ onSuccess,customerId, customerNo }) {
 
     const saveData = async () => {
         try {
-            const response = await axios.post('http://localhost:8000/sales/person/cus/reg', {
+            const response = await axios.post('http://148.251.230.14:8000/sales/person/cus/reg', {
                 uksId,
                 salesPersonName,
                 customerName,

@@ -13,7 +13,7 @@ const File_Status = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:8000/api/file-status', { fileStatus: documentType });
+      const response = await axios.post('http://148.251.230.14:8000/api/file-status', { fileStatus: documentType });
       setMessage(response.data.message);
       setDocumentType('');
       setError('');

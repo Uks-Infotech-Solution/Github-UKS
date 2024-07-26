@@ -15,7 +15,7 @@ const Package_Activate = () => {
 
   const activateAccount = async () => {
     try {
-      const response = await axios.post(`http://localhost:8000/package/activate/${token}`, {
+      const response = await axios.post(`http://148.251.230.14:8000/package/activate/${token}`, {
         transferAmountRefNumber,
       });
 

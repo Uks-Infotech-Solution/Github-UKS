@@ -23,7 +23,7 @@ function Customer_Login_Dashboard() {
 
     const fetchDownloadTableCount = async (customerId) => {
         try {
-            const response = await axios.get(`http://localhost:8000/dsa-customer/downloadtable/count?customerId=${customerId}`);
+            const response = await axios.get(`http://148.251.230.14:8000/dsa-customer/downloadtable/count?customerId=${customerId}`);
             setDownloadTableCount(response.data.count);
         } catch (error) {
             console.error('Error fetching download table count:', error.message);
@@ -32,7 +32,7 @@ function Customer_Login_Dashboard() {
 
     const fetchTableCount = async (customerId) => {
         try {
-            const response = await axios.get(`http://localhost:8000/dsa-customer/table/count?customerId=${customerId}`);
+            const response = await axios.get(`http://148.251.230.14:8000/dsa-customer/table/count?customerId=${customerId}`);
             setTableCount(response.data.count);
         } catch (error) {
             console.error('Error fetching table count:', error.message);

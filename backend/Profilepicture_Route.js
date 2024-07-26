@@ -11,7 +11,7 @@ const Customer = require('./models/Schema'); // Adjust the path as per your file
 const router = express.Router();
 
 // Create mongo connection
-const conn = mongoose.createConnection('mongodb://localhost:27017/Customer', {
+const conn = mongoose.createConnection('mongodb://LDp-DB:d888833d093ksKdmc@148.251.230.14:27017/LDp-DB', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
@@ -26,7 +26,7 @@ conn.once('open', () => {
 
 // Create storage engine
 const storage = new GridFsStorage({
-    url: 'mongodb://localhost:27017/Customer',
+    url: 'mongodb://LDp-DB:d888833d093ksKdmc@148.251.230.14:27017/LDp-DB',
     file: (req, file) => {
         return {
             filename: file.originalname,

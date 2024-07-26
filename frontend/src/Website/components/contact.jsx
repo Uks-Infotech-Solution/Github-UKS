@@ -22,7 +22,7 @@ export const Contact = ({ data }) => {
 
     const emailData = { name, email, message };
 
-    axios.post("http://localhost:5000/send-email", emailData)
+    axios.post("http://148.251.230.14:8000/send-email", emailData)
       .then((response) => {
         console.log("SUCCESS!", response.data);
         clearState();

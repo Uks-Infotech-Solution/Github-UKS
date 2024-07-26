@@ -1,5 +1,4 @@
 import { Container } from "react-bootstrap";
-import Pricing_Details from "./Pricing_Input";
 import { useSidebar } from '../Customer/Navbar/SidebarContext';
 import DSA_Package_List from "./DSA_Package_List";
 

@@ -28,7 +28,7 @@ const Section_1 = () => {
 
     useEffect(() => {
         // Fetch loan types from the backend
-        axios.get('http://localhost:8000/api/loan-types')
+        axios.get('http://148.251.230.14:8000/api/loan-types')
             .then(response => {
                 setLoanTypes(response.data.map(type => ({
                     value: type.id,
@@ -64,7 +64,7 @@ const Section_1 = () => {
 
         if (Object.keys(newErrors).length === 0) {
             try {
-                const response = await axios.post('http://localhost:8000/api/customer/register', {
+                const response = await axios.post('http://148.251.230.14:8000/api/customer/register', {
                     customerType,
                     title,
                     customerFname,

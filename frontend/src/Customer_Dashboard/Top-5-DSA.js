@@ -20,13 +20,13 @@ const Top_5_DSA = () => {
 
     const fetchAllDSAs = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/api/dsa/list');
+            const response = await axios.get('http://148.251.230.14:8000/api/dsa/list');
             const dsas = response.data.dsa;
 
             const dsaWithDetailsPromises = dsas.map(async (dsa) => {
-                const addressResponse = await axios.get(`http://localhost:8000/api/dsa/address?dsaId=${dsa._id}`);
-                const loanResponse = await axios.get(`http://localhost:8000/api/dsa/${dsa._id}/loanDetails`);
-                const feedbackResponse = await axios.get(`http://localhost:8000/loan/api/feedback/${dsa._id}`);
+                const addressResponse = await axios.get(`http://148.251.230.14:8000/api/dsa/address?dsaId=${dsa._id}`);
+                const loanResponse = await axios.get(`http://148.251.230.14:8000/api/dsa/${dsa._id}/loanDetails`);
+                const feedbackResponse = await axios.get(`http://148.251.230.14:8000/loan/api/feedback/${dsa._id}`);
 
                 return {
                     ...dsa,

@@ -14,7 +14,7 @@ function HeaderDashboard() {
 
     const fetchCustomerCounts = async () => {
         try {
-            const response = await axios.get(`http://localhost:8000/customer/status`);
+            const response = await axios.get(`http://148.251.230.14:8000/customer/status`);
             const { totalcustomer, activestatus, inactivestatus } = response.data;
             setCustomerCounts({ total: totalcustomer, active: activestatus, inactive: inactivestatus });
         } catch (error) {

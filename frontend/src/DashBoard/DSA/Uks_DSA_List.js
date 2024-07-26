@@ -44,13 +44,13 @@ function UKS_DSA_List() {
 
   const fetchDSADetails = async () => {
     try {
-      const response = await axios.get(`http://localhost:8000/api/dsa/list`);
+      const response = await axios.get(`http://148.251.230.14:8000/api/dsa/list`);
       setDsaData(response.data.dsa);
       setLoading(false);
 
       // Fetch address details for each DSA
       const addressPromises = response.data.dsa.map(dsa => (
-        axios.get(`http://localhost:8000/api/dsa/address?dsaId=${dsa._id}`)
+        axios.get(`http://148.251.230.14:8000/api/dsa/address?dsaId=${dsa._id}`)
       ));
       const addressResponses = await Promise.all(addressPromises);
       const addresses = {};
@@ -72,7 +72,7 @@ function UKS_DSA_List() {
     }));
 
     try {
-      const response = await axios.get(`http://localhost:8000/api/dsa/getLoanDetails/${dsaId}`);
+      const response = await axios.get(`http://148.251.230.14:8000/api/dsa/getLoanDetails/${dsaId}`);
 
       setDsaLoanDetails((prevDetails) => ({
         ...prevDetails,

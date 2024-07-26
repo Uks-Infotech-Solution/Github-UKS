@@ -54,7 +54,7 @@ function Profile_View( ) {
     useEffect(() => {
         const fetchCustomerDetails = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/customer-details', {
+                const response = await axios.get('http://148.251.230.14:8000/customer-details', {
                     params: {customerId: customerId }
                 });
                 setCustomerDetails(response.data);
@@ -426,7 +426,7 @@ function Profile_View( ) {
 
     const fetchLoanProcessingDetails = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/get-loan-processing', {
+            const response = await axios.get('http://148.251.230.14:8000/get-loan-processing', {
                 params: { customerId: customerId }
             });
             if (response.status === 200) {
@@ -461,7 +461,7 @@ function Profile_View( ) {
 
     const fetchPreviousLoans = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/get-previous-loans', {
+            const response = await axios.get('http://148.251.230.14:8000/get-previous-loans', {
                 params: { customerId: customerId }
             });
             setPreviousLoanDetails(response.data);
@@ -539,7 +539,7 @@ function Profile_View( ) {
         const fetchAddressDetails = async () => {
             try {
                 console.log(`Fetching address details for customerId: ${customerId}`);
-                const response = await axios.get(`http://localhost:8000/view-address`, {
+                const response = await axios.get(`http://148.251.230.14:8000/view-address`, {
                     params: { customerId: customerId }
                 });
                 if (response.data) {
@@ -570,7 +570,7 @@ function Profile_View( ) {
 
     const fetchProfilePicture = async (customerId) => {
         try {
-            const response = await axios.get(`http://localhost:8000/api/profile/view-profile-picture?customerId=${customerId}`, {
+            const response = await axios.get(`http://148.251.230.14:8000/api/profile/view-profile-picture?customerId=${customerId}`, {
                 responseType: 'arraybuffer'
             });
             const contentType = response.headers['content-type'];
@@ -602,7 +602,7 @@ function Profile_View( ) {
         if (customerDetails?.customerType === 'Salaried Person') {
             const fetchSalariedPersonDetails = async () => {
                 try {
-                    const response = await axios.get('http://localhost:8000/salariedperson', {
+                    const response = await axios.get('http://148.251.230.14:8000/salariedperson', {
                         params: { customerId: customerId }
                     });
 

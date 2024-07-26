@@ -35,7 +35,7 @@ function DSA_Login_Dashboard() {
 
     const fetchDownloadTableCount = async (dsaId) => {
         try {
-            const response = await axios.get(`http://localhost:8000/dsa/download/count`, {
+            const response = await axios.get(`http://148.251.230.14:8000/dsa/download/count`, {
                 params: { dsaId: dsaId }
             });
             setDownloadTableCount(response.data.count);
@@ -46,7 +46,7 @@ function DSA_Login_Dashboard() {
 
     const fetchTableCount = async (dsaId) => {
         try {
-            const response = await axios.get(`http://localhost:8000/dsa/table/count`, {
+            const response = await axios.get(`http://148.251.230.14:8000/dsa/table/count`, {
                 params: { dsaId: dsaId }
             });
             setTableCount(response.data.count);
@@ -57,7 +57,7 @@ function DSA_Login_Dashboard() {
 
     const fetchDSADetails = async (dsaId) => {
         try {
-            const response = await axios.get('http://localhost:8000/api/dsa', {
+            const response = await axios.get('http://148.251.230.14:8000/api/dsa', {
                 params: { dsaId: dsaId }
             });
             setDSADetails(response.data);
@@ -68,7 +68,7 @@ function DSA_Login_Dashboard() {
     useEffect(() => {
         const fetchLoanStatusCounts = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/api/dsa/loan/status/count/${dsaId}`);
+                const response = await axios.get(`http://148.251.230.14:8000/api/dsa/loan/status/count/${dsaId}`);
                 setApprovedCount(response.data.approvedCount);
                 setRejectedCount(response.data.rejectedCount);
             } catch (error) {
@@ -82,7 +82,7 @@ function DSA_Login_Dashboard() {
     }, [dsaId]);
     const fetchLastLoginSession = async (dsaId) => {
         try {
-            const response = await axios.get('http://localhost:8000/dsa/login/last-session', {
+            const response = await axios.get('http://148.251.230.14:8000/dsa/login/last-session', {
                 params: { dsaId: dsaId }
             });
             setLastLoginDateTime(response.data.loginDateTime);
@@ -95,7 +95,7 @@ function DSA_Login_Dashboard() {
     useEffect(() => {
         const fetchPackages = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/buy_packages/dsa/${dsaId}`);
+                const response = await axios.get(`http://148.251.230.14:8000/buy_packages/dsa/${dsaId}`);
                 setPackages(response.data);
                 console.log(response.data);
             } catch (err) {

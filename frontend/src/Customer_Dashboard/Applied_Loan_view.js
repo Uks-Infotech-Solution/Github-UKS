@@ -54,7 +54,7 @@ function Applied_Loan_View() {
     useEffect(() => {
         const fetchDSADetails = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/api/dsa?dsaId=${dsaId}`);
+                const response = await axios.get(`http://148.251.230.14:8000/api/dsa?dsaId=${dsaId}`);
                 const dsaDetails = response.data;
 
                 if (dsaDetails) {
@@ -69,7 +69,7 @@ function Applied_Loan_View() {
                         email: dsaDetails.email || "",
                         website: dsaDetails.website || ""
                     });
-                    const branchResponse = await axios.get(`http://localhost:8000/dsa/BranchDetails/${dsaId}`);
+                    const branchResponse = await axios.get(`http://148.251.230.14:8000/dsa/BranchDetails/${dsaId}`);
                     setBranchDetails(branchResponse.data.data);
                 } else {
                     console.error('No data found for DSA ID:', dsaId);
@@ -89,7 +89,7 @@ function Applied_Loan_View() {
     useEffect(() => {
         const fetchLoanDetails = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/api/dsa/${dsaId}/loanDetails`);
+                const response = await axios.get(`http://148.251.230.14:8000/api/dsa/${dsaId}/loanDetails`);
                 if (response.status === 200) {
                     setLoanDetails(response.data.loanDetails);
                 }
@@ -106,7 +106,7 @@ function Applied_Loan_View() {
     useEffect(() => {
         const fetchAddressDetails = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/api/dsa/address?dsaId=${dsaId}`);
+                const response = await axios.get(`http://148.251.230.14:8000/api/dsa/address?dsaId=${dsaId}`);
                 const fetchedAddress = response.data;
 
                 if (fetchedAddress) {
@@ -128,7 +128,7 @@ function Applied_Loan_View() {
 
     const fetchDownloadTableCount = async () => {
         try {
-            const response = await axios.get(`http://localhost:8000/dsa/download/count?dsaId=${dsaId}`);
+            const response = await axios.get(`http://148.251.230.14:8000/dsa/download/count?dsaId=${dsaId}`);
             setDownloadTableCount(response.data.count);
         } catch (error) {
             console.error('Error fetching download table count:', error.message);
@@ -137,7 +137,7 @@ function Applied_Loan_View() {
 
     const fetchTableCount = async () => {
         try {
-            const response = await axios.get(`http://localhost:8000/dsa/table/count?dsaId=${dsaId}`);
+            const response = await axios.get(`http://148.251.230.14:8000/dsa/table/count?dsaId=${dsaId}`);
             setTableCount(response.data.count);
         } catch (error) {
             console.error('Error fetching table count:', error.message);
@@ -167,7 +167,7 @@ function Applied_Loan_View() {
                 date: new Date().toISOString()
             };
 
-            await axios.post('http://localhost:8000/loan/api/feedback', feedback);
+            await axios.post('http://148.251.230.14:8000/loan/api/feedback', feedback);
             alert("Feedback submitted successfully!");
         } catch (error) {
             console.error('Error submitting feedback:', error);
@@ -177,7 +177,7 @@ function Applied_Loan_View() {
 
     const fetchFeedbackDetails = async () => {
         try {
-            const response = await axios.get(`http://localhost:8000/loan/api/feedback/${dsaId}`);
+            const response = await axios.get(`http://148.251.230.14:8000/loan/api/feedback/${dsaId}`);
             if (response.status === 200) {
                 setFeedbackDetails(response.data.feedbacks);
             }
