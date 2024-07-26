@@ -39,7 +39,7 @@ const DSA_Loan_Customer = () => {
     useEffect(() => {
         const fetchDSADetails = async () => {
             try {
-                const response = await axios.get(`http://148.251.230.14:8000/api/dsa?dsaId=${dsaId}`);
+                const response = await axios.get(`https://localhost:8000/api/dsa?dsaId=${dsaId}`);
                 setDsaDetails(response.data);
             } catch (error) {
                 console.error('Error fetching DSA details:', error);
@@ -52,7 +52,7 @@ const DSA_Loan_Customer = () => {
     useEffect(() => {
         const fetchLoanDetails = async () => {
             try {
-                const response = await axios.get(`http://148.251.230.14:8000/api/dsa/${dsaId}/loanDetails`);
+                const response = await axios.get(`https://localhost:8000/api/dsa/${dsaId}/loanDetails`);
                 if (response.status === 200) {
                     setLoanDetails(response.data.loanDetails);
                 }
@@ -67,7 +67,7 @@ const DSA_Loan_Customer = () => {
     useEffect(() => {
         const fetchCustomerDetails = async () => {
             try {
-                const response = await axios.get('http://148.251.230.14:8000/customer-details', {
+                const response = await axios.get('https://localhost:8000/customer-details', {
                     params: { customerId: customerId }
                 });
                 setCustomerDetails(response.data);
@@ -84,7 +84,7 @@ const DSA_Loan_Customer = () => {
     useEffect(() => {
         const fetchLoanLevels = async () => {
             try {
-                const response = await axios.get('http://148.251.230.14:8000/api/loan-levels');
+                const response = await axios.get('https://localhost:8000/api/loan-levels');
                 setLoanLevels(response.data);
                 console.log(response.data);
                 setLoading(false);
@@ -100,7 +100,7 @@ const DSA_Loan_Customer = () => {
     useEffect(() => {
         const fetchDocumentTypes = async () => {
             try {
-                const response = await axios.get('http://148.251.230.14:8000/api/document-type');
+                const response = await axios.get('https://localhost:8000/api/document-type');
                 setDocumentTypes(response.data);
             } catch (error) {
                 console.error('Error fetching document types:', error);
@@ -113,7 +113,7 @@ const DSA_Loan_Customer = () => {
     useEffect(() => {
         const fetchUnsecured_DocumentTypes = async () => {
             try {
-                const response = await axios.get('http://148.251.230.14:8000/api/unsecured/document-type');
+                const response = await axios.get('https://localhost:8000/api/unsecured/document-type');
                 setUnsecured_DocumentTypes(response.data);
             } catch (error) {
                 console.error('Error fetching document types:', error);
@@ -169,7 +169,7 @@ const DSA_Loan_Customer = () => {
 
     const handleSubmit = async () => {
         try {
-            const response = await axios.post('http://148.251.230.14:8000/customer/loan/apply', {
+            const response = await axios.post('https://localhost:8000/customer/loan/apply', {
                 customerId: customerId,
                 customerName: customerDetails.customerFname,
                 customerNo: customerDetails.customerNo,
