@@ -107,7 +107,7 @@ const StickyNavbar = () => {
 
   const fetchDSADetails = async (dsaId) => {
     try {
-      const response = await axios.get(`http://148.251.230.14:8000/api/dsa?dsaId=${dsaId}`);
+      const response = await axios.get(`https://localhost:8000/api/dsa?dsaId=${dsaId}`);
       setDsaData(response.data);
       console.log(response.data);
     } catch (error) {
@@ -118,7 +118,7 @@ const StickyNavbar = () => {
   const fetchCustomerDetails = async (customerId) => {
     console.log({ customerId });
     try {
-      const response = await axios.get(`http://148.251.230.14:8000/customer-details`, { params: { customerId } });
+      const response = await axios.get(`https://localhost:8000/customer-details`, { params: { customerId } });
       setCustomerDetails(response.data);
       console.log('customer:', response.data); // Correct logging
     } catch (error) {
@@ -128,7 +128,7 @@ const StickyNavbar = () => {
 
   const fetchUKSDetails = async (uksId) => {
     try {
-      const response = await axios.get(`http://148.251.230.14:8000/uks/details?uksId=${uksId}`);
+      const response = await axios.get(`https://localhost:8000/uks/details?uksId=${uksId}`);
       setUksData(response.data);
       console.log(response.data);
     } catch (error) {
@@ -138,7 +138,7 @@ const StickyNavbar = () => {
 
   const fetchProfilePicture = async (customerId) => {
     try {
-      const response = await axios.get(`http://148.251.230.14:8000/api/profile/view-profile-picture?customerId=${customerId}`, {
+      const response = await axios.get(`https://localhost:8000/api/profile/view-profile-picture?customerId=${customerId}`, {
         responseType: 'arraybuffer'
       });
       const contentType = response.headers['content-type'];
