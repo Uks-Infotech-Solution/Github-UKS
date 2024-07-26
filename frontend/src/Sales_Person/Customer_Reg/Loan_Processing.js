@@ -18,7 +18,7 @@ function Loan_process({ onSuccess,customerId,customerNo }) {
                 ? previousLoanDetails
                 : [{ financeName: 'No previous loan', yearOfLoan: null, loanAmount: 0, outstandingAmount: 0 }];
 
-            await axios.post('http://148.251.230.14:8000/add-previous-loans', {
+            await axios.post('https://localhost:8000/add-previous-loans', {
                 previousLoans: loansToSave,
                 customerId: customerId,
             });
