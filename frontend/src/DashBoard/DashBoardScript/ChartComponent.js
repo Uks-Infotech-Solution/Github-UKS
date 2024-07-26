@@ -13,7 +13,7 @@ const ChartComponent = () => {
   useEffect(() => {
     const fetchCustomers = async () => {
       try {
-        const response = await axios.get('http://148.251.230.14:8000/');
+        const response = await axios.get('https://localhost:8000/');
         setCustomers(response.data);
         setLoading(false);
       } catch (err) {
@@ -30,7 +30,7 @@ const ChartComponent = () => {
       for (let customer of customers) {
         if (customer && customer.customermailid) {
           try {
-            const response = await axios.get('http://148.251.230.14:8000/get-loan-processing', {
+            const response = await axios.get('https://localhost:8000/get-loan-processing', {
               params: { email: customer.customermailid }
             });
             if (response.status === 200 && response.data !== null) {
