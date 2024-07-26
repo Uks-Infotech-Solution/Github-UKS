@@ -23,7 +23,7 @@ const PricingBox = () => {
   useEffect(() => {
     const fetchPackageDetails = async () => {
       try {
-        const response = await axios.get(`http://148.251.230.14:8000/PackageDetails`);
+        const response = await axios.get(`https://localhost:8000/PackageDetails`);
         setPackageDetails(response.data.data);
       } catch (error) {
         console.error('Error fetching package details:', error);
@@ -36,7 +36,7 @@ const PricingBox = () => {
   useEffect(() => {
     const fetchDSADetails = async () => {
       try {
-        const response = await axios.get(`http://148.251.230.14:8000/api/dsa?dsaId=${dsaId}`);
+        const response = await axios.get(`https://localhost:8000/api/dsa?dsaId=${dsaId}`);
         setDsaData(response.data);
       } catch (error) {
         console.error('Error fetching DSA details:', error);
@@ -78,7 +78,7 @@ const PricingBox = () => {
     };
 
     try {
-      await axios.post('http://148.251.230.14:8000/buy_packagers', purchaseData);
+      await axios.post('https://localhost:8000/buy_packagers', purchaseData);
       setShowModal(false);
       setShowSuccessModal(true); // Show success modal upon successful purchase
     } catch (error) {
