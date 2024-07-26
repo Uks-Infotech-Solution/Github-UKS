@@ -34,7 +34,7 @@ function Applied_Loan_Customer() {
         const fetchApplyLoanDetails = async () => {
             try {
                 console.log("Sending GET request for loanId:", loanId);
-                const response = await axios.get(`http://148.251.230.14:8000/api/customer/dsa/loans/${loanId}`);
+                const response = await axios.get(`https://localhost:8000/api/customer/dsa/loans/${loanId}`);
                 if (response.status === 200) {
                     const data = response.data.data;
                     setAppliedLoan(Array.isArray(data) ? data : [data]);
@@ -53,7 +53,7 @@ function Applied_Loan_Customer() {
     useEffect(() => {
         const fetchDSADetails = async () => {
             try {
-                const response = await axios.get(`http://148.251.230.14:8000/api/dsa`, {
+                const response = await axios.get(`https://localhost:8000/api/dsa`, {
                     params: { dsaId }
                 });
                 const dsaDetails = response.data;
@@ -104,7 +104,7 @@ function Applied_Loan_Customer() {
 
     const handleCancelApplication = async () => {
         try {
-            const response = await axios.post('http://148.251.230.14:8000/customer/loan/cancel', {
+            const response = await axios.post('https://localhost:8000/customer/loan/cancel', {
                 customerId,
                 dsaId,
                 loanId
