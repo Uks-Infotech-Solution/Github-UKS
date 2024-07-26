@@ -18,7 +18,7 @@ const DSA_Branch_Details = () => {
     useEffect(() => {
         const fetchBranchDetails = async () => {
             try {
-                const response = await axios.get(`http://148.251.230.14:8000/dsa/BranchDetails/${dsaId}`);
+                const response = await axios.get(`https://localhost:8000/dsa/BranchDetails/${dsaId}`);
                 setBranchDetails(response.data.data);
             } catch (error) {
                 console.error('Error fetching branch details:', error);
@@ -39,7 +39,7 @@ const DSA_Branch_Details = () => {
 
     const deleteBranchRow = async (index, branchId) => {
         try {
-            const response = await axios.delete(`http://148.251.230.14:8000/dsa/BranchDetails/${branchId}`);
+            const response = await axios.delete(`https://localhost:8000/dsa/BranchDetails/${branchId}`);
             if (response.status === 200) {
                 const updatedBranchDetails = [...BranchDetails];
                 updatedBranchDetails.splice(index, 1); // Remove the branch from the state
@@ -64,7 +64,7 @@ const DSA_Branch_Details = () => {
 
     const handleBranchSave = async () => {
         try {
-            const response = await axios.post('http://148.251.230.14:8000/dsa/saveBranchDetails', { dsaId, branchDetails: BranchDetails });
+            const response = await axios.post('https://localhost:8000/dsa/saveBranchDetails', { dsaId, branchDetails: BranchDetails });
             if (response.status === 200) {
                 setModalMessage('Branch details saved successfully.');
                 setModalType('success');
