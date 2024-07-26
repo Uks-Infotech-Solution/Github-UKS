@@ -59,7 +59,7 @@ function Uks_Customer_View() {
 
     const handleDeleteAccount = async () => {
         try {
-            await axios.post('http://148.251.230.14:8000/customer/status', {
+            await axios.post('https://localhost:8000/customer/status', {
                 customerId: customerId, // Ensure you have the customerId of the customer
                 status: 'InActive' // You can send 'InActive' or 'Active' based on the current state
             });
@@ -73,7 +73,7 @@ function Uks_Customer_View() {
 
     const handleActivateAccount = async () => {
         try {
-            await axios.post('http://148.251.230.14:8000/customer/status', {
+            await axios.post('https://localhost:8000/customer/status', {
                 customerId: customerId,
                 status: 'Active' // Set the status to 'active'
             });
@@ -115,7 +115,7 @@ function Uks_Customer_View() {
     useEffect(() => {
         const fetchCustomerDetails = async () => {
             try {
-                const response = await axios.get('http://148.251.230.14:8000/customer-details', {
+                const response = await axios.get('https://localhost:8000/customer-details', {
                     params: { customerId: customerId }
                 });
                 setCustomerDetails(response.data);
@@ -144,7 +144,7 @@ function Uks_Customer_View() {
     useEffect(() => {
         const fetchLoanTypes = async () => {
             try {
-                const response = await axios.get('http://148.251.230.14:8000/api/loan-types');
+                const response = await axios.get('https://localhost:8000/api/loan-types');
                 setLoanTypes(response.data);
             } catch (error) {
                 console.error('Error fetching loan types:', error);
@@ -161,7 +161,7 @@ function Uks_Customer_View() {
     const [level, setLevel] = useState('');
     const determineLevel = async (amount) => {
         try {
-            const response = await axios.post('http://148.251.230.14:8000/api/determine-loan-level', { loanAmount: amount });
+            const response = await axios.post('https://localhost:8000/api/determine-loan-level', { loanAmount: amount });
             setLevel(response.data.loanLevel);
         } catch (error) {
             console.error('Error determining loan level:', error);
@@ -202,7 +202,7 @@ function Uks_Customer_View() {
         };
         console.log(updatedDetails);
         try {
-            const response = await axios.put('http://148.251.230.14:8000/update-customer-details', {
+            const response = await axios.put('https://localhost:8000/update-customer-details', {
                 customerId: customerId, // Use the _id from customerDetails
                 updatedDetails: updatedDetails
             });
@@ -228,7 +228,7 @@ function Uks_Customer_View() {
     useEffect(() => {
         const checkForPdf = async () => {
             try {
-                const response = await axios.get('http://148.251.230.14:8000/api/check-pdf', {
+                const response = await axios.get('https://localhost:8000/api/check-pdf', {
                     params: { customerId: customerId }
                 });
                 if (response.status === 200) {
@@ -269,7 +269,7 @@ function Uks_Customer_View() {
         formData.append('customerId', customerDetails._id);
 
         try {
-            await axios.post('http://148.251.230.14:8000/api/upload-pdf', formData, {
+            await axios.post('https://localhost:8000/api/upload-pdf', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -290,7 +290,7 @@ function Uks_Customer_View() {
 
     const fetchLoanProcessingDetails = async () => {
         try {
-            const response = await axios.get('http://148.251.230.14:8000/get-loan-processing', {
+            const response = await axios.get('https://localhost:8000/get-loan-processing', {
                 params: { customerId: customerId }
             });
             if (response.status === 200) {
@@ -351,7 +351,7 @@ function Uks_Customer_View() {
             return;
         }
         try {
-            await axios.post('http://148.251.230.14:8000/api/save-loan-processing', {
+            await axios.post('https://localhost:8000/api/save-loan-processing', {
                 selectedOptions, // Ensure this is defined somewhere in your component
                 checkBounds,
                 blockStatus,
@@ -397,7 +397,7 @@ function Uks_Customer_View() {
                 ? previousLoanDetails
                 : [{ financeName: 'No previous loan', yearOfLoan: null, loanAmount: 0, outstandingAmount: 0 }];
 
-            await axios.post('http://148.251.230.14:8000/add-previous-loans', {
+            await axios.post('https://localhost:8000/add-previous-loans', {
                 previousLoans: loansToSave,
                 customerId: customerId,
             });
@@ -428,7 +428,7 @@ function Uks_Customer_View() {
         const loanToDelete = previousLoanDetails[index];
         if (loanToDelete._id) {
             try {
-                await axios.delete(`http://148.251.230.14:8000/delete-previous-loan/${loanToDelete._id}`);
+                await axios.delete(`https://localhost:8000/delete-previous-loan/${loanToDelete._id}`);
                 alert('Loan deleted successfully');
             } catch (error) {
                 console.error('Error deleting previous loan:', error);
@@ -444,7 +444,7 @@ function Uks_Customer_View() {
     // FETCH PREVIOUS LOAN
     const fetchPreviousLoans = async () => {
         try {
-            const response = await axios.get('http://148.251.230.14:8000/get-previous-loans', {
+            const response = await axios.get('https://localhost:8000/get-previous-loans', {
                 params: { customerId: customerId }
             });
             setPreviousLoanDetails(response.data);
@@ -558,7 +558,7 @@ function Uks_Customer_View() {
             return;
         }
         try {
-            await axios.post(`http://148.251.230.14:8000/add-address`, {
+            await axios.post(`https://localhost:8000/add-address`, {
                 customerId: customerId,
                 address: addressDetails,
             });
@@ -577,7 +577,7 @@ function Uks_Customer_View() {
         const fetchAddressDetails = async () => {
             try {
                 console.log(`Fetching address details for customerId: ${customerId}`);
-                const response = await axios.get(`http://148.251.230.14:8000/view-address`, {
+                const response = await axios.get(`https://localhost:8000/view-address`, {
                     params: { customerId: customerId }
                 });
                 if (response.data) {
@@ -621,7 +621,7 @@ function Uks_Customer_View() {
         formData.append('profilePicture', file);
         formData.append('customerId', customerId);
         try {
-            const response = await axios.post('http://148.251.230.14:8000/api/profile/upload-profile-picture', formData, {
+            const response = await axios.post('https://localhost:8000/api/profile/upload-profile-picture', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -639,7 +639,7 @@ function Uks_Customer_View() {
 
     const fetchProfilePicture = async (customerId) => {
         try {
-            const response = await axios.get(`http://148.251.230.14:8000/api/profile/view-profile-picture?customerId=${customerId}`, {
+            const response = await axios.get(`https://localhost:8000/api/profile/view-profile-picture?customerId=${customerId}`, {
                 responseType: 'arraybuffer'
             });
             const contentType = response.headers['content-type'];
@@ -676,7 +676,7 @@ function Uks_Customer_View() {
     useEffect(() => {
         const fetchSalariedPersonDetails = async () => {
             try {
-                const response = await axios.get('http://148.251.230.14:8000/salariedperson', {
+                const response = await axios.get('https://localhost:8000/salariedperson', {
                     params: { customerId: customerId }
                 });
                 if (response.status === 200) {
@@ -725,7 +725,7 @@ function Uks_Customer_View() {
         if (salariedPersonToDelete) {
             if (salariedPersonToDelete._id) {
                 // If the salaried person has been saved before, delete it from the database
-                axios.delete(`http://148.251.230.14:8000/salariedperson/${_id}`)
+                axios.delete(`https://localhost:8000/salariedperson/${_id}`)
                     .then(() => {
                         alert('Salaried person deleted successfully');
                     })
@@ -743,7 +743,7 @@ function Uks_Customer_View() {
     const handleSaveSalariedPerson = async () => {
         try {
 
-            const response = await axios.post('http://148.251.230.14:8000/salariedperson', {
+            const response = await axios.post('https://localhost:8000/salariedperson', {
                 customerId: customerId,
                 salariedperson: salariedPersons
             });
@@ -764,7 +764,7 @@ function Uks_Customer_View() {
     useEffect(() => {
         const fetchFileStatuses = async () => {
             try {
-                const response = await axios.get('http://148.251.230.14:8000/api/file-status');
+                const response = await axios.get('https://localhost:8000/api/file-status');
                 setFileStatuses(response.data);
             } catch (error) {
                 console.error('Error fetching file statuses:', error);
@@ -819,7 +819,7 @@ function Uks_Customer_View() {
                             </span>
                             {showDownloadLink && (
                                 <span>
-                                    <a href={`http://148.251.230.14:8000/api/download-pdf/${customerDetails._id}`} style={{ textDecoration: 'none' }} download="Cibil_Report.pdf">
+                                    <a href={`https://localhost:8000/api/download-pdf/${customerDetails._id}`} style={{ textDecoration: 'none' }} download="Cibil_Report.pdf">
                                         Cibil Report Download
                                     </a>
                                 </span>
