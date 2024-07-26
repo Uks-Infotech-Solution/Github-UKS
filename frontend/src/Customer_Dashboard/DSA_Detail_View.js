@@ -46,14 +46,14 @@ function DSA_Detail_View() {
     useEffect(() => {
         const fetchDSADetails = async () => {
             try {
-                const response = await axios.get(`http://148.251.230.14:8000/api/dsa?dsaId=${dsaId}`);
+                const response = await axios.get(`https://localhost:8000/api/dsa?dsaId=${dsaId}`);
                 const dsaDetails = response.data;
                 console.log('Fetched DSA Details:', dsaDetails); // Log fetched data to inspect
                 // Fetch branch details
-                const branchResponse = await axios.get(`http://148.251.230.14:8000/dsa/BranchDetails/${dsaId}`);
+                const branchResponse = await axios.get(`https://localhost:8000/dsa/BranchDetails/${dsaId}`);
                 setBranchDetails(branchResponse.data.data);
                 if (dsaDetails) {
-                    const addressResponse = await axios.get(`http://148.251.230.14:8000/api/dsa/address?dsaId=${dsaDetails._id}`);
+                    const addressResponse = await axios.get(`https://localhost:8000/api/dsa/address?dsaId=${dsaDetails._id}`);
                     const permanentAddress = addressResponse.data.permanentAddress;
 
                     setFormData({
@@ -80,7 +80,7 @@ function DSA_Detail_View() {
 
         const fetchFeedbacks = async () => {
             try {
-                const feedbackResponse = await axios.get(`http://148.251.230.14:8000/loan/api/feedback/${dsaId}`);
+                const feedbackResponse = await axios.get(`https://localhost:8000/loan/api/feedback/${dsaId}`);
                 const { feedbacks } = feedbackResponse.data;
                 setFeedbacks(feedbacks || []);
                 setFeedbacksLoaded(true);
