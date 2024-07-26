@@ -46,7 +46,7 @@ function Section_1() {
 
 
     useEffect(() => {
-        axios.get('http://148.251.230.14:8000/api/loan-types')
+        axios.get('https://localhost:8000/api/loan-types')
             .then(response => {
                 setLoanTypes(response.data.map(type => ({
                     value: type.id,
@@ -129,7 +129,7 @@ function Section_1() {
                     customerType,
                     title,
                 };
-                const response = await axios.post('http://148.251.230.14:8000/register', customerData);
+                const response = await axios.post('https://localhost:8000/register', customerData);
                 console.log(customerData);
                 const customerNo = response.data.customerNo; // Assume the response contains the new customer number
                 setErrors({});
