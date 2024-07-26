@@ -16,7 +16,7 @@ function DSA_Last_Div() {
     useEffect(() => {
         const fetchLoanApplications = async () => {
             try {
-                const response = await axios.get(`http://148.251.230.14:8000/api/dsa/applications/count/${dsaId}`);
+                const response = await axios.get(`https://localhost:8000/api/dsa/applications/count/${dsaId}`);
                 setDownloadTableCount(response.data.count);
             } catch (error) {
                 console.error('Error fetching loan application count:', error);
@@ -31,7 +31,7 @@ function DSA_Last_Div() {
     useEffect(() => {
         const fetchCount = async () => {
             try {
-                const response = await axios.get(`http://148.251.230.14:8000/dsa/customer/apply/view/count/${dsaId}`);
+                const response = await axios.get(`https://localhost:8000/dsa/customer/apply/view/count/${dsaId}`);
                 setTableCount(response.data.count);
                 console.log(response.data.count);
             } catch (error) {
@@ -46,7 +46,7 @@ function DSA_Last_Div() {
     useEffect(() => {
         const fetchLoanStatusCounts = async () => {
             try {
-                const response = await axios.get(`http://148.251.230.14:8000/api/dsa/loan/status/count/${dsaId}`);
+                const response = await axios.get(`https://localhost:8000/api/dsa/loan/status/count/${dsaId}`);
                 setApprovedCount(response.data.approvedCount);
                 setRejectedCount(response.data.rejectedCount);
             } catch (error) {
