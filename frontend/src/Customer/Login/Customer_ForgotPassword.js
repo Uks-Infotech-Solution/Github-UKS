@@ -9,7 +9,7 @@ const Customer_ForgotPassword = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://148.251.230.14:8000/customer/forgotpassword', { email });
+      const response = await axios.post('https://localhost:8000/customer/forgotpassword', { email });
       setMessage(response.data.message || 'Password Reset Link has been sent to Your Email-id');
       setShowModal(true); // Show modal on successful email send
     } catch (error) {
