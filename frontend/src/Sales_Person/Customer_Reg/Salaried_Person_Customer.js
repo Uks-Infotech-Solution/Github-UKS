@@ -14,7 +14,7 @@ function Salaried_Person({ onSuccess,customerId }) {
  // Function to handle saving salaried person details
  const handleSaveSalariedPerson = async () => {
     try {
-        const response = await axios.post('http://148.251.230.14:8000/salariedperson', {
+        const response = await axios.post('https://localhost:8000/salariedperson', {
             customerId: customerId,
             salariedperson: salariedPersons
         });
