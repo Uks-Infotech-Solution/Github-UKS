@@ -18,7 +18,7 @@ const DSA_Loan_Details = () => {
     useEffect(() => {
         const fetchLoanDetails = async () => {
             try {
-                const response = await axios.get(`http://148.251.230.14:8000/api/dsa/${dsaId}/loanDetails`);
+                const response = await axios.get(`https://localhost:8000/api/dsa/${dsaId}/loanDetails`);
                 if (response.status === 200) {
                     setLoanDetails(response.data.loanDetails);
                 }
@@ -29,7 +29,7 @@ const DSA_Loan_Details = () => {
 
         const fetchRequiredTypes = async () => {
             try {
-                const response = await axios.get('http://148.251.230.14:8000/api/dsa/required/type');
+                const response = await axios.get('https://localhost:8000/api/dsa/required/type');
                 if (response.status === 200) {
                     console.log(response.data);
                     const options = response.data.map((type) => ({
@@ -62,7 +62,7 @@ const DSA_Loan_Details = () => {
 
     const deleteLoanRow = async (index, loanId) => {
         try {
-            const response = await axios.delete(`http://148.251.230.14:8000/api/dsa/loanDetails/${loanId}`);
+            const response = await axios.delete(`https://localhost:8000/api/dsa/loanDetails/${loanId}`);
             if (response.status === 200) {
                 const updatedLoanDetails = [...LoanDetails];
                 updatedLoanDetails.splice(index, 1);
@@ -80,7 +80,7 @@ const DSA_Loan_Details = () => {
 
     const handlePreviousLoanSave = async () => {
         try {
-            const response = await axios.post('http://148.251.230.14:8000/api/dsa/saveLoanDetails', { dsaId, loanDetails: LoanDetails });
+            const response = await axios.post('https://localhost:8000/api/dsa/saveLoanDetails', { dsaId, loanDetails: LoanDetails });
             if (response.status === 200) {
                 setSuccessMessage('Loan details saved successfully.');
                 alert('Loan details saved successfully.');
