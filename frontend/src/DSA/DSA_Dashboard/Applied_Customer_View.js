@@ -51,13 +51,13 @@ function Applied_Customer_View() {
     useEffect(() => {
         const fetchDetails = async () => {
             try {
-                const loanResponse = await axios.get(`http://148.251.230.14:8000/api/dsa/applications/loan/${loanId}`);
+                const loanResponse = await axios.get(`https://localhost:8000/api/dsa/applications/loan/${loanId}`);
                 const loanApplication = loanResponse.data.loanApplication;
                 console.log(loanApplication);
                 setLoanApp(loanApplication);
                 const { dsaId, customerId } = loanApplication;
 
-                const dsaResponse = await axios.get(`http://148.251.230.14:8000/api/dsa?dsaId=${dsaId}`);
+                const dsaResponse = await axios.get(`https://localhost:8000/api/dsa?dsaId=${dsaId}`);
                 const dsaDetails = dsaResponse.data;
 
                 setFormData({
@@ -72,7 +72,7 @@ function Applied_Customer_View() {
                     website: dsaDetails.website || ""
                 });
 
-                const customerResponse = await axios.get('http://148.251.230.14:8000/customer-details', {
+                const customerResponse = await axios.get('https://localhost:8000/customer-details', {
                     params: { customerId: customerId }
                 });
                 const customerDetails = customerResponse.data;
@@ -96,7 +96,7 @@ function Applied_Customer_View() {
 
     const fetchAddressDetails = async (customerId) => {
         try {
-            const response = await axios.get(`http://148.251.230.14:8000/view-address`, {
+            const response = await axios.get(`https://localhost:8000/view-address`, {
                 params: { customerId: customerId }
             });
             if (response.data) {
@@ -110,7 +110,7 @@ function Applied_Customer_View() {
 
     const fetchTableCount = async (customerId) => {
         try {
-            const response = await axios.get(`http://148.251.230.14:8000/dsa-customer/table/count?customerId=${customerId}`);
+            const response = await axios.get(`https://localhost:8000/dsa-customer/table/count?customerId=${customerId}`);
             setTableCount(response.data.count);
             console.log(response.data.count);
 
@@ -121,7 +121,7 @@ function Applied_Customer_View() {
 
     const fetchDownloadTableCount = async (customerId) => {
         try {
-            const response = await axios.get(`http://148.251.230.14:8000/dsa-customer/downloadtable/count?customerId=${customerId}`);
+            const response = await axios.get(`https://localhost:8000/dsa-customer/downloadtable/count?customerId=${customerId}`);
             setDownloadTableCount(response.data.count);
             console.log(response.data.count);
         } catch (error) {
@@ -132,7 +132,7 @@ function Applied_Customer_View() {
     useEffect(() => {
         const fetchPackages = async () => {
             try {
-                const response = await axios.get(`http://148.251.230.14:8000/buy_packages/dsa/${dsaId}`);
+                const response = await axios.get(`https://localhost:8000/buy_packages/dsa/${dsaId}`);
                 setPackages(response.data);
             } catch (err) {
                 console.log(err);
