@@ -21,7 +21,7 @@ function Sales_Person_dashboard() {
     useEffect(() => {
         const fetchUksIdCount = async () => {
             try {
-                const response = await axios.get(`http://148.251.230.14:8000/sales/person/dsa/count/${uksId}`);
+                const response = await axios.get(`https://localhost:8000/sales/person/dsa/count/${uksId}`);
                 setUksIdCount(response.data.count);
                 setDsaCreatedDates(response.data.createdDates);
             } catch (err) {
@@ -37,7 +37,7 @@ function Sales_Person_dashboard() {
     useEffect(() => {
         const fetchUksIdDsaCount = async () => {
             try {
-                const response = await axios.get(`http://148.251.230.14:8000/sales/person/cus/count/${uksId}`);
+                const response = await axios.get(`https://localhost:8000/sales/person/cus/count/${uksId}`);
                 setUksIdcusCount(response.data.count);
                 setCusCreatedDates(response.data.createdDates);
             } catch (err) {
@@ -97,7 +97,7 @@ function Sales_Person_dashboard() {
     };
     const fetchLastLoginSession = async (dsaId) => {
         try {
-            const response = await axios.get('http://148.251.230.14:8000/dsa/login/last-session', {
+            const response = await axios.get('https://localhost:8000/dsa/login/last-session', {
                 params: { dsaId: dsaId }
             });
             setLastLoginDateTime(response.data.loginDateTime);
