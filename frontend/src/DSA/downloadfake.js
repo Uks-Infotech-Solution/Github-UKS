@@ -58,7 +58,7 @@ function Dsa_Profile_View() {
     useEffect(() => {
         const fetchCustomerDetails = async () => {
             try {
-                const response = await axios.get('http://148.251.230.14:8000/customer-details', {
+                const response = await axios.get('https://localhost:8000/customer-details', {
                     params: { customerId: customerId }
                 });
                 setCustomerDetails(response.data);
@@ -83,7 +83,7 @@ function Dsa_Profile_View() {
 
     const fetchLoanProcessingDetails = async () => {
         try {
-            const response = await axios.get('http://148.251.230.14:8000/get-loan-processing', {
+            const response = await axios.get('https://localhost:8000/get-loan-processing', {
                 params: { customerId: customerId }
             });
             setLoanProcessingDetails(response.data)
@@ -105,7 +105,7 @@ function Dsa_Profile_View() {
 
     const fetchPreviousLoans = async () => {
         try {
-            const response = await axios.get('http://148.251.230.14:8000/get-previous-loans', {
+            const response = await axios.get('https://localhost:8000/get-previous-loans', {
                 params: { customerId: customerId }
             });
             setPreviousLoanDetails(response.data);
@@ -182,7 +182,7 @@ function Dsa_Profile_View() {
         const fetchAddressDetails = async () => {
             try {
                 console.log(`Fetching address details for customerId: ${customerId}`);
-                const response = await axios.get(`http://148.251.230.14:8000/view-address`, {
+                const response = await axios.get(`https://localhost:8000/view-address`, {
                     params: { customerId: customerId }
                 });
                 if (response.data) {
@@ -214,7 +214,7 @@ function Dsa_Profile_View() {
 
     const fetchProfilePicture = async (customerId) => {
         try {
-            const response = await axios.get(`http://148.251.230.14:8000/api/profile/view-profile-picture?customerId=${customerId}`, {
+            const response = await axios.get(`https://localhost:8000/api/profile/view-profile-picture?customerId=${customerId}`, {
                 responseType: 'arraybuffer'
             });
             const contentType = response.headers['content-type'];
@@ -248,7 +248,7 @@ function Dsa_Profile_View() {
     useEffect(() => {
         const fetchSalariedPersonDetails = async () => {
             try {
-                const response = await axios.get('http://148.251.230.14:8000/salariedperson', {
+                const response = await axios.get('https://localhost:8000/salariedperson', {
                     params: { customerId: customerId }
                 });
                 console.log(response.data);
@@ -280,7 +280,7 @@ function Dsa_Profile_View() {
     useEffect(() => {
         const fetchFileStatuses = async () => {
             try {
-                const response = await axios.get('http://148.251.230.14:8000/api/file-status');
+                const response = await axios.get('https://localhost:8000/api/file-status');
                 const fileStatusesData = response.data.map(status => status.type); // Assuming the status object has a 'type' field
                 setFileStatuses(fileStatusesData);
                 console.log('Fetched file statuses:', fileStatusesData); // Log the fetched data
@@ -301,7 +301,7 @@ function Dsa_Profile_View() {
                 rejectionReason: selectedFileStatus === 'Rejected' ? rejectionReason : '',
                 dsaId: dsaId // Add dsaId here
             };
-            const response = await axios.post('http://148.251.230.14:8000/api/customer_file_status_update', data);
+            const response = await axios.post('https://localhost:8000/api/customer_file_status_update', data);
             console.log('File status update response:', response.data);
             setIsEditing(false);
             alert('File status updated');
@@ -325,7 +325,7 @@ function Dsa_Profile_View() {
     useEffect(() => {
         const fetchPackages = async () => {
             try {
-                const response = await axios.get(`http://148.251.230.14:8000/buy_packages/dsa/${dsaId}`);
+                const response = await axios.get(`https://localhost:8000/buy_packages/dsa/${dsaId}`);
                 setPackages(response.data);
             } catch (err) {
                 console.log(err);
@@ -341,7 +341,7 @@ function Dsa_Profile_View() {
         const fetchDownloadTableCount = async (dsaId) => {
             try {
                 console.log('Fetching download table count for dsaId:', dsaId);
-                const response = await axios.get(`http://148.251.230.14:8000/dsa/download/count`, {
+                const response = await axios.get(`https://localhost:8000/dsa/download/count`, {
                     params: { dsaId: dsaId }
                 });
                 setDownloadTableCount(response.data.count);
@@ -714,7 +714,7 @@ function Dsa_Profile_View() {
         try {
             // First, update the block and file status
             console.log('Sending block status update request...');
-            const updateStatusResponse = await axios.post('http://148.251.230.14:8000/api/block_status_update', {
+            const updateStatusResponse = await axios.post('https://localhost:8000/api/block_status_update', {
                 customerId: customerId,
                 blockStatus: 'Active',
                 fileStatus: 'Open'
@@ -725,7 +725,7 @@ function Dsa_Profile_View() {
 
                 // Then, store the DSA and Customer IDs
                 console.log('Sending store data request...');
-                const storeDataResponse = await axios.post('http://148.251.230.14:8000/dsa-customer/downloadtable', {
+                const storeDataResponse = await axios.post('https://localhost:8000/dsa-customer/downloadtable', {
                     dsaId: dsaId,
                     customerId: customerDetails._id
                 });
