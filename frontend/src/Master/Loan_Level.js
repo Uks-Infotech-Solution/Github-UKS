@@ -13,7 +13,7 @@ const Loan_Level = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://148.251.230.14:8000/api/loan-levels', { loanLevel: documentType });
+      const response = await axios.post('https://localhost:8000/api/loan-levels', { loanLevel: documentType });
       setMessage(response.data.message);
       setDocumentType('');
       setError('');
