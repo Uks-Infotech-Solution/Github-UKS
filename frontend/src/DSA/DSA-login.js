@@ -27,7 +27,7 @@ function DSA_Login() {
         e.preventDefault();
         try {
             // Send a GET request to your backend for authentication
-            const response = await axios.get("http://148.251.230.14:8000/api/dsa-login", { 
+            const response = await axios.get("https://localhost:8000/api/dsa-login", { 
                 params: formData 
             });
             const { dsaId } = response.data;
@@ -38,7 +38,7 @@ function DSA_Login() {
                 setShowModal(true);
 
                 // Store login session
-                await axios.post('http://148.251.230.14:8000/dsa/login/session', {
+                await axios.post('https://localhost:8000/dsa/login/session', {
                     dsaId: dsaId,
                     loginDateTime: new Date()
                 });
