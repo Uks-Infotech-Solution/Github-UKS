@@ -51,7 +51,7 @@ function Dsa_cus_prf_down( ) {
     useEffect(() => {
         const fetchCustomerDetails = async () => {
             try {
-                const response = await axios.get('http://148.251.230.14:8000/customer-details', {
+                const response = await axios.get('https://localhost:8000/customer-details', {
                     params: { email: customerEmail }
                 });
                 setCustomerDetails(response.data);
@@ -423,7 +423,7 @@ function Dsa_cus_prf_down( ) {
 
     const fetchLoanProcessingDetails = async () => {
         try {
-            const response = await axios.get('http://148.251.230.14:8000/get-loan-processing', {
+            const response = await axios.get('https://localhost:8000/get-loan-processing', {
                 params: { email: customerEmail }
             });
             if (response.status === 200) {
@@ -458,7 +458,7 @@ function Dsa_cus_prf_down( ) {
 
     const fetchPreviousLoans = async () => {
         try {
-            const response = await axios.get('http://148.251.230.14:8000/get-previous-loans', {
+            const response = await axios.get('https://localhost:8000/get-previous-loans', {
                 params: { email: customerEmail }
             });
             setPreviousLoanDetails(response.data);
@@ -533,7 +533,7 @@ function Dsa_cus_prf_down( ) {
     useEffect(() => {
         const fetchAddressDetails = async () => {
             try {
-                const response = await axios.get(`http://148.251.230.14:8000/view-address?email=${customerEmail}`);
+                const response = await axios.get(`https://localhost:8000/view-address?email=${customerEmail}`);
                 // console.log('Response data:', response.data);
 
                 if (response.data) {
@@ -567,7 +567,7 @@ function Dsa_cus_prf_down( ) {
     // Function to fetch profile picture
     const fetchProfilePicture = async (customerEmail) => {
         try {
-            const response = await axios.get(`http://148.251.230.14:8000/api/profile/view-profile-picture/${customerEmail}`, {
+            const response = await axios.get(`https://localhost:8000/api/profile/view-profile-picture/${customerEmail}`, {
                 responseType: 'arraybuffer'
             });
             const contentType = response.headers['content-type'];
@@ -598,7 +598,7 @@ function Dsa_cus_prf_down( ) {
     useEffect(() => {
         const fetchSalariedPersonDetails = async () => {
             try {
-                const response = await axios.get('http://148.251.230.14:8000/salariedperson', {
+                const response = await axios.get('https://localhost:8000/salariedperson', {
                     params: { email: customerEmail }
                 });
 
