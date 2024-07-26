@@ -30,7 +30,7 @@ function Uks_Loan_Applications() {
   useEffect(() => {
     const fetchCustomers = async () => {
       try {
-        const response = await axios.get('http://148.251.230.14:8000/customer/loan/application');
+        const response = await axios.get('https://localhost:8000/customer/loan/application');
         const customersData = response.data;
         setCustomers(customersData);
 
@@ -42,7 +42,7 @@ function Uks_Loan_Applications() {
           initialCheckedItems[customer._id] = false;
 
           try {
-            const addressResponse = await axios.get('http://148.251.230.14:8000/view-address', {
+            const addressResponse = await axios.get('https://localhost:8000/view-address', {
               params: { customerId: customer.customerId },
             });
             addressesData[customer._id] = addressResponse.data;
@@ -51,7 +51,7 @@ function Uks_Loan_Applications() {
           }
 
           try {
-            const profileResponse = await axios.get(`http://148.251.230.14:8000/api/profile/view-profile-picture?customerId=${customer.customerId}`, {
+            const profileResponse = await axios.get(`https://localhost:8000/api/profile/view-profile-picture?customerId=${customer.customerId}`, {
               responseType: 'arraybuffer',
             });
             const contentType = profileResponse.headers['content-type'];
@@ -144,7 +144,7 @@ function Uks_Loan_Applications() {
         date: currentDate,
       };
 
-      await axios.post('http://148.251.230.14:8000/dsa/customer/apply/view/count', payload);
+      await axios.post('https://localhost:8000/dsa/customer/apply/view/count', payload);
       navigate('/applied/customer/view', { state: { loanId: selectedCustomer._id, applicationNumber: selectedCustomer.applicationNumber } });
     } catch (error) {
       console.error('Error storing data:', error.response ? error.response.data : error.message);
