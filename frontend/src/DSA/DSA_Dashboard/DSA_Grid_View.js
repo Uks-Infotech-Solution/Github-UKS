@@ -28,7 +28,7 @@ const DSA_LoanGridView = () => {
 
     const fetchCustomers = async () => {
         try {
-            const response = await axios.get('http://148.251.230.14:8000/'); // Adjust the URL as needed
+            const response = await axios.get('https://localhost:8000/'); // Adjust the URL as needed
             const customersData = response.data;
             setCustomers(customersData);
             await fetchAddresses(customersData);
@@ -42,7 +42,7 @@ const DSA_LoanGridView = () => {
         const newAddresses = {};
         for (let customer of customers) {
             try {
-                const response = await axios.get('http://148.251.230.14:8000/view-address', {
+                const response = await axios.get('https://localhost:8000/view-address', {
                     params: { customerId: customer._id },
                 });
                 if (response.status === 200) {
@@ -60,7 +60,7 @@ const DSA_LoanGridView = () => {
         const newCustomerDetails = {};
         for (let customer of customers) {
             try {
-                const response = await axios.get('http://148.251.230.14:8000/customer-details', {
+                const response = await axios.get('https://localhost:8000/customer-details', {
                     params: { customerId: customer._id },
                 });
                 if (response.status === 200) {
