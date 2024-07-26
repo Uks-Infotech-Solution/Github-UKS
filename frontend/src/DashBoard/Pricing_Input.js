@@ -23,7 +23,7 @@ const Pricing_Details = () => {
     useEffect(() => {
         const getLoanTypes = async () => {
             try {
-                const response = await axios.get('http://148.251.230.14:8000/api/loan-types');
+                const response = await axios.get('https://localhost:8000/api/loan-types');
                 const loanTypesData = response.data.map(type => ({ value: type.type, label: type.type }));
                 setLoanTypes(loanTypesData);
                 console.log('Fetched loan types:', loanTypesData); // Debugging line
@@ -45,7 +45,7 @@ const Pricing_Details = () => {
     useEffect(() => {
         const fetchPackageDetails = async () => {
             try {
-                const response = await axios.get(`http://148.251.230.14:8000/uks/PackageDetails/${uksId}`);
+                const response = await axios.get(`https://localhost:8000/uks/PackageDetails/${uksId}`);
                 const packageDetailsWithDefaults = response.data.data.map((packageDetail) => ({
                     ...packageDetail,
                     packageStatus: packageDetail.packageStatus || 'Active',
@@ -71,7 +71,7 @@ const Pricing_Details = () => {
 
     const deletePackageRow = async (index, packageId) => {
         try {
-            const response = await axios.delete(`http://148.251.230.14:8000/uks/PackageDetails/${packageId}`);
+            const response = await axios.delete(`https://localhost:8000/uks/PackageDetails/${packageId}`);
             if (response.status === 200) {
                 const updatedPackageDetails = [...PackageDetails];
                 updatedPackageDetails.splice(index, 1); // Remove the package from the state
@@ -97,7 +97,7 @@ const Pricing_Details = () => {
     const handlePackageSave = async () => {
         try {
             console.log('Sending package details:', { uksId, packageDetails: PackageDetails });
-            const response = await axios.post('http://148.251.230.14:8000/uks/savePackageDetails', { uksId, packageDetails: PackageDetails });
+            const response = await axios.post('https://localhost:8000/uks/savePackageDetails', { uksId, packageDetails: PackageDetails });
             if (response.status === 200) {
                 setModalMessage('Package details saved successfully.');
                 setModalType('success');
