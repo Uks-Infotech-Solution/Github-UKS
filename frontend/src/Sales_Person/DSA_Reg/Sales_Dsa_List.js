@@ -44,14 +44,14 @@ function Sales_Dsa_list() {
 
   const fetchDSADetails = async () => {
     try {
-      const response = await axios.get(`http://148.251.230.14:8000/sales/person/dsa/reg/${uksId}`);
+      const response = await axios.get(`https://localhost:8000/sales/person/dsa/reg/${uksId}`);
       setDsaData(response.data);
       console.log(response.data);
       setLoading(false);
 
       // Fetch address details for each DSA
       const addressPromises = response.data.map(dsa => (
-        axios.get(`http://148.251.230.14:8000/api/dsa/address?dsaId=${dsa.dsaId}`)
+        axios.get(`https://localhost:8000/api/dsa/address?dsaId=${dsa.dsaId}`)
       ));
       const addressResponses = await Promise.all(addressPromises);
       const addresses = {};
@@ -74,7 +74,7 @@ function Sales_Dsa_list() {
     }));
 
     try {
-      const response = await axios.get(`http://148.251.230.14:8000/api/dsa/getLoanDetails/${dsaId}`);
+      const response = await axios.get(`https://localhost:8000/api/dsa/getLoanDetails/${dsaId}`);
 
       setDsaLoanDetails((prevDetails) => ({
         ...prevDetails,
