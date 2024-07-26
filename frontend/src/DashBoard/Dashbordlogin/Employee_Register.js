@@ -31,7 +31,7 @@ const DashboardUserRegister = () => {
     useEffect(() => {
         const fetchEmployeeTypes = async () => {
             try {
-                const response = await axios.get('http://148.251.230.14:8000/api/employee-type');
+                const response = await axios.get('https://localhost:8000/api/employee-type');
                 console.log(response.data);
                 setEmployeeTypes(response.data);
             } catch (error) {
@@ -50,7 +50,7 @@ const DashboardUserRegister = () => {
             setErrors(validationErrors);
         } else {
             try {
-                const response = await axios.post('http://148.251.230.14:8000/api/uksregister', {
+                const response = await axios.post('https://localhost:8000/api/uksregister', {
                     name,
                     email,
                     password,
