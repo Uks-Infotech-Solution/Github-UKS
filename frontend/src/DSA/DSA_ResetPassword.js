@@ -21,7 +21,7 @@ const DSA_ResetPassword = () => {
       return;
     }
     try {
-      await axios.post(`http://148.251.230.14:8000/dsa/resetpassword/${token}`, { password });
+      await axios.post(`https://localhost:8000/dsa/resetpassword/${token}`, { password });
       setShowModal(true);
     } catch (error) {
       console.error('Error resetting password:', error);
