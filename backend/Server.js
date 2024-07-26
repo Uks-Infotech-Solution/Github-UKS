@@ -47,9 +47,6 @@ const SalesPersonDSA= require('./UKS/Sales_person_dsa_reg');
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
-const https = require('https');
-const WebSocket = require('ws');
-const fs = require('fs');
 // const bcrypt = require('bcryptjs');
 
 const connectDB = require('../backend/db');
@@ -69,21 +66,6 @@ const transporter = nodemailer.createTransport({
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
     },
-});
-
-const server = https.createServer({
-    cert: fs.readFileSync('/www/server/panel/vhost/cert/frontend/fullchain.pem'),
-    key: fs.readFileSync('/www/server/panel/vhost/cert/frontend/privkey.pem')
-}, app);
-
-const wss = new WebSocket.Server({ server });
-
-wss.on('connection', function connection(ws) {
-    ws.on('message', function incoming(message) {
-        console.log('received: %s', message);
-    });
-
-    ws.send('something');
 });
 
 // Define the customer schema
@@ -422,7 +404,7 @@ app.post('/package/activate/:token', async (req, res) => {
         html: `
           <h4>${dsaName} (UKS-DSA_0${dsaNumber}) Package Activation Mail,</h4>
           <p>${dsaName} has selected the ${packageName} (${packageAmount}) Package,</p>
-          <p>To activate this package <a href="http://148.251.230.14:8000/package/activate/${token}">Click Here</a>.</p>
+          <p>To activate this package <a href="http://localhost:3000/package/activate/${token}">Click Here</a>.</p>
           <p>Thanks & regards,<br>LDP Finanserv.</p>`,
       };
   
@@ -1208,7 +1190,7 @@ app.post('/api/dsa/register', async (req, res) => {
 
         // Save the new DSA to the database
         const savedDSA = await newDSA.save();
-        const confirmationUrl = `http://148.251.230.14:8000/dsa/activate/${token}`;
+        const confirmationUrl = `http://localhost:3000/dsa/activate/${token}`;
         // Send confirmation email
         const mailOptions = {
             from: process.env.EMAIL_USER,
@@ -1218,7 +1200,7 @@ app.post('/api/dsa/register', async (req, res) => {
             html: `
             <p>Hello ${dsaName},</p>
             <p>Welcome to LDP Finanserv ,</p>
-            <p>To Activate Your Account  <a href="http://148.251.230.14:8000/dsa/activate/${token}">Click </a> Here.</p>
+            <p>To Activate Your Account  <a href="http://localhost:3000/dsa/activate/${token}">Click </a> Here.</p>
             <p>Thanks & regards,<br>LDP Finanserv.</p>`,
         
         
@@ -1389,7 +1371,7 @@ app.post('/dsa/forgotpassword', async (req, res) => {
             subject: 'Password Reset',
             html: `
             <p>Hi ${dsa.dsaName},</p>
-            <p><a href="http://148.251.230.14:8000/dsa/reset/password/${token}">Click</a> to Reset Your Account (UKS-DSA-00${dsa.dsaNumber}) Password.</p>
+            <p><a href="http://localhost:3000/dsa/reset/password/${token}">Click</a> to Reset Your Account (UKS-DSA-00${dsa.dsaNumber}) Password.</p>
             <p>Thanks & regards,<br>LDP Finanserv.</p>
         `,
         
@@ -2072,7 +2054,7 @@ app.post('/customer/forgotpassword', async (req, res) => {
             subject: 'Password Reset',
             html: `
     <p>Hi ${customer.customerFname},</p>
-    <p><a href="http://148.251.230.14:8000/customer/reset/password/${token}">Click</a> to Reset Your Account (UKS-CUS-00${customer.customerNo}) Password.</p>
+    <p><a href="http://localhost:3000/customer/reset/password/${token}">Click</a> to Reset Your Account (UKS-CUS-00${customer.customerNo}) Password.</p>
     <p>Thanks & regards,<br>LDP Finanserv.</p>
 `,
 
@@ -2413,7 +2395,7 @@ app.post('/api/uksregister', async (req, res) => {
     try {
         await newUser.save();
 
-        const confirmationUrl = `http://148.251.230.14:8000/uks/activate/${token}`;
+        const confirmationUrl = `http://localhost:3000/uks/activate/${token}`;
         const mailOptions = {
             from: process.env.EMAIL_USER,
             to: email,
@@ -2421,7 +2403,7 @@ app.post('/api/uksregister', async (req, res) => {
             html: `
             <p>Hello ${name},</p>
             <p>Welcome to LDP Finanserv</p>
-            <p>To Activate Your Account <a href="http://148.251.230.14:8000/uks/activate/${token}">Click Here</a>.</p>
+            <p>To Activate Your Account <a href="http://localhost:3000/uks/activate/${token}">Click Here</a>.</p>
             <p>Thanks & regards,<br>LDP Finanserv.</p>`,
         };
 
@@ -2558,7 +2540,7 @@ app.post('/uks/forgotpassword', async (req, res) => {
             subject: 'Password Reset',
             html: `
             <p>Hi ${user.name},</p>
-            <p><a href="http://148.251.230.14:8000/uks/reset/password/${token}">Click</a> to Reset Your Account (UKS-00${user.UKSNumber}) Password.</p>
+            <p><a href="http://localhost:3000/uks/reset/password/${token}">Click</a> to Reset Your Account (UKS-00${user.UKSNumber}) Password.</p>
             <p>Thanks & regards,<br>LDP Finanserv.</p>`,
         };
 
@@ -2968,7 +2950,6 @@ app.get('/api/document-type', async (req, res) => {
 });
 
 
-server.listen(8000, () => {
-    console.log(`Server running on https://148.251.230.14:8000:${8000}`);
-  console.log('WebSocket server is running on wss://148.251.230.14:${8000}');
+app.listen(8000, () => {
+    console.log('Server started on port 8000');
 });
