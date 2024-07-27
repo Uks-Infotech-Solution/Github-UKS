@@ -45,11 +45,7 @@ function DSA_Updation() {
     useEffect(() => {
         const fetchDSADetails = async () => {
             try {
-<<<<<<< HEAD
                 const response = await axios.get(`https://uksinfotechsolution.in:8000/api/dsa?dsaId=${dsaId}`);
-=======
-                const response = await axios.get(`https://localhost:8000/api/dsa?dsaId=${dsaId}`);
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 const dsaDetails = response.data;
                 const { address } = dsaDetails || {};
                 setFormData(prevData => ({
@@ -84,11 +80,7 @@ function DSA_Updation() {
         e.preventDefault();
         try {
             // Update DSA details
-<<<<<<< HEAD
             await axios.put(`https://uksinfotechsolution.in:8000/api/dsa/${formData._id}`, {
-=======
-            await axios.put(`https://localhost:8000/api/dsa/${formData._id}`, {
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 dsaName: formData.dsaName,
                 dsaCompanyName: formData.dsaCompanyName,
                 primaryNumber: formData.primaryNumber,
@@ -99,11 +91,7 @@ function DSA_Updation() {
             });
 
             // Update DSA address
-<<<<<<< HEAD
             await axios.put(`https://uksinfotechsolution.in:8000/api/dsa/address/${formData._id}`, {
-=======
-            await axios.put(`https://localhost:8000/api/dsa/address/${formData._id}`, {
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 state: formData.address.state,
                 district: formData.address.district,
                 city: formData.address.city
@@ -202,11 +190,7 @@ function DSA_Updation() {
 
     const handleConfirmDeactivate = async () => {
         try {
-<<<<<<< HEAD
             const response = await axios.delete(`https://uksinfotechsolution.in:8000/api/dsa/deactivate/${dsaId}`);
-=======
-            const response = await axios.delete(`https://localhost:8000/api/dsa/deactivate/${dsaId}`);
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
             if (response.status === 200) {
                 alert('Account deactivated successfully.');
                 // navigate('/dsa/dashboard');

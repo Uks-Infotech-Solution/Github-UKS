@@ -107,11 +107,7 @@ const StickyNavbar = () => {
 
   const fetchDSADetails = async (dsaId) => {
     try {
-<<<<<<< HEAD
       const response = await axios.get(`https://uksinfotechsolution.in:8000/api/dsa?dsaId=${dsaId}`);
-=======
-      const response = await axios.get(`https://localhost:8000/api/dsa?dsaId=${dsaId}`);
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
       setDsaData(response.data);
       console.log(response.data);
     } catch (error) {
@@ -122,11 +118,7 @@ const StickyNavbar = () => {
   const fetchCustomerDetails = async (customerId) => {
     console.log({ customerId });
     try {
-<<<<<<< HEAD
       const response = await axios.get(`https://uksinfotechsolution.in:8000/customer-details`, { params: { customerId } });
-=======
-      const response = await axios.get(`https://localhost:8000/customer-details`, { params: { customerId } });
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
       setCustomerDetails(response.data);
       console.log('customer:', response.data); // Correct logging
     } catch (error) {
@@ -136,11 +128,7 @@ const StickyNavbar = () => {
 
   const fetchUKSDetails = async (uksId) => {
     try {
-<<<<<<< HEAD
       const response = await axios.get(`https://uksinfotechsolution.in:8000/uks/details?uksId=${uksId}`);
-=======
-      const response = await axios.get(`https://localhost:8000/uks/details?uksId=${uksId}`);
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
       setUksData(response.data);
       console.log(response.data);
     } catch (error) {
@@ -150,11 +138,7 @@ const StickyNavbar = () => {
 
   const fetchProfilePicture = async (customerId) => {
     try {
-<<<<<<< HEAD
       const response = await axios.get(`https://uksinfotechsolution.in:8000/api/profile/view-profile-picture?customerId=${customerId}`, {
-=======
-      const response = await axios.get(`https://localhost:8000/api/profile/view-profile-picture?customerId=${customerId}`, {
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
         responseType: 'arraybuffer'
       });
       const contentType = response.headers['content-type'];

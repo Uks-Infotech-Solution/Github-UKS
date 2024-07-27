@@ -14,11 +14,7 @@ function Salaried_Person({ onSuccess,customerId }) {
  // Function to handle saving salaried person details
  const handleSaveSalariedPerson = async () => {
     try {
-<<<<<<< HEAD
         const response = await axios.post('https://uksinfotechsolution.in:8000/salariedperson', {
-=======
-        const response = await axios.post('https://localhost:8000/salariedperson', {
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
             customerId: customerId,
             salariedperson: salariedPersons
         });

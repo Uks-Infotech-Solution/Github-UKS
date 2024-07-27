@@ -6,11 +6,7 @@
 
     const determineLevel = async (amount) => {
         try {
-<<<<<<< HEAD
             const response = await axios.post('https://uksinfotechsolution.in:8000/api/determine-loan-level', { loanAmount: amount });
-=======
-            const response = await axios.post('https://localhost:8000/api/determine-loan-level', { loanAmount: amount });
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
             setLevel(response.data.loanLevel);
         } catch (error) {
             console.error('Error determining loan level:', error);
@@ -35,11 +31,7 @@
     useEffect(() => {
         const fetchLoanTypes = async () => {
             try {
-<<<<<<< HEAD
                 const response = await axios.get('https://uksinfotechsolution.in:8000/api/loan-types');
-=======
-                const response = await axios.get('https://localhost:8000/api/loan-types');
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 setLoanTypes(response.data);
             } catch (error) {
                 console.error('Error fetching loan types:', error);
@@ -129,11 +121,7 @@
     const [level, setLevel] = useState('');
     const determineLevel = async (amount) => {
         try {
-<<<<<<< HEAD
             const response = await axios.post('https://uksinfotechsolution.in:8000/api/determine-loan-level', { loanAmount: amount });
-=======
-            const response = await axios.post('https://localhost:8000/api/determine-loan-level', { loanAmount: amount });
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
             setLevel(response.data.loanLevel);
         } catch (error) {
             console.error('Error determining loan level:', error);
@@ -165,11 +153,7 @@ const [cibilRecord, setCibilRecord] = useState('');
     useEffect(() => {
         const fetchLoanTypes = async () => {
             try {
-<<<<<<< HEAD
                 const response = await axios.get('https://uksinfotechsolution.in:8000/api/loan-types');
-=======
-                const response = await axios.get('https://localhost:8000/api/loan-types');
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 setLoanTypes(response.data);
             } catch (error) {
                 console.error('Error fetching loan types:', error);
@@ -187,11 +171,7 @@ const [cibilRecord, setCibilRecord] = useState('');
     useEffect(() => {
         const fetchDocumentTypes = async () => {
             try {
-<<<<<<< HEAD
                 const response = await axios.get('https://uksinfotechsolution.in:8000/api/document-type');
-=======
-                const response = await axios.get('https://localhost:8000/api/document-type');
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 setDocumentTypes(response.data);
                 // console.log(response.data);
             } catch (error) {

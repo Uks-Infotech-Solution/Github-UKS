@@ -35,11 +35,7 @@ function DSA_Login_Dashboard() {
 
     const fetchDownloadTableCount = async (dsaId) => {
         try {
-<<<<<<< HEAD
             const response = await axios.get(`https://uksinfotechsolution.in:8000/dsa/download/count`, {
-=======
-            const response = await axios.get(`https://localhost:8000/dsa/download/count`, {
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 params: { dsaId: dsaId }
             });
             setDownloadTableCount(response.data.count);
@@ -50,11 +46,7 @@ function DSA_Login_Dashboard() {
 
     const fetchTableCount = async (dsaId) => {
         try {
-<<<<<<< HEAD
             const response = await axios.get(`https://uksinfotechsolution.in:8000/dsa/table/count`, {
-=======
-            const response = await axios.get(`https://localhost:8000/dsa/table/count`, {
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 params: { dsaId: dsaId }
             });
             setTableCount(response.data.count);
@@ -65,11 +57,7 @@ function DSA_Login_Dashboard() {
 
     const fetchDSADetails = async (dsaId) => {
         try {
-<<<<<<< HEAD
             const response = await axios.get('https://uksinfotechsolution.in:8000/api/dsa', {
-=======
-            const response = await axios.get('https://localhost:8000/api/dsa', {
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 params: { dsaId: dsaId }
             });
             setDSADetails(response.data);
@@ -80,11 +68,7 @@ function DSA_Login_Dashboard() {
     useEffect(() => {
         const fetchLoanStatusCounts = async () => {
             try {
-<<<<<<< HEAD
                 const response = await axios.get(`https://uksinfotechsolution.in:8000/api/dsa/loan/status/count/${dsaId}`);
-=======
-                const response = await axios.get(`https://localhost:8000/api/dsa/loan/status/count/${dsaId}`);
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 setApprovedCount(response.data.approvedCount);
                 setRejectedCount(response.data.rejectedCount);
             } catch (error) {
@@ -98,11 +82,7 @@ function DSA_Login_Dashboard() {
     }, [dsaId]);
     const fetchLastLoginSession = async (dsaId) => {
         try {
-<<<<<<< HEAD
             const response = await axios.get('https://uksinfotechsolution.in:8000/dsa/login/last-session', {
-=======
-            const response = await axios.get('https://localhost:8000/dsa/login/last-session', {
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 params: { dsaId: dsaId }
             });
             setLastLoginDateTime(response.data.loginDateTime);
@@ -115,11 +95,7 @@ function DSA_Login_Dashboard() {
     useEffect(() => {
         const fetchPackages = async () => {
             try {
-<<<<<<< HEAD
                 const response = await axios.get(`https://uksinfotechsolution.in:8000/buy_packages/dsa/${dsaId}`);
-=======
-                const response = await axios.get(`https://localhost:8000/buy_packages/dsa/${dsaId}`);
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 setPackages(response.data);
                 console.log(response.data);
             } catch (err) {

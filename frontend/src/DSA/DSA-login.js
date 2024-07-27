@@ -27,11 +27,7 @@ function DSA_Login() {
         e.preventDefault();
         try {
             // Send a GET request to your backend for authentication
-<<<<<<< HEAD
             const response = await axios.get("https://uksinfotechsolution.in:8000/api/dsa-login", { 
-=======
-            const response = await axios.get("https://localhost:8000/api/dsa-login", { 
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 params: formData 
             });
             const { dsaId } = response.data;
@@ -42,11 +38,7 @@ function DSA_Login() {
                 setShowModal(true);
 
                 // Store login session
-<<<<<<< HEAD
                 await axios.post('https://uksinfotechsolution.in:8000/dsa/login/session', {
-=======
-                await axios.post('https://localhost:8000/dsa/login/session', {
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                     dsaId: dsaId,
                     loginDateTime: new Date()
                 });

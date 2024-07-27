@@ -23,22 +23,14 @@ function Customer_login() {
         e.preventDefault();
 
         try {
-<<<<<<< HEAD
             const response = await axios.post('https://uksinfotechsolution.in:8000/login', {
-=======
-            const response = await axios.post('https://localhost:8000/login', {
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 email,
                 password,
             });
 
             const { customerId } = response.data;
 
-<<<<<<< HEAD
             const customerResponse = await axios.get('https://uksinfotechsolution.in:8000/customer-details', {
-=======
-            const customerResponse = await axios.get('https://localhost:8000/customer-details', {
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 params: {
                     customerId,
                 },
@@ -46,11 +38,7 @@ function Customer_login() {
             console.log(customerResponse.data.customerFname);
 
             const loginDateTime = new Date().toISOString();
-<<<<<<< HEAD
             await axios.post('https://uksinfotechsolution.in:8000/customer/login/session', {
-=======
-            await axios.post('https://localhost:8000/customer/login/session', {
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 customerId,
                 loginDateTime
             });

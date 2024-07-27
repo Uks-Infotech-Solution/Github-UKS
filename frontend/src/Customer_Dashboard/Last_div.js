@@ -28,11 +28,7 @@ function Last_Div() {
 
     const fetchDownloadTableCount = async (customerId) => {
         try {
-<<<<<<< HEAD
             const response = await axios.get(`https://uksinfotechsolution.in:8000/dsa-customer/downloadtable/count?customerId=${customerId}`);
-=======
-            const response = await axios.get(`https://localhost:8000/dsa-customer/downloadtable/count?customerId=${customerId}`);
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
             setDownloadTableCount(response.data.count);
         } catch (error) {
             console.error('Error fetching download table count:', error.message);
@@ -41,11 +37,7 @@ function Last_Div() {
 
     const fetchTableCount = async (customerId) => {
         try {
-<<<<<<< HEAD
             const response = await axios.get(`https://uksinfotechsolution.in:8000/dsa-customer/table/count?customerId=${customerId}`);
-=======
-            const response = await axios.get(`https://localhost:8000/dsa-customer/table/count?customerId=${customerId}`);
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
             setTableCount(response.data.count);
         } catch (error) {
             console.error('Error fetching table count:', error.message);
@@ -54,11 +46,7 @@ function Last_Div() {
     useEffect(() => {
         const fetchLoanStatusCounts = async () => {
             try {
-<<<<<<< HEAD
                 const response = await axios.get(`https://uksinfotechsolution.in:8000/api/dsa/loan/status/count/customer${customerId}`);
-=======
-                const response = await axios.get(`https://localhost:8000/api/dsa/loan/status/count/customer${customerId}`);
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 setApprovedCount(response.data.approvedCount);
                 setRejectedCount(response.data.rejectedCount);
             } catch (error) {

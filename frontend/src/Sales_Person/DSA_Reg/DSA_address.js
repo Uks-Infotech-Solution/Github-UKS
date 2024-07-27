@@ -110,11 +110,7 @@ function DSA_address({onSuccess,dsaId }) {
 
     const handleUpdateClick = async () => {
         try {
-<<<<<<< HEAD
             const response = await axios.post('https://uksinfotechsolution.in:8000/api/dsa/address', {
-=======
-            const response = await axios.post('https://localhost:8000/api/dsa/address', {
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 dsaId: dsaId,
                 aadharAddress: {
                     state: addressDetails.aadharState,

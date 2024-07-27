@@ -46,7 +46,6 @@ function DSA_Detail_View() {
     useEffect(() => {
         const fetchDSADetails = async () => {
             try {
-<<<<<<< HEAD
                 const response = await axios.get(`https://uksinfotechsolution.in:8000/api/dsa?dsaId=${dsaId}`);
                 const dsaDetails = response.data;
                 console.log('Fetched DSA Details:', dsaDetails); // Log fetched data to inspect
@@ -55,16 +54,6 @@ function DSA_Detail_View() {
                 setBranchDetails(branchResponse.data.data);
                 if (dsaDetails) {
                     const addressResponse = await axios.get(`https://uksinfotechsolution.in:8000/api/dsa/address?dsaId=${dsaDetails._id}`);
-=======
-                const response = await axios.get(`https://localhost:8000/api/dsa?dsaId=${dsaId}`);
-                const dsaDetails = response.data;
-                console.log('Fetched DSA Details:', dsaDetails); // Log fetched data to inspect
-                // Fetch branch details
-                const branchResponse = await axios.get(`https://localhost:8000/dsa/BranchDetails/${dsaId}`);
-                setBranchDetails(branchResponse.data.data);
-                if (dsaDetails) {
-                    const addressResponse = await axios.get(`https://localhost:8000/api/dsa/address?dsaId=${dsaDetails._id}`);
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                     const permanentAddress = addressResponse.data.permanentAddress;
 
                     setFormData({
@@ -91,11 +80,7 @@ function DSA_Detail_View() {
 
         const fetchFeedbacks = async () => {
             try {
-<<<<<<< HEAD
                 const feedbackResponse = await axios.get(`https://uksinfotechsolution.in:8000/loan/api/feedback/${dsaId}`);
-=======
-                const feedbackResponse = await axios.get(`https://localhost:8000/loan/api/feedback/${dsaId}`);
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 const { feedbacks } = feedbackResponse.data;
                 setFeedbacks(feedbacks || []);
                 setFeedbacksLoaded(true);

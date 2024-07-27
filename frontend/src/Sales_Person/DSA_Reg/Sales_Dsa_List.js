@@ -44,22 +44,14 @@ function Sales_Dsa_list() {
 
   const fetchDSADetails = async () => {
     try {
-<<<<<<< HEAD
       const response = await axios.get(`https://uksinfotechsolution.in:8000/sales/person/dsa/reg/${uksId}`);
-=======
-      const response = await axios.get(`https://localhost:8000/sales/person/dsa/reg/${uksId}`);
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
       setDsaData(response.data);
       console.log(response.data);
       setLoading(false);
 
       // Fetch address details for each DSA
       const addressPromises = response.data.map(dsa => (
-<<<<<<< HEAD
         axios.get(`https://uksinfotechsolution.in:8000/api/dsa/address?dsaId=${dsa.dsaId}`)
-=======
-        axios.get(`https://localhost:8000/api/dsa/address?dsaId=${dsa.dsaId}`)
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
       ));
       const addressResponses = await Promise.all(addressPromises);
       const addresses = {};
@@ -82,11 +74,7 @@ function Sales_Dsa_list() {
     }));
 
     try {
-<<<<<<< HEAD
       const response = await axios.get(`https://uksinfotechsolution.in:8000/api/dsa/getLoanDetails/${dsaId}`);
-=======
-      const response = await axios.get(`https://localhost:8000/api/dsa/getLoanDetails/${dsaId}`);
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
 
       setDsaLoanDetails((prevDetails) => ({
         ...prevDetails,

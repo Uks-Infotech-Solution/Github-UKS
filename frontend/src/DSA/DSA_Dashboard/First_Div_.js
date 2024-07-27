@@ -19,11 +19,7 @@ function First_Div() {
   useEffect(() => {
     const fetchLoanApplications = async () => {
       try {
-<<<<<<< HEAD
         const response = await axios.get(`https://uksinfotechsolution.in:8000/dsa/customer/applied/loan/${dsaId}`);
-=======
-        const response = await axios.get(`https://localhost:8000/dsa/customer/applied/loan/${dsaId}`);
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
         const loanApplicationsData = response.data;
         console.log(response.data);
         setLoanApplications(loanApplicationsData);
@@ -40,11 +36,7 @@ function First_Div() {
   useEffect(() => {
     const fetchDownloadTableCount = async () => {
       try {
-<<<<<<< HEAD
         const response = await axios.get(`https://uksinfotechsolution.in:8000/api/dsa/applications/count/${dsaId}`);
-=======
-        const response = await axios.get(`https://localhost:8000/api/dsa/applications/count/${dsaId}`);
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
         // setDownloadTableCount(response.data.count);
       } catch (error) {
         console.error('Error fetching loan application count:', error);
@@ -59,11 +51,7 @@ function First_Div() {
   useEffect(() => {
     const fetchTableCount = async () => {
       try {
-<<<<<<< HEAD
         const response = await axios.get(`https://uksinfotechsolution.in:8000/dsa/customer/apply/view/count/${dsaId}`);
-=======
-        const response = await axios.get(`https://localhost:8000/dsa/customer/apply/view/count/${dsaId}`);
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
         setTableCount(response.data.count);
         console.log(response.data.count);
       } catch (error) {
@@ -79,11 +67,7 @@ function First_Div() {
   useEffect(() => {
     const fetchLoanStatusCounts = async () => {
       try {
-<<<<<<< HEAD
         const response = await axios.get(`https://uksinfotechsolution.in:8000/api/dsa/loan/status/count/${dsaId}`);
-=======
-        const response = await axios.get(`https://localhost:8000/api/dsa/loan/status/count/${dsaId}`);
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
         // setApprovedCount(response.data.approvedCount);
         // setRejectedCount(response.data.rejectedCount);
       } catch (error) {

@@ -31,11 +31,7 @@ function First_Div() {
 
   const fetchDSADetails = async (dsaId) => {
     try {
-<<<<<<< HEAD
       const response = await axios.get(`https://uksinfotechsolution.in:8000/api/dsa?dsaId=${dsaId}`);
-=======
-      const response = await axios.get(`https://localhost:8000/api/dsa?dsaId=${dsaId}`);
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
       setDsaData(response.data);
     } catch (error) {
       console.error('Error fetching DSA details:', error);
@@ -45,11 +41,7 @@ function First_Div() {
   useEffect(() => {
     const fetchCustomers = async () => {
       try {
-<<<<<<< HEAD
         const response = await axios.get(`https://uksinfotechsolution.in:8000/dsa/customer/applied/loan/${dsaId}`);
-=======
-        const response = await axios.get(`https://localhost:8000/dsa/customer/applied/loan/${dsaId}`);
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
         const customersData = response.data;
         setCustomers(customersData);
 
@@ -61,11 +53,7 @@ function First_Div() {
           initialCheckedItems[customer._id] = false;
 
           try {
-<<<<<<< HEAD
             const addressResponse = await axios.get('https://uksinfotechsolution.in:8000/view-address', {
-=======
-            const addressResponse = await axios.get('https://localhost:8000/view-address', {
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
               params: { customerId: customer.customerId },
             });
             addresses[customer._id] = addressResponse.data;
@@ -74,11 +62,7 @@ function First_Div() {
           }
 
           try {
-<<<<<<< HEAD
             const response = await axios.get(`https://uksinfotechsolution.in:8000/api/profile/view-profile-picture?customerId=${customer.customerId}`, {
-=======
-            const response = await axios.get(`https://localhost:8000/api/profile/view-profile-picture?customerId=${customer.customerId}`, {
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
               responseType: 'arraybuffer',
             });
             const contentType = response.headers['content-type'];
@@ -170,11 +154,7 @@ function First_Div() {
         date: currentDate,
       };
 
-<<<<<<< HEAD
       await axios.post('https://uksinfotechsolution.in:8000/dsa/customer/apply/view/count', payload);
-=======
-      await axios.post('https://localhost:8000/dsa/customer/apply/view/count', payload);
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
       navigate('/applied/customer/view', { state: { loanId: selectedCustomer._id, applicationNumber: selectedCustomer.applicationNumber } });
 
     } catch (error) {

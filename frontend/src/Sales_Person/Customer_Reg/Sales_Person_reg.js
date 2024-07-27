@@ -23,11 +23,7 @@ function Location({ onSuccess,customerId, customerNo }) {
     useEffect(() => {
         const fetchCustomerDetails = async () => {
             try {
-<<<<<<< HEAD
                 const response = await axios.get('https://uksinfotechsolution.in:8000/customer-details',{
-=======
-                const response = await axios.get('https://localhost:8000/customer-details',{
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                     params: { customerId: customerId }
                 });
                 setCustomerDetails(response.data)
@@ -43,11 +39,7 @@ function Location({ onSuccess,customerId, customerNo }) {
 
     const saveData = async () => {
         try {
-<<<<<<< HEAD
             const response = await axios.post('https://uksinfotechsolution.in:8000/sales/person/cus/reg', {
-=======
-            const response = await axios.post('https://localhost:8000/sales/person/cus/reg', {
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 uksId,
                 salesPersonName,
                 customerName,

@@ -39,11 +39,7 @@ const DSA_Loan_Customer = () => {
     useEffect(() => {
         const fetchDSADetails = async () => {
             try {
-<<<<<<< HEAD
                 const response = await axios.get(`https://uksinfotechsolution.in:8000/api/dsa?dsaId=${dsaId}`);
-=======
-                const response = await axios.get(`https://localhost:8000/api/dsa?dsaId=${dsaId}`);
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 setDsaDetails(response.data);
             } catch (error) {
                 console.error('Error fetching DSA details:', error);
@@ -56,11 +52,7 @@ const DSA_Loan_Customer = () => {
     useEffect(() => {
         const fetchLoanDetails = async () => {
             try {
-<<<<<<< HEAD
                 const response = await axios.get(`https://uksinfotechsolution.in:8000/api/dsa/${dsaId}/loanDetails`);
-=======
-                const response = await axios.get(`https://localhost:8000/api/dsa/${dsaId}/loanDetails`);
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 if (response.status === 200) {
                     setLoanDetails(response.data.loanDetails);
                 }
@@ -75,11 +67,7 @@ const DSA_Loan_Customer = () => {
     useEffect(() => {
         const fetchCustomerDetails = async () => {
             try {
-<<<<<<< HEAD
                 const response = await axios.get('https://uksinfotechsolution.in:8000/customer-details', {
-=======
-                const response = await axios.get('https://localhost:8000/customer-details', {
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                     params: { customerId: customerId }
                 });
                 setCustomerDetails(response.data);
@@ -96,11 +84,7 @@ const DSA_Loan_Customer = () => {
     useEffect(() => {
         const fetchLoanLevels = async () => {
             try {
-<<<<<<< HEAD
                 const response = await axios.get('https://uksinfotechsolution.in:8000/api/loan-levels');
-=======
-                const response = await axios.get('https://localhost:8000/api/loan-levels');
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 setLoanLevels(response.data);
                 console.log(response.data);
                 setLoading(false);
@@ -116,11 +100,7 @@ const DSA_Loan_Customer = () => {
     useEffect(() => {
         const fetchDocumentTypes = async () => {
             try {
-<<<<<<< HEAD
                 const response = await axios.get('https://uksinfotechsolution.in:8000/api/document-type');
-=======
-                const response = await axios.get('https://localhost:8000/api/document-type');
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 setDocumentTypes(response.data);
             } catch (error) {
                 console.error('Error fetching document types:', error);
@@ -133,11 +113,7 @@ const DSA_Loan_Customer = () => {
     useEffect(() => {
         const fetchUnsecured_DocumentTypes = async () => {
             try {
-<<<<<<< HEAD
                 const response = await axios.get('https://uksinfotechsolution.in:8000/api/unsecured/document-type');
-=======
-                const response = await axios.get('https://localhost:8000/api/unsecured/document-type');
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 setUnsecured_DocumentTypes(response.data);
             } catch (error) {
                 console.error('Error fetching document types:', error);
@@ -193,11 +169,7 @@ const DSA_Loan_Customer = () => {
 
     const handleSubmit = async () => {
         try {
-<<<<<<< HEAD
             const response = await axios.post('https://uksinfotechsolution.in:8000/customer/loan/apply', {
-=======
-            const response = await axios.post('https://localhost:8000/customer/loan/apply', {
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 customerId: customerId,
                 customerName: customerDetails.customerFname,
                 customerNo: customerDetails.customerNo,

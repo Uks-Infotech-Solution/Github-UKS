@@ -91,11 +91,7 @@ function NewCustomer() {
           userpassword,
           customerType
         };
-<<<<<<< HEAD
         const response = await axios.post('https://uksinfotechsolution.in:8000/register', customerData);
-=======
-        const response = await axios.post('https://localhost:8000/register', customerData);
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
         const customerNo = response.data.customerNo; // Assume the response contains the new customer number
         setErrors({});
         setCustomerFname('');

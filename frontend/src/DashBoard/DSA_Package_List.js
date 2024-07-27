@@ -22,11 +22,7 @@ function DSA_Package_List() {
     useEffect(() => {
         const fetchPackages = async () => {
             try {
-<<<<<<< HEAD
                 const response = await axios.get('https://uksinfotechsolution.in:8000/Inactive/packagers');
-=======
-                const response = await axios.get('https://localhost:8000/Inactive/packagers');
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 setPackagers(response.data.data || []); // Ensure it's an array
                 setLoading(false);
             } catch (error) {

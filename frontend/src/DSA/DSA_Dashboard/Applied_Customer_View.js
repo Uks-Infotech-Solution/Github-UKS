@@ -51,21 +51,13 @@ function Applied_Customer_View() {
     useEffect(() => {
         const fetchDetails = async () => {
             try {
-<<<<<<< HEAD
                 const loanResponse = await axios.get(`https://uksinfotechsolution.in:8000/api/dsa/applications/loan/${loanId}`);
-=======
-                const loanResponse = await axios.get(`https://localhost:8000/api/dsa/applications/loan/${loanId}`);
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 const loanApplication = loanResponse.data.loanApplication;
                 console.log(loanApplication);
                 setLoanApp(loanApplication);
                 const { dsaId, customerId } = loanApplication;
 
-<<<<<<< HEAD
                 const dsaResponse = await axios.get(`https://uksinfotechsolution.in:8000/api/dsa?dsaId=${dsaId}`);
-=======
-                const dsaResponse = await axios.get(`https://localhost:8000/api/dsa?dsaId=${dsaId}`);
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 const dsaDetails = dsaResponse.data;
 
                 setFormData({
@@ -80,11 +72,7 @@ function Applied_Customer_View() {
                     website: dsaDetails.website || ""
                 });
 
-<<<<<<< HEAD
                 const customerResponse = await axios.get('https://uksinfotechsolution.in:8000/customer-details', {
-=======
-                const customerResponse = await axios.get('https://localhost:8000/customer-details', {
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                     params: { customerId: customerId }
                 });
                 const customerDetails = customerResponse.data;
@@ -108,11 +96,7 @@ function Applied_Customer_View() {
 
     const fetchAddressDetails = async (customerId) => {
         try {
-<<<<<<< HEAD
             const response = await axios.get(`https://uksinfotechsolution.in:8000/view-address`, {
-=======
-            const response = await axios.get(`https://localhost:8000/view-address`, {
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 params: { customerId: customerId }
             });
             if (response.data) {
@@ -126,11 +110,7 @@ function Applied_Customer_View() {
 
     const fetchTableCount = async (customerId) => {
         try {
-<<<<<<< HEAD
             const response = await axios.get(`https://uksinfotechsolution.in:8000/dsa-customer/table/count?customerId=${customerId}`);
-=======
-            const response = await axios.get(`https://localhost:8000/dsa-customer/table/count?customerId=${customerId}`);
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
             setTableCount(response.data.count);
             console.log(response.data.count);
 
@@ -141,11 +121,7 @@ function Applied_Customer_View() {
 
     const fetchDownloadTableCount = async (customerId) => {
         try {
-<<<<<<< HEAD
             const response = await axios.get(`https://uksinfotechsolution.in:8000/dsa-customer/downloadtable/count?customerId=${customerId}`);
-=======
-            const response = await axios.get(`https://localhost:8000/dsa-customer/downloadtable/count?customerId=${customerId}`);
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
             setDownloadTableCount(response.data.count);
             console.log(response.data.count);
         } catch (error) {
@@ -156,11 +132,7 @@ function Applied_Customer_View() {
     useEffect(() => {
         const fetchPackages = async () => {
             try {
-<<<<<<< HEAD
                 const response = await axios.get(`https://uksinfotechsolution.in:8000/buy_packages/dsa/${dsaId}`);
-=======
-                const response = await axios.get(`https://localhost:8000/buy_packages/dsa/${dsaId}`);
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 setPackages(response.data);
             } catch (err) {
                 console.log(err);

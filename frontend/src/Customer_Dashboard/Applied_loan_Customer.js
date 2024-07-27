@@ -34,11 +34,7 @@ function Applied_Loan_Customer() {
         const fetchApplyLoanDetails = async () => {
             try {
                 console.log("Sending GET request for loanId:", loanId);
-<<<<<<< HEAD
                 const response = await axios.get(`https://uksinfotechsolution.in:8000/api/customer/dsa/loans/${loanId}`);
-=======
-                const response = await axios.get(`https://localhost:8000/api/customer/dsa/loans/${loanId}`);
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 if (response.status === 200) {
                     const data = response.data.data;
                     setAppliedLoan(Array.isArray(data) ? data : [data]);
@@ -57,11 +53,7 @@ function Applied_Loan_Customer() {
     useEffect(() => {
         const fetchDSADetails = async () => {
             try {
-<<<<<<< HEAD
                 const response = await axios.get(`https://uksinfotechsolution.in:8000/api/dsa`, {
-=======
-                const response = await axios.get(`https://localhost:8000/api/dsa`, {
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                     params: { dsaId }
                 });
                 const dsaDetails = response.data;
@@ -112,11 +104,7 @@ function Applied_Loan_Customer() {
 
     const handleCancelApplication = async () => {
         try {
-<<<<<<< HEAD
             const response = await axios.post('https://uksinfotechsolution.in:8000/customer/loan/cancel', {
-=======
-            const response = await axios.post('https://localhost:8000/customer/loan/cancel', {
->>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 customerId,
                 dsaId,
                 loanId
