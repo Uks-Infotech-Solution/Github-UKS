@@ -109,10 +109,6 @@ const customerSchema = new Schema({
     },
     resetToken: String,
     resetTokenExpiration: Date,
-    address: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'DSAAddress' // Reference to DSAAddress model
-    }
 });
 
 // Add auto-increment plugin for customerNo
