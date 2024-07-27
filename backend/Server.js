@@ -1179,7 +1179,6 @@ app.get('/dsa/activate/:token', async (req, res) => {
         await dsa.save();
 
         // Send a JSON response with a redirect URL
-        // const redirectUrl = `${process.env.BASE_URL}/dsa/login`;
         return res.status(200).json('Email confirmed successfully');
     } catch (err) {
         return res.status(400).json({ error: 'Error: ' + err });
@@ -2181,8 +2180,6 @@ app.get('/customer/activate/:token', async (req, res) => {
         await customer.save();
 
         // Send a JSON response indicating success and a redirect URL
-        //   res.redirect(`${process.env.BASE_URL}/customer/login`);
-
         return res.status(200).json('Customer Email confirmed successfully');
     } catch (err) {
         return res.status(400).json({ error: 'Error: ' + err });
@@ -2454,7 +2451,6 @@ app.get('/uks/activate/:token', async (req, res) => {
         user.isActive = true;
         user.activationToken = undefined;
         await user.save();
-        // res.redirect(`${process.env.BASE_URL}/uks/login`);
 
         // Send a JSON response indicating success and a redirect URL
         return res.status(200).json('Email confirmed successfully');
