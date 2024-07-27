@@ -13,7 +13,7 @@ const Required_Type = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://148.251.230.14:8000/api/dsa/required/type', { requiredType: documentType });
+      const response = await axios.post('https://uksinfotechsolution.in:8000/api/dsa/required/type', { requiredType: documentType });
       setMessage(response.data.message);
       setDocumentType('');
       setError('');

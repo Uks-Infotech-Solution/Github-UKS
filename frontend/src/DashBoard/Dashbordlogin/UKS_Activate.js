@@ -8,7 +8,7 @@ const UKS_Activate = () => {
   useEffect(() => {
     const activateAccount = async () => {
       try {
-        const response = await fetch(`http://148.251.230.14:8000/uks/activate/${token}`);
+        const response = await fetch(`https://uksinfotechsolution.in:8000/uks/activate/${token}`);
         const data = await response.json();
 
         if (response.ok) {

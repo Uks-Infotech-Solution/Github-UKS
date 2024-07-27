@@ -24,7 +24,7 @@ function Sales_Packagers() {
     useEffect(() => {
         const fetchPackages = async () => {
             try {
-                const response = await axios.get('http://148.251.230.14:8000/sales/packagers', {
+                const response = await axios.get('https://uksinfotechsolution.in:8000/sales/packagers', {
                     params: { uksId } // Send uksId as a query parameter
                 });
                 setPackagers(response.data.data || []); // Ensure it's an array

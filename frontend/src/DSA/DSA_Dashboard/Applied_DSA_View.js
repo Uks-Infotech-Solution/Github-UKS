@@ -35,7 +35,7 @@ function Applied_DSA_View() {
         const fetchApplyLoanDetails = async () => {
             try {
                 console.log("Sending GET request for loanId:", loanId);
-                const response = await axios.get(`http://148.251.230.14:8000/api/customer/dsa/loans/${loanId}`);
+                const response = await axios.get(`https://uksinfotechsolution.in:8000/api/customer/dsa/loans/${loanId}`);
                 if (response.status === 200) {
                     const data = response.data.data;
                     setAppliedLoan(Array.isArray(data) ? data : [data]);
@@ -55,7 +55,7 @@ function Applied_DSA_View() {
     useEffect(() => {
         const fetchDSADetails = async () => {
             try {
-                const response = await axios.get(`http://148.251.230.14:8000/api/dsa`, {
+                const response = await axios.get(`https://uksinfotechsolution.in:8000/api/dsa`, {
                     params: { dsaId }
                 });
                 const dsaDetails = response.data;
@@ -76,7 +76,7 @@ function Applied_DSA_View() {
 
                     });
                     // Fetch branch details
-                    const branchResponse = await axios.get(`http://148.251.230.14:8000/dsa/BranchDetails/${dsaId}`);
+                    const branchResponse = await axios.get(`https://uksinfotechsolution.in:8000/dsa/BranchDetails/${dsaId}`);
                     setBranchDetails(branchResponse.data.data);
                 } else {
                     console.error('No data found for DSA ID:', dsaId);
@@ -112,7 +112,7 @@ function Applied_DSA_View() {
 
     const handleCancelApplication = async (loan) => {
         try {
-            const response = await axios.post('http://148.251.230.14:8000/customer/loan/cancel', {
+            const response = await axios.post('https://uksinfotechsolution.in:8000/customer/loan/cancel', {
                 customerId,
                 dsaId,
                 loanId
@@ -146,7 +146,7 @@ function Applied_DSA_View() {
 
     const handleStatusChange = async (loan) => {
         try {
-            const response = await axios.post('http://148.251.230.14:8000/api/customer/dsa/updateStatus', {
+            const response = await axios.post('https://uksinfotechsolution.in:8000/api/customer/dsa/updateStatus', {
                 customerId: loan.customerId,
                 dsaId: loan.dsaId,
                 loanId: loan._id,

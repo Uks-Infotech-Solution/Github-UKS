@@ -13,7 +13,7 @@ const Employee_Type = () => {
     e.preventDefault();
 // console.log(employeeType);
     try {
-      const response = await axios.post('http://148.251.230.14:8000/api/employee-type', { employeeType });
+      const response = await axios.post('https://uksinfotechsolution.in:8000/api/employee-type', { employeeType });
       setMessage(response.data.message);
       setEmployeeType('')
       setError('');

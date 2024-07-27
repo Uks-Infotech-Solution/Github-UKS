@@ -22,7 +22,7 @@ function Sales_Person({ onSuccess,dsaId, dsaNo }) {
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const saveData = async () => {
         try {
-            const response = await axios.post('http://148.251.230.14:8000/sales/person/dsa/reg', {
+            const response = await axios.post('https://uksinfotechsolution.in:8000/sales/person/dsa/reg', {
                 uksId,
                 salesPersonName,
                 dsaName,

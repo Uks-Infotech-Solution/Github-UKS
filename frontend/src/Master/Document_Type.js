@@ -13,7 +13,7 @@ const DocumentTypeForm = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://148.251.230.14:8000/api/document-type', { documenttype: documentType });
+      const response = await axios.post('https://uksinfotechsolution.in:8000/api/document-type', { documenttype: documentType });
       setMessage(response.data.message);
       setDocumentType('');
       setError('');

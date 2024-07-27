@@ -23,14 +23,14 @@ function Customer_login() {
         e.preventDefault();
 
         try {
-            const response = await axios.post('http://148.251.230.14:8000/login', {
+            const response = await axios.post('https://uksinfotechsolution.in:8000/login', {
                 email,
                 password,
             });
 
             const { customerId } = response.data;
 
-            const customerResponse = await axios.get('http://148.251.230.14:8000/customer-details', {
+            const customerResponse = await axios.get('https://uksinfotechsolution.in:8000/customer-details', {
                 params: {
                     customerId,
                 },
@@ -38,7 +38,7 @@ function Customer_login() {
             console.log(customerResponse.data.customerFname);
 
             const loginDateTime = new Date().toISOString();
-            await axios.post('http://148.251.230.14:8000/customer/login/session', {
+            await axios.post('https://uksinfotechsolution.in:8000/customer/login/session', {
                 customerId,
                 loginDateTime
             });

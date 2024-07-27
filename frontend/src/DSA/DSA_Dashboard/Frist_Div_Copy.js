@@ -31,7 +31,7 @@ function First_Div() {
 
   const fetchDSADetails = async (dsaId) => {
     try {
-      const response = await axios.get(`http://148.251.230.14:8000/api/dsa?dsaId=${dsaId}`);
+      const response = await axios.get(`https://uksinfotechsolution.in:8000/api/dsa?dsaId=${dsaId}`);
       setDsaData(response.data);
     } catch (error) {
       console.error('Error fetching DSA details:', error);
@@ -41,7 +41,7 @@ function First_Div() {
   useEffect(() => {
     const fetchCustomers = async () => {
       try {
-        const response = await axios.get(`http://148.251.230.14:8000/dsa/customer/applied/loan/${dsaId}`);
+        const response = await axios.get(`https://uksinfotechsolution.in:8000/dsa/customer/applied/loan/${dsaId}`);
         const customersData = response.data;
         setCustomers(customersData);
 
@@ -53,7 +53,7 @@ function First_Div() {
           initialCheckedItems[customer._id] = false;
 
           try {
-            const addressResponse = await axios.get('http://148.251.230.14:8000/view-address', {
+            const addressResponse = await axios.get('https://uksinfotechsolution.in:8000/view-address', {
               params: { customerId: customer.customerId },
             });
             addresses[customer._id] = addressResponse.data;
@@ -62,7 +62,7 @@ function First_Div() {
           }
 
           try {
-            const response = await axios.get(`http://148.251.230.14:8000/api/profile/view-profile-picture?customerId=${customer.customerId}`, {
+            const response = await axios.get(`https://uksinfotechsolution.in:8000/api/profile/view-profile-picture?customerId=${customer.customerId}`, {
               responseType: 'arraybuffer',
             });
             const contentType = response.headers['content-type'];
@@ -154,7 +154,7 @@ function First_Div() {
         date: currentDate,
       };
 
-      await axios.post('http://148.251.230.14:8000/dsa/customer/apply/view/count', payload);
+      await axios.post('https://uksinfotechsolution.in:8000/dsa/customer/apply/view/count', payload);
       navigate('/applied/customer/view', { state: { loanId: selectedCustomer._id, applicationNumber: selectedCustomer.applicationNumber } });
 
     } catch (error) {

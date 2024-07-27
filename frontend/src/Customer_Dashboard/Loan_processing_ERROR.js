@@ -6,7 +6,7 @@
 
     const determineLevel = async (amount) => {
         try {
-            const response = await axios.post('http://148.251.230.14:8000/api/determine-loan-level', { loanAmount: amount });
+            const response = await axios.post('https://uksinfotechsolution.in:8000/api/determine-loan-level', { loanAmount: amount });
             setLevel(response.data.loanLevel);
         } catch (error) {
             console.error('Error determining loan level:', error);
@@ -31,7 +31,7 @@
     useEffect(() => {
         const fetchLoanTypes = async () => {
             try {
-                const response = await axios.get('http://148.251.230.14:8000/api/loan-types');
+                const response = await axios.get('https://uksinfotechsolution.in:8000/api/loan-types');
                 setLoanTypes(response.data);
             } catch (error) {
                 console.error('Error fetching loan types:', error);
@@ -121,7 +121,7 @@
     const [level, setLevel] = useState('');
     const determineLevel = async (amount) => {
         try {
-            const response = await axios.post('http://148.251.230.14:8000/api/determine-loan-level', { loanAmount: amount });
+            const response = await axios.post('https://uksinfotechsolution.in:8000/api/determine-loan-level', { loanAmount: amount });
             setLevel(response.data.loanLevel);
         } catch (error) {
             console.error('Error determining loan level:', error);
@@ -153,7 +153,7 @@ const [cibilRecord, setCibilRecord] = useState('');
     useEffect(() => {
         const fetchLoanTypes = async () => {
             try {
-                const response = await axios.get('http://148.251.230.14:8000/api/loan-types');
+                const response = await axios.get('https://uksinfotechsolution.in:8000/api/loan-types');
                 setLoanTypes(response.data);
             } catch (error) {
                 console.error('Error fetching loan types:', error);
@@ -171,7 +171,7 @@ const [cibilRecord, setCibilRecord] = useState('');
     useEffect(() => {
         const fetchDocumentTypes = async () => {
             try {
-                const response = await axios.get('http://148.251.230.14:8000/api/document-type');
+                const response = await axios.get('https://uksinfotechsolution.in:8000/api/document-type');
                 setDocumentTypes(response.data);
                 // console.log(response.data);
             } catch (error) {

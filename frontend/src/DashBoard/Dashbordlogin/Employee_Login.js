@@ -18,7 +18,7 @@ const DashbordUserLogin = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://148.251.230.14:8000/api/ukslogin', {
+      const response = await axios.post('https://uksinfotechsolution.in:8000/api/ukslogin', {
         email: uksNumber,
         password,
       });

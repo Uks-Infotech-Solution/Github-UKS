@@ -26,11 +26,11 @@ const LoanGridView = () => {
 
     const fetchDSADetails = async (area) => {
         try {
-            const response = await axios.get('http://148.251.230.14:8000/api/dsa/list');
+            const response = await axios.get('https://uksinfotechsolution.in:8000/api/dsa/list');
             const dsas = response.data.dsa;
 
             const dsaWithAddressPromises = dsas.map(async (dsa) => {
-                const addressResponse = await axios.get(`http://148.251.230.14:8000/api/dsa/address?dsaId=${dsa._id}`);
+                const addressResponse = await axios.get(`https://uksinfotechsolution.in:8000/api/dsa/address?dsaId=${dsa._id}`);
                 return {
                     ...dsa,
                     permanentAddress: addressResponse.data.permanentAddress
@@ -56,7 +56,7 @@ const LoanGridView = () => {
 
     const fetchLoanDetails = async (dsaId) => {
         try {
-            const response = await axios.get(`http://148.251.230.14:8000/api/dsa/${dsaId}/loanDetails`);
+            const response = await axios.get(`https://uksinfotechsolution.in:8000/api/dsa/${dsaId}/loanDetails`);
             if (response.status === 200) {
                 setLoanDetails(prevLoanDetails => [
                     ...prevLoanDetails,
@@ -70,7 +70,7 @@ const LoanGridView = () => {
 
     const fetchFeedbackDetails = async (dsaId) => {
         try {
-            const response = await axios.get(`http://148.251.230.14:8000/loan/api/feedback/${dsaId}`);
+            const response = await axios.get(`https://uksinfotechsolution.in:8000/loan/api/feedback/${dsaId}`);
             if (response.status === 200) {
                 setFeedbackDetails(prevFeedbackDetails => [
                     ...prevFeedbackDetails,

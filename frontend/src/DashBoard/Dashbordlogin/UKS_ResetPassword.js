@@ -21,7 +21,7 @@ const UKS_ResetPassword = () => {
       return;
     }
     try {
-      await axios.post(`http://148.251.230.14:8000/uks/resetpassword/${token}`, { password });
+      await axios.post(`https://uksinfotechsolution.in:8000/uks/resetpassword/${token}`, { password });
       setShowModal(true);
     } catch (error) {
       console.error('Error resetting password:', error);

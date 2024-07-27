@@ -44,7 +44,7 @@ function Customer_reg({ onSuccess }) {
     };
 
     useEffect(() => {
-        axios.get('http://148.251.230.14:8000/api/loan-types')
+        axios.get('https://uksinfotechsolution.in:8000/api/loan-types')
             .then(response => {
                 setLoanTypes(response.data.map(type => ({
                     value: type.id,
@@ -134,7 +134,7 @@ function Customer_reg({ onSuccess }) {
                 customerType,
                 title,
             };
-            const response = await axios.post('http://148.251.230.14:8000/register', customerData);
+            const response = await axios.post('https://uksinfotechsolution.in:8000/register', customerData);
             const customerId = response.data.customerId; // Assume the response contains the new customer ID
             setCustomerId(customerId); // Set the customer ID
             console.log(customerId);
