@@ -116,6 +116,8 @@ customerSchema.plugin(AutoIncrement, { inc_field: 'customerNo', start_seq: 1 });
 
 const Customer = mongoose.model('Customer', customerSchema);
 
+app.get('/favicon.ico', (req, res) => res.status(204).end());
+
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
