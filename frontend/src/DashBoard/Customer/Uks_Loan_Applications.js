@@ -30,7 +30,11 @@ function Uks_Loan_Applications() {
   useEffect(() => {
     const fetchCustomers = async () => {
       try {
+<<<<<<< HEAD
         const response = await axios.get('https://uksinfotechsolution.in:8000/customer/loan/application');
+=======
+        const response = await axios.get('https://localhost:8000/customer/loan/application');
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
         const customersData = response.data;
         setCustomers(customersData);
 
@@ -42,7 +46,11 @@ function Uks_Loan_Applications() {
           initialCheckedItems[customer._id] = false;
 
           try {
+<<<<<<< HEAD
             const addressResponse = await axios.get('https://uksinfotechsolution.in:8000/view-address', {
+=======
+            const addressResponse = await axios.get('https://localhost:8000/view-address', {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
               params: { customerId: customer.customerId },
             });
             addressesData[customer._id] = addressResponse.data;
@@ -51,7 +59,11 @@ function Uks_Loan_Applications() {
           }
 
           try {
+<<<<<<< HEAD
             const profileResponse = await axios.get(`https://uksinfotechsolution.in:8000/api/profile/view-profile-picture?customerId=${customer.customerId}`, {
+=======
+            const profileResponse = await axios.get(`https://localhost:8000/api/profile/view-profile-picture?customerId=${customer.customerId}`, {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
               responseType: 'arraybuffer',
             });
             const contentType = profileResponse.headers['content-type'];
@@ -144,7 +156,11 @@ function Uks_Loan_Applications() {
         date: currentDate,
       };
 
+<<<<<<< HEAD
       await axios.post('https://uksinfotechsolution.in:8000/dsa/customer/apply/view/count', payload);
+=======
+      await axios.post('https://localhost:8000/dsa/customer/apply/view/count', payload);
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
       navigate('/applied/customer/view', { state: { loanId: selectedCustomer._id, applicationNumber: selectedCustomer.applicationNumber } });
     } catch (error) {
       console.error('Error storing data:', error.response ? error.response.data : error.message);

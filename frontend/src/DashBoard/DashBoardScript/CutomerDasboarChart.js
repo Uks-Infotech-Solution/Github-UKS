@@ -42,7 +42,11 @@ const ChartComponent = () => {
   useEffect(() => {
     const fetchCustomers = async () => {
       try {
+<<<<<<< HEAD
         const response = await axios.get('https://uksinfotechsolution.in:8000/');
+=======
+        const response = await axios.get('https://localhost:8000/');
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
         setCustomers(response.data);
         setLoading(false);
       } catch (err) {
@@ -59,7 +63,11 @@ const ChartComponent = () => {
       for (let customer of customers) {
         if (customer && customer.customermailid) {
           try {
+<<<<<<< HEAD
             const response = await axios.get('https://uksinfotechsolution.in:8000/get-loan-processing', {
+=======
+            const response = await axios.get('https://localhost:8000/get-loan-processing', {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
               params: { email: customer.customermailid }
             });
             if (response.status === 200 && response.data !== null) {

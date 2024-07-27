@@ -43,7 +43,11 @@ function CustomerTable() {
   // Fetch DSA details
   const fetchDSADetails = async (dsaId) => {
     try {
+<<<<<<< HEAD
       const response = await axios.get(`https://uksinfotechsolution.in:8000/api/dsa?dsaId=${dsaId}`);
+=======
+      const response = await axios.get(`https://localhost:8000/api/dsa?dsaId=${dsaId}`);
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
       setDsaData(response.data);
     } catch (error) {
       console.error('Error fetching DSA details:', error);
@@ -60,7 +64,11 @@ function CustomerTable() {
   useEffect(() => {
     const fetchCustomers = async () => {
       try {
+<<<<<<< HEAD
         const response = await axios.get('https://uksinfotechsolution.in:8000/');
+=======
+        const response = await axios.get('https://localhost:8000/');
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
         setCustomers(response.data);
         setLoading(false);
         const initialCheckedItems = {};
@@ -84,7 +92,11 @@ function CustomerTable() {
       const newAddresses = {};
       for (let customer of customers) {
         try {
+<<<<<<< HEAD
           const response = await axios.get('https://uksinfotechsolution.in:8000/view-address', {
+=======
+          const response = await axios.get('https://localhost:8000/view-address', {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
             params: { customerId: customer._id },
           });
           if (response.status === 200) {
@@ -108,7 +120,11 @@ function CustomerTable() {
       const newCustomerStatuses = {};
       for (let customer of customers) {
         try {
+<<<<<<< HEAD
           const response = await axios.get('https://uksinfotechsolution.in:8000/customer/status/table', {
+=======
+          const response = await axios.get('https://localhost:8000/customer/status/table', {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
             params: { customerId: customer._id },
           });
           if (response.status === 200) {
@@ -132,7 +148,11 @@ function CustomerTable() {
       const newLoanProcessingDetails = {};
       for (let customer of customers) {
         try {
+<<<<<<< HEAD
           const response = await axios.get('https://uksinfotechsolution.in:8000/get-loan-processing', {
+=======
+          const response = await axios.get('https://localhost:8000/get-loan-processing', {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
             params: { customerId: customer._id },
           });
           if (response.status === 200) {
@@ -154,7 +174,11 @@ function CustomerTable() {
 
   const fetchProfilePicture = async (customerId) => {
     try {
+<<<<<<< HEAD
       const response = await axios.get(`https://uksinfotechsolution.in:8000/api/profile/view-profile-picture?customerId=${customerId}`, {
+=======
+      const response = await axios.get(`https://localhost:8000/api/profile/view-profile-picture?customerId=${customerId}`, {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
         responseType: 'arraybuffer'
       });
       const contentType = response.headers['content-type'];
@@ -262,7 +286,11 @@ function CustomerTable() {
     }
 
     try {
+<<<<<<< HEAD
       const response = await axios.post('https://uksinfotechsolution.in:8000/dsa-customer/table', {
+=======
+      const response = await axios.post('https://localhost:8000/dsa-customer/table', {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
         dsaId: dsaData._id,
         customerId: selectedCustomer._id,
       });

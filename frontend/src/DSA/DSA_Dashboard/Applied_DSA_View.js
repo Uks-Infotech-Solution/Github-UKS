@@ -35,7 +35,11 @@ function Applied_DSA_View() {
         const fetchApplyLoanDetails = async () => {
             try {
                 console.log("Sending GET request for loanId:", loanId);
+<<<<<<< HEAD
                 const response = await axios.get(`https://uksinfotechsolution.in:8000/api/customer/dsa/loans/${loanId}`);
+=======
+                const response = await axios.get(`https://localhost:8000/api/customer/dsa/loans/${loanId}`);
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 if (response.status === 200) {
                     const data = response.data.data;
                     setAppliedLoan(Array.isArray(data) ? data : [data]);
@@ -55,7 +59,11 @@ function Applied_DSA_View() {
     useEffect(() => {
         const fetchDSADetails = async () => {
             try {
+<<<<<<< HEAD
                 const response = await axios.get(`https://uksinfotechsolution.in:8000/api/dsa`, {
+=======
+                const response = await axios.get(`https://localhost:8000/api/dsa`, {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                     params: { dsaId }
                 });
                 const dsaDetails = response.data;
@@ -76,7 +84,11 @@ function Applied_DSA_View() {
 
                     });
                     // Fetch branch details
+<<<<<<< HEAD
                     const branchResponse = await axios.get(`https://uksinfotechsolution.in:8000/dsa/BranchDetails/${dsaId}`);
+=======
+                    const branchResponse = await axios.get(`https://localhost:8000/dsa/BranchDetails/${dsaId}`);
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                     setBranchDetails(branchResponse.data.data);
                 } else {
                     console.error('No data found for DSA ID:', dsaId);
@@ -112,7 +124,11 @@ function Applied_DSA_View() {
 
     const handleCancelApplication = async (loan) => {
         try {
+<<<<<<< HEAD
             const response = await axios.post('https://uksinfotechsolution.in:8000/customer/loan/cancel', {
+=======
+            const response = await axios.post('https://localhost:8000/customer/loan/cancel', {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 customerId,
                 dsaId,
                 loanId
@@ -146,7 +162,11 @@ function Applied_DSA_View() {
 
     const handleStatusChange = async (loan) => {
         try {
+<<<<<<< HEAD
             const response = await axios.post('https://uksinfotechsolution.in:8000/api/customer/dsa/updateStatus', {
+=======
+            const response = await axios.post('https://localhost:8000/api/customer/dsa/updateStatus', {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 customerId: loan.customerId,
                 dsaId: loan.dsaId,
                 loanId: loan._id,

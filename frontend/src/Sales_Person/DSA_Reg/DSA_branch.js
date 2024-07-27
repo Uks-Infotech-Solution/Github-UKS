@@ -27,7 +27,11 @@ function DSA_Branch ({onSuccess,dsaId }) {
 
     const handleBranchSave = async () => {
         try {
+<<<<<<< HEAD
             const response = await axios.post('https://uksinfotechsolution.in:8000/dsa/saveBranchDetails', { dsaId, branchDetails: BranchDetails });
+=======
+            const response = await axios.post('https://localhost:8000/dsa/saveBranchDetails', { dsaId, branchDetails: BranchDetails });
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
             if (response.status === 200) {
                 setModalMessage('Branch details saved successfully.');
                 setModalType('success');

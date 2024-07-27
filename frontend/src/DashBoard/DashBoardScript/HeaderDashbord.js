@@ -14,7 +14,11 @@ function HeaderDashboard() {
 
     const fetchCustomerCounts = async () => {
         try {
+<<<<<<< HEAD
             const response = await axios.get(`https://uksinfotechsolution.in:8000/customer/status`);
+=======
+            const response = await axios.get(`https://localhost:8000/customer/status`);
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
             const { totalcustomer, activestatus, inactivestatus } = response.data;
             setCustomerCounts({ total: totalcustomer, active: activestatus, inactive: inactivestatus });
         } catch (error) {

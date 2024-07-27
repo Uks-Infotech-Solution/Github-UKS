@@ -21,7 +21,11 @@ function Sales_Person_dashboard() {
     useEffect(() => {
         const fetchUksIdCount = async () => {
             try {
+<<<<<<< HEAD
                 const response = await axios.get(`https://uksinfotechsolution.in:8000/sales/person/dsa/count/${uksId}`);
+=======
+                const response = await axios.get(`https://localhost:8000/sales/person/dsa/count/${uksId}`);
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 setUksIdCount(response.data.count);
                 setDsaCreatedDates(response.data.createdDates);
             } catch (err) {
@@ -37,7 +41,11 @@ function Sales_Person_dashboard() {
     useEffect(() => {
         const fetchUksIdDsaCount = async () => {
             try {
+<<<<<<< HEAD
                 const response = await axios.get(`https://uksinfotechsolution.in:8000/sales/person/cus/count/${uksId}`);
+=======
+                const response = await axios.get(`https://localhost:8000/sales/person/cus/count/${uksId}`);
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 setUksIdcusCount(response.data.count);
                 setCusCreatedDates(response.data.createdDates);
             } catch (err) {
@@ -97,7 +105,11 @@ function Sales_Person_dashboard() {
     };
     const fetchLastLoginSession = async (dsaId) => {
         try {
+<<<<<<< HEAD
             const response = await axios.get('https://uksinfotechsolution.in:8000/dsa/login/last-session', {
+=======
+            const response = await axios.get('https://localhost:8000/dsa/login/last-session', {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 params: { dsaId: dsaId }
             });
             setLastLoginDateTime(response.data.loginDateTime);

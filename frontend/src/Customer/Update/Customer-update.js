@@ -23,7 +23,11 @@ function UpdateCustomer() {
         // Fetch existing customer data for editing
         const fetchCustomerData = async () => {
             try {
+<<<<<<< HEAD
                 const response = await axios.get(`https://uksinfotechsolution.in:8000/${id}`);
+=======
+                const response = await axios.get(`https://localhost:8000/${id}`);
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 const data = response.data;
                 setCustomerNo(data.customerNo); // Set the customerNo received from the backend
                 setCustomerFname(data.customerFname);
@@ -78,7 +82,11 @@ function UpdateCustomer() {
                 customerType
             };
 
+<<<<<<< HEAD
             const response = await axios.put(`https://uksinfotechsolution.in:8000/customers/${id}`, customerData);
+=======
+            const response = await axios.put(`https://localhost:8000/customers/${id}`, customerData);
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
             const updatedCustomerId = response.data._id; // Assume the response contains the updated customer ID
             setMessage(`Customer updated successfully! Customer ID: ${updatedCustomerId}`);
             setErrors({});

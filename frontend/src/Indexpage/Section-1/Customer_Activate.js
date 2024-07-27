@@ -8,7 +8,11 @@ const Customer_Activate = () => {
   useEffect(() => {
     const activateAccount = async () => {
       try {
+<<<<<<< HEAD
         const response = await fetch(`https://uksinfotechsolution.in:8000/customer/activate/${token}`);
+=======
+        const response = await fetch(`https://localhost:8000/customer/activate/${token}`);
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
         const data = await response.json(); // Parse the response to JSON
 
         if (response.ok) {

@@ -54,7 +54,11 @@ function Applied_Loan_View() {
     useEffect(() => {
         const fetchDSADetails = async () => {
             try {
+<<<<<<< HEAD
                 const response = await axios.get(`https://uksinfotechsolution.in:8000/api/dsa?dsaId=${dsaId}`);
+=======
+                const response = await axios.get(`https://localhost:8000/api/dsa?dsaId=${dsaId}`);
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 const dsaDetails = response.data;
 
                 if (dsaDetails) {
@@ -69,7 +73,11 @@ function Applied_Loan_View() {
                         email: dsaDetails.email || "",
                         website: dsaDetails.website || ""
                     });
+<<<<<<< HEAD
                     const branchResponse = await axios.get(`https://uksinfotechsolution.in:8000/dsa/BranchDetails/${dsaId}`);
+=======
+                    const branchResponse = await axios.get(`https://localhost:8000/dsa/BranchDetails/${dsaId}`);
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                     setBranchDetails(branchResponse.data.data);
                 } else {
                     console.error('No data found for DSA ID:', dsaId);
@@ -89,7 +97,11 @@ function Applied_Loan_View() {
     useEffect(() => {
         const fetchLoanDetails = async () => {
             try {
+<<<<<<< HEAD
                 const response = await axios.get(`https://uksinfotechsolution.in:8000/api/dsa/${dsaId}/loanDetails`);
+=======
+                const response = await axios.get(`https://localhost:8000/api/dsa/${dsaId}/loanDetails`);
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 if (response.status === 200) {
                     setLoanDetails(response.data.loanDetails);
                 }
@@ -106,7 +118,11 @@ function Applied_Loan_View() {
     useEffect(() => {
         const fetchAddressDetails = async () => {
             try {
+<<<<<<< HEAD
                 const response = await axios.get(`https://uksinfotechsolution.in:8000/api/dsa/address?dsaId=${dsaId}`);
+=======
+                const response = await axios.get(`https://localhost:8000/api/dsa/address?dsaId=${dsaId}`);
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 const fetchedAddress = response.data;
 
                 if (fetchedAddress) {
@@ -128,7 +144,11 @@ function Applied_Loan_View() {
 
     const fetchDownloadTableCount = async () => {
         try {
+<<<<<<< HEAD
             const response = await axios.get(`https://uksinfotechsolution.in:8000/dsa/download/count?dsaId=${dsaId}`);
+=======
+            const response = await axios.get(`https://localhost:8000/dsa/download/count?dsaId=${dsaId}`);
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
             setDownloadTableCount(response.data.count);
         } catch (error) {
             console.error('Error fetching download table count:', error.message);
@@ -137,7 +157,11 @@ function Applied_Loan_View() {
 
     const fetchTableCount = async () => {
         try {
+<<<<<<< HEAD
             const response = await axios.get(`https://uksinfotechsolution.in:8000/dsa/table/count?dsaId=${dsaId}`);
+=======
+            const response = await axios.get(`https://localhost:8000/dsa/table/count?dsaId=${dsaId}`);
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
             setTableCount(response.data.count);
         } catch (error) {
             console.error('Error fetching table count:', error.message);
@@ -167,7 +191,11 @@ function Applied_Loan_View() {
                 date: new Date().toISOString()
             };
 
+<<<<<<< HEAD
             await axios.post('https://uksinfotechsolution.in:8000/loan/api/feedback', feedback);
+=======
+            await axios.post('https://localhost:8000/loan/api/feedback', feedback);
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
             alert("Feedback submitted successfully!");
         } catch (error) {
             console.error('Error submitting feedback:', error);
@@ -177,7 +205,11 @@ function Applied_Loan_View() {
 
     const fetchFeedbackDetails = async () => {
         try {
+<<<<<<< HEAD
             const response = await axios.get(`https://uksinfotechsolution.in:8000/loan/api/feedback/${dsaId}`);
+=======
+            const response = await axios.get(`https://localhost:8000/loan/api/feedback/${dsaId}`);
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
             if (response.status === 200) {
                 setFeedbackDetails(response.data.feedbacks);
             }

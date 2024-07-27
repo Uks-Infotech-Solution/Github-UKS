@@ -59,7 +59,11 @@ function Uks_Customer_View() {
 
     const handleDeleteAccount = async () => {
         try {
+<<<<<<< HEAD
             await axios.post('https://uksinfotechsolution.in:8000/customer/status', {
+=======
+            await axios.post('https://localhost:8000/customer/status', {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 customerId: customerId, // Ensure you have the customerId of the customer
                 status: 'InActive' // You can send 'InActive' or 'Active' based on the current state
             });
@@ -73,7 +77,11 @@ function Uks_Customer_View() {
 
     const handleActivateAccount = async () => {
         try {
+<<<<<<< HEAD
             await axios.post('https://uksinfotechsolution.in:8000/customer/status', {
+=======
+            await axios.post('https://localhost:8000/customer/status', {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 customerId: customerId,
                 status: 'Active' // Set the status to 'active'
             });
@@ -115,7 +123,11 @@ function Uks_Customer_View() {
     useEffect(() => {
         const fetchCustomerDetails = async () => {
             try {
+<<<<<<< HEAD
                 const response = await axios.get('https://uksinfotechsolution.in:8000/customer-details', {
+=======
+                const response = await axios.get('https://localhost:8000/customer-details', {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                     params: { customerId: customerId }
                 });
                 setCustomerDetails(response.data);
@@ -144,7 +156,11 @@ function Uks_Customer_View() {
     useEffect(() => {
         const fetchLoanTypes = async () => {
             try {
+<<<<<<< HEAD
                 const response = await axios.get('https://uksinfotechsolution.in:8000/api/loan-types');
+=======
+                const response = await axios.get('https://localhost:8000/api/loan-types');
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 setLoanTypes(response.data);
             } catch (error) {
                 console.error('Error fetching loan types:', error);
@@ -161,7 +177,11 @@ function Uks_Customer_View() {
     const [level, setLevel] = useState('');
     const determineLevel = async (amount) => {
         try {
+<<<<<<< HEAD
             const response = await axios.post('https://uksinfotechsolution.in:8000/api/determine-loan-level', { loanAmount: amount });
+=======
+            const response = await axios.post('https://localhost:8000/api/determine-loan-level', { loanAmount: amount });
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
             setLevel(response.data.loanLevel);
         } catch (error) {
             console.error('Error determining loan level:', error);
@@ -202,7 +222,11 @@ function Uks_Customer_View() {
         };
         console.log(updatedDetails);
         try {
+<<<<<<< HEAD
             const response = await axios.put('https://uksinfotechsolution.in:8000/update-customer-details', {
+=======
+            const response = await axios.put('https://localhost:8000/update-customer-details', {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 customerId: customerId, // Use the _id from customerDetails
                 updatedDetails: updatedDetails
             });
@@ -228,7 +252,11 @@ function Uks_Customer_View() {
     useEffect(() => {
         const checkForPdf = async () => {
             try {
+<<<<<<< HEAD
                 const response = await axios.get('https://uksinfotechsolution.in:8000/api/check-pdf', {
+=======
+                const response = await axios.get('https://localhost:8000/api/check-pdf', {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                     params: { customerId: customerId }
                 });
                 if (response.status === 200) {
@@ -269,7 +297,11 @@ function Uks_Customer_View() {
         formData.append('customerId', customerDetails._id);
 
         try {
+<<<<<<< HEAD
             await axios.post('https://uksinfotechsolution.in:8000/api/upload-pdf', formData, {
+=======
+            await axios.post('https://localhost:8000/api/upload-pdf', formData, {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -290,7 +322,11 @@ function Uks_Customer_View() {
 
     const fetchLoanProcessingDetails = async () => {
         try {
+<<<<<<< HEAD
             const response = await axios.get('https://uksinfotechsolution.in:8000/get-loan-processing', {
+=======
+            const response = await axios.get('https://localhost:8000/get-loan-processing', {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 params: { customerId: customerId }
             });
             if (response.status === 200) {
@@ -351,7 +387,11 @@ function Uks_Customer_View() {
             return;
         }
         try {
+<<<<<<< HEAD
             await axios.post('https://uksinfotechsolution.in:8000/api/save-loan-processing', {
+=======
+            await axios.post('https://localhost:8000/api/save-loan-processing', {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 selectedOptions, // Ensure this is defined somewhere in your component
                 checkBounds,
                 blockStatus,
@@ -397,7 +437,11 @@ function Uks_Customer_View() {
                 ? previousLoanDetails
                 : [{ financeName: 'No previous loan', yearOfLoan: null, loanAmount: 0, outstandingAmount: 0 }];
 
+<<<<<<< HEAD
             await axios.post('https://uksinfotechsolution.in:8000/add-previous-loans', {
+=======
+            await axios.post('https://localhost:8000/add-previous-loans', {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 previousLoans: loansToSave,
                 customerId: customerId,
             });
@@ -428,7 +472,11 @@ function Uks_Customer_View() {
         const loanToDelete = previousLoanDetails[index];
         if (loanToDelete._id) {
             try {
+<<<<<<< HEAD
                 await axios.delete(`https://uksinfotechsolution.in:8000/delete-previous-loan/${loanToDelete._id}`);
+=======
+                await axios.delete(`https://localhost:8000/delete-previous-loan/${loanToDelete._id}`);
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 alert('Loan deleted successfully');
             } catch (error) {
                 console.error('Error deleting previous loan:', error);
@@ -444,7 +492,11 @@ function Uks_Customer_View() {
     // FETCH PREVIOUS LOAN
     const fetchPreviousLoans = async () => {
         try {
+<<<<<<< HEAD
             const response = await axios.get('https://uksinfotechsolution.in:8000/get-previous-loans', {
+=======
+            const response = await axios.get('https://localhost:8000/get-previous-loans', {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 params: { customerId: customerId }
             });
             setPreviousLoanDetails(response.data);
@@ -558,7 +610,11 @@ function Uks_Customer_View() {
             return;
         }
         try {
+<<<<<<< HEAD
             await axios.post(`https://uksinfotechsolution.in:8000/add-address`, {
+=======
+            await axios.post(`https://localhost:8000/add-address`, {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 customerId: customerId,
                 address: addressDetails,
             });
@@ -577,7 +633,11 @@ function Uks_Customer_View() {
         const fetchAddressDetails = async () => {
             try {
                 console.log(`Fetching address details for customerId: ${customerId}`);
+<<<<<<< HEAD
                 const response = await axios.get(`https://uksinfotechsolution.in:8000/view-address`, {
+=======
+                const response = await axios.get(`https://localhost:8000/view-address`, {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                     params: { customerId: customerId }
                 });
                 if (response.data) {
@@ -621,7 +681,11 @@ function Uks_Customer_View() {
         formData.append('profilePicture', file);
         formData.append('customerId', customerId);
         try {
+<<<<<<< HEAD
             const response = await axios.post('https://uksinfotechsolution.in:8000/api/profile/upload-profile-picture', formData, {
+=======
+            const response = await axios.post('https://localhost:8000/api/profile/upload-profile-picture', formData, {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -639,7 +703,11 @@ function Uks_Customer_View() {
 
     const fetchProfilePicture = async (customerId) => {
         try {
+<<<<<<< HEAD
             const response = await axios.get(`https://uksinfotechsolution.in:8000/api/profile/view-profile-picture?customerId=${customerId}`, {
+=======
+            const response = await axios.get(`https://localhost:8000/api/profile/view-profile-picture?customerId=${customerId}`, {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 responseType: 'arraybuffer'
             });
             const contentType = response.headers['content-type'];
@@ -676,7 +744,11 @@ function Uks_Customer_View() {
     useEffect(() => {
         const fetchSalariedPersonDetails = async () => {
             try {
+<<<<<<< HEAD
                 const response = await axios.get('https://uksinfotechsolution.in:8000/salariedperson', {
+=======
+                const response = await axios.get('https://localhost:8000/salariedperson', {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                     params: { customerId: customerId }
                 });
                 if (response.status === 200) {
@@ -725,7 +797,11 @@ function Uks_Customer_View() {
         if (salariedPersonToDelete) {
             if (salariedPersonToDelete._id) {
                 // If the salaried person has been saved before, delete it from the database
+<<<<<<< HEAD
                 axios.delete(`https://uksinfotechsolution.in:8000/salariedperson/${_id}`)
+=======
+                axios.delete(`https://localhost:8000/salariedperson/${_id}`)
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                     .then(() => {
                         alert('Salaried person deleted successfully');
                     })
@@ -743,7 +819,11 @@ function Uks_Customer_View() {
     const handleSaveSalariedPerson = async () => {
         try {
 
+<<<<<<< HEAD
             const response = await axios.post('https://uksinfotechsolution.in:8000/salariedperson', {
+=======
+            const response = await axios.post('https://localhost:8000/salariedperson', {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 customerId: customerId,
                 salariedperson: salariedPersons
             });
@@ -764,7 +844,11 @@ function Uks_Customer_View() {
     useEffect(() => {
         const fetchFileStatuses = async () => {
             try {
+<<<<<<< HEAD
                 const response = await axios.get('https://uksinfotechsolution.in:8000/api/file-status');
+=======
+                const response = await axios.get('https://localhost:8000/api/file-status');
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 setFileStatuses(response.data);
             } catch (error) {
                 console.error('Error fetching file statuses:', error);
@@ -819,7 +903,11 @@ function Uks_Customer_View() {
                             </span>
                             {showDownloadLink && (
                                 <span>
+<<<<<<< HEAD
                                     <a href={`https://uksinfotechsolution.in:8000/api/download-pdf/${customerDetails._id}`} style={{ textDecoration: 'none' }} download="Cibil_Report.pdf">
+=======
+                                    <a href={`https://localhost:8000/api/download-pdf/${customerDetails._id}`} style={{ textDecoration: 'none' }} download="Cibil_Report.pdf">
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                                         Cibil Report Download
                                     </a>
                                 </span>

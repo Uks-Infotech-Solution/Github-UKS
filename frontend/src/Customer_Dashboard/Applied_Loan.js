@@ -40,14 +40,22 @@ function DsaTable() {
   useEffect(() => {
     const fetchLoanDetails = async () => {
       try {
+<<<<<<< HEAD
         const response = await axios.get(`https://uksinfotechsolution.in:8000/api/customer/${customerId}/loans`);
+=======
+        const response = await axios.get(`https://localhost:8000/api/customer/${customerId}/loans`);
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
         if (response.status === 200) {
           setAppliedLoan(response.data.data);
           setLoading(false);
 
           // Fetch address details for each DSA
           const addressPromises = response.data.data.map(loan => (
+<<<<<<< HEAD
             axios.get(`https://uksinfotechsolution.in:8000/api/dsa/address?dsaId=${loan.dsaId}`)
+=======
+            axios.get(`https://localhost:8000/api/dsa/address?dsaId=${loan.dsaId}`)
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
           ));
           const addressResponses = await Promise.all(addressPromises);
           const addresses = {};

@@ -23,7 +23,11 @@ const PricingBox = () => {
   useEffect(() => {
     const fetchPackageDetails = async () => {
       try {
+<<<<<<< HEAD
         const response = await axios.get(`https://uksinfotechsolution.in:8000/PackageDetails`);
+=======
+        const response = await axios.get(`https://localhost:8000/PackageDetails`);
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
         setPackageDetails(response.data.data);
       } catch (error) {
         console.error('Error fetching package details:', error);
@@ -36,7 +40,11 @@ const PricingBox = () => {
   useEffect(() => {
     const fetchDSADetails = async () => {
       try {
+<<<<<<< HEAD
         const response = await axios.get(`https://uksinfotechsolution.in:8000/api/dsa?dsaId=${dsaId}`);
+=======
+        const response = await axios.get(`https://localhost:8000/api/dsa?dsaId=${dsaId}`);
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
         setDsaData(response.data);
       } catch (error) {
         console.error('Error fetching DSA details:', error);
@@ -78,7 +86,11 @@ const PricingBox = () => {
     };
 
     try {
+<<<<<<< HEAD
       await axios.post('https://uksinfotechsolution.in:8000/buy_packagers', purchaseData);
+=======
+      await axios.post('https://localhost:8000/buy_packagers', purchaseData);
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
       setShowModal(false);
       setShowSuccessModal(true); // Show success modal upon successful purchase
     } catch (error) {

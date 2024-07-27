@@ -18,7 +18,11 @@ const DSA_Branch_Details = () => {
     useEffect(() => {
         const fetchBranchDetails = async () => {
             try {
+<<<<<<< HEAD
                 const response = await axios.get(`https://uksinfotechsolution.in:8000/dsa/BranchDetails/${dsaId}`);
+=======
+                const response = await axios.get(`https://localhost:8000/dsa/BranchDetails/${dsaId}`);
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 setBranchDetails(response.data.data);
             } catch (error) {
                 console.error('Error fetching branch details:', error);
@@ -39,7 +43,11 @@ const DSA_Branch_Details = () => {
 
     const deleteBranchRow = async (index, branchId) => {
         try {
+<<<<<<< HEAD
             const response = await axios.delete(`https://uksinfotechsolution.in:8000/dsa/BranchDetails/${branchId}`);
+=======
+            const response = await axios.delete(`https://localhost:8000/dsa/BranchDetails/${branchId}`);
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
             if (response.status === 200) {
                 const updatedBranchDetails = [...BranchDetails];
                 updatedBranchDetails.splice(index, 1); // Remove the branch from the state
@@ -64,7 +72,11 @@ const DSA_Branch_Details = () => {
 
     const handleBranchSave = async () => {
         try {
+<<<<<<< HEAD
             const response = await axios.post('https://uksinfotechsolution.in:8000/dsa/saveBranchDetails', { dsaId, branchDetails: BranchDetails });
+=======
+            const response = await axios.post('https://localhost:8000/dsa/saveBranchDetails', { dsaId, branchDetails: BranchDetails });
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
             if (response.status === 200) {
                 setModalMessage('Branch details saved successfully.');
                 setModalType('success');

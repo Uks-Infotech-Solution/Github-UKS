@@ -58,7 +58,11 @@ function Dsa_Profile_View() {
     useEffect(() => {
         const fetchCustomerDetails = async () => {
             try {
+<<<<<<< HEAD
                 const response = await axios.get('https://uksinfotechsolution.in:8000/customer-details', {
+=======
+                const response = await axios.get('https://localhost:8000/customer-details', {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                     params: { customerId: customerId }
                 });
                 setCustomerDetails(response.data);
@@ -83,7 +87,11 @@ function Dsa_Profile_View() {
 
     const fetchLoanProcessingDetails = async () => {
         try {
+<<<<<<< HEAD
             const response = await axios.get('https://uksinfotechsolution.in:8000/get-loan-processing', {
+=======
+            const response = await axios.get('https://localhost:8000/get-loan-processing', {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 params: { customerId: customerId }
             });
             setLoanProcessingDetails(response.data)
@@ -105,7 +113,11 @@ function Dsa_Profile_View() {
 
     const fetchPreviousLoans = async () => {
         try {
+<<<<<<< HEAD
             const response = await axios.get('https://uksinfotechsolution.in:8000/get-previous-loans', {
+=======
+            const response = await axios.get('https://localhost:8000/get-previous-loans', {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 params: { customerId: customerId }
             });
             setPreviousLoanDetails(response.data);
@@ -182,7 +194,11 @@ function Dsa_Profile_View() {
         const fetchAddressDetails = async () => {
             try {
                 console.log(`Fetching address details for customerId: ${customerId}`);
+<<<<<<< HEAD
                 const response = await axios.get(`https://uksinfotechsolution.in:8000/view-address`, {
+=======
+                const response = await axios.get(`https://localhost:8000/view-address`, {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                     params: { customerId: customerId }
                 });
                 if (response.data) {
@@ -214,7 +230,11 @@ function Dsa_Profile_View() {
 
     const fetchProfilePicture = async (customerId) => {
         try {
+<<<<<<< HEAD
             const response = await axios.get(`https://uksinfotechsolution.in:8000/api/profile/view-profile-picture?customerId=${customerId}`, {
+=======
+            const response = await axios.get(`https://localhost:8000/api/profile/view-profile-picture?customerId=${customerId}`, {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 responseType: 'arraybuffer'
             });
             const contentType = response.headers['content-type'];
@@ -248,7 +268,11 @@ function Dsa_Profile_View() {
     useEffect(() => {
         const fetchSalariedPersonDetails = async () => {
             try {
+<<<<<<< HEAD
                 const response = await axios.get('https://uksinfotechsolution.in:8000/salariedperson', {
+=======
+                const response = await axios.get('https://localhost:8000/salariedperson', {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                     params: { customerId: customerId }
                 });
                 console.log(response.data);
@@ -280,7 +304,11 @@ function Dsa_Profile_View() {
     useEffect(() => {
         const fetchFileStatuses = async () => {
             try {
+<<<<<<< HEAD
                 const response = await axios.get('https://uksinfotechsolution.in:8000/api/file-status');
+=======
+                const response = await axios.get('https://localhost:8000/api/file-status');
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 const fileStatusesData = response.data.map(status => status.type); // Assuming the status object has a 'type' field
                 setFileStatuses(fileStatusesData);
                 console.log('Fetched file statuses:', fileStatusesData); // Log the fetched data
@@ -301,7 +329,11 @@ function Dsa_Profile_View() {
                 rejectionReason: selectedFileStatus === 'Rejected' ? rejectionReason : '',
                 dsaId: dsaId // Add dsaId here
             };
+<<<<<<< HEAD
             const response = await axios.post('https://uksinfotechsolution.in:8000/api/customer_file_status_update', data);
+=======
+            const response = await axios.post('https://localhost:8000/api/customer_file_status_update', data);
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
             console.log('File status update response:', response.data);
             setIsEditing(false);
             alert('File status updated');
@@ -325,7 +357,11 @@ function Dsa_Profile_View() {
     useEffect(() => {
         const fetchPackages = async () => {
             try {
+<<<<<<< HEAD
                 const response = await axios.get(`https://uksinfotechsolution.in:8000/buy_packages/dsa/${dsaId}`);
+=======
+                const response = await axios.get(`https://localhost:8000/buy_packages/dsa/${dsaId}`);
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 setPackages(response.data);
             } catch (err) {
                 console.log(err);
@@ -341,7 +377,11 @@ function Dsa_Profile_View() {
         const fetchDownloadTableCount = async (dsaId) => {
             try {
                 console.log('Fetching download table count for dsaId:', dsaId);
+<<<<<<< HEAD
                 const response = await axios.get(`https://uksinfotechsolution.in:8000/dsa/download/count`, {
+=======
+                const response = await axios.get(`https://localhost:8000/dsa/download/count`, {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                     params: { dsaId: dsaId }
                 });
                 setDownloadTableCount(response.data.count);
@@ -714,7 +754,11 @@ function Dsa_Profile_View() {
         try {
             // First, update the block and file status
             console.log('Sending block status update request...');
+<<<<<<< HEAD
             const updateStatusResponse = await axios.post('https://uksinfotechsolution.in:8000/api/block_status_update', {
+=======
+            const updateStatusResponse = await axios.post('https://localhost:8000/api/block_status_update', {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 customerId: customerId,
                 blockStatus: 'Active',
                 fileStatus: 'Open'
@@ -725,7 +769,11 @@ function Dsa_Profile_View() {
 
                 // Then, store the DSA and Customer IDs
                 console.log('Sending store data request...');
+<<<<<<< HEAD
                 const storeDataResponse = await axios.post('https://uksinfotechsolution.in:8000/dsa-customer/downloadtable', {
+=======
+                const storeDataResponse = await axios.post('https://localhost:8000/dsa-customer/downloadtable', {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                     dsaId: dsaId,
                     customerId: customerDetails._id
                 });

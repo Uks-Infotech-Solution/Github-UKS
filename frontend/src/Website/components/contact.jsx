@@ -22,7 +22,11 @@ export const Contact = ({ data }) => {
 
     const emailData = { name, email, message };
 
+<<<<<<< HEAD
     axios.post("https://uksinfotechsolution.in:8000/send-email", emailData)
+=======
+    axios.post("https://localhost:8000/send-email", emailData)
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
       .then((response) => {
         console.log("SUCCESS!", response.data);
         clearState();

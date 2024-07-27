@@ -15,7 +15,11 @@ const Package_Activate = () => {
 
   const activateAccount = async () => {
     try {
+<<<<<<< HEAD
       const response = await axios.post(`https://uksinfotechsolution.in:8000/package/activate/${token}`, {
+=======
+      const response = await axios.post(`https://localhost:8000/package/activate/${token}`, {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
         transferAmountRefNumber,
       });
 

@@ -9,7 +9,11 @@ const UKS_ForgotPassword = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+<<<<<<< HEAD
       const response = await axios.post('https://uksinfotechsolution.in:8000/uks/forgotpassword', { email });
+=======
+      const response = await axios.post('https://localhost:8000/uks/forgotpassword', { email });
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
       setMessage(response.data.message || 'Password Reset Link Sent to Your Email Id');
       setShowModal(true);
     } catch (error) {

@@ -79,7 +79,11 @@ function Address({ onSuccess, customerId }) {
             return;
         }
         try {
+<<<<<<< HEAD
             await axios.post(`https://uksinfotechsolution.in:8000/add-address`, {
+=======
+            await axios.post(`https://localhost:8000/add-address`, {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 customerId: customerId, // Replace with actual customerId logic
                 address: addressDetails,
             });

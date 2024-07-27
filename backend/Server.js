@@ -109,16 +109,14 @@ const customerSchema = new Schema({
     },
     resetToken: String,
     resetTokenExpiration: Date,
-    address: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'DSAAddress' // Reference to DSAAddress model
-    }
 });
 
 // Add auto-increment plugin for customerNo
 customerSchema.plugin(AutoIncrement, { inc_field: 'customerNo', start_seq: 1 });
 
 const Customer = mongoose.model('Customer', customerSchema);
+
+app.get('/favicon.ico', (req, res) => res.status(204).end());
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -422,7 +420,7 @@ app.post('/package/activate/:token', async (req, res) => {
         html: `
           <h4>${dsaName} (UKS-DSA_0${dsaNumber}) Package Activation Mail,</h4>
           <p>${dsaName} has selected the ${packageName} (${packageAmount}) Package,</p>
-          <p>To activate this package <a href="http://148.251.230.14:8000/package/activate/${token}">Click Here</a>.</p>
+          <p>To activate this package <a href="https://localhost:8000/package/activate/${token}">Click Here</a>.</p>
           <p>Thanks & regards,<br>LDP Finanserv.</p>`,
       };
   
@@ -1179,7 +1177,6 @@ app.get('/dsa/activate/:token', async (req, res) => {
         await dsa.save();
 
         // Send a JSON response with a redirect URL
-        // const redirectUrl = `${process.env.BASE_URL}/dsa/login`;
         return res.status(200).json('Email confirmed successfully');
     } catch (err) {
         return res.status(400).json({ error: 'Error: ' + err });
@@ -1208,7 +1205,7 @@ app.post('/api/dsa/register', async (req, res) => {
 
         // Save the new DSA to the database
         const savedDSA = await newDSA.save();
-        const confirmationUrl = `http://148.251.230.14:8000/dsa/activate/${token}`;
+        const confirmationUrl = `https://localhost:8000/dsa/activate/${token}`;
         // Send confirmation email
         const mailOptions = {
             from: process.env.EMAIL_USER,
@@ -1218,7 +1215,7 @@ app.post('/api/dsa/register', async (req, res) => {
             html: `
             <p>Hello ${dsaName},</p>
             <p>Welcome to LDP Finanserv ,</p>
-            <p>To Activate Your Account  <a href="http://148.251.230.14:8000/dsa/activate/${token}">Click </a> Here.</p>
+            <p>To Activate Your Account  <a href="https://localhost:8000/dsa/activate/${token}">Click </a> Here.</p>
             <p>Thanks & regards,<br>LDP Finanserv.</p>`,
         
         
@@ -1389,7 +1386,7 @@ app.post('/dsa/forgotpassword', async (req, res) => {
             subject: 'Password Reset',
             html: `
             <p>Hi ${dsa.dsaName},</p>
-            <p><a href="http://148.251.230.14:8000/dsa/reset/password/${token}">Click</a> to Reset Your Account (UKS-DSA-00${dsa.dsaNumber}) Password.</p>
+            <p><a href="https://localhost:8000/dsa/reset/password/${token}">Click</a> to Reset Your Account (UKS-DSA-00${dsa.dsaNumber}) Password.</p>
             <p>Thanks & regards,<br>LDP Finanserv.</p>
         `,
         
@@ -2072,7 +2069,7 @@ app.post('/customer/forgotpassword', async (req, res) => {
             subject: 'Password Reset',
             html: `
     <p>Hi ${customer.customerFname},</p>
-    <p><a href="http://148.251.230.14:8000/customer/reset/password/${token}">Click</a> to Reset Your Account (UKS-CUS-00${customer.customerNo}) Password.</p>
+    <p><a href="https://localhost:8000/customer/reset/password/${token}">Click</a> to Reset Your Account (UKS-CUS-00${customer.customerNo}) Password.</p>
     <p>Thanks & regards,<br>LDP Finanserv.</p>
 `,
 
@@ -2181,8 +2178,6 @@ app.get('/customer/activate/:token', async (req, res) => {
         await customer.save();
 
         // Send a JSON response indicating success and a redirect URL
-        //   res.redirect(`${process.env.BASE_URL}/customer/login`);
-
         return res.status(200).json('Customer Email confirmed successfully');
     } catch (err) {
         return res.status(400).json({ error: 'Error: ' + err });
@@ -2219,7 +2214,7 @@ console.log(req.body);
         });
 
         const savedCustomer = await customer.save();
-        const confirmationUrl = `http://148.251.230.14:8000/customer/activate/${token}`;
+        const confirmationUrl = `https://localhost:8000/customer/activate/${token}`;
 
         const mailOptions = {
             from: process.env.EMAIL_USER,
@@ -2229,7 +2224,7 @@ console.log(req.body);
             html: `
             <p>Hello ${customerFname},</p>
             <p>Welcome to LDP Finanserv ,</p>
-            <p>To Activate Your Account  <a href="http://148.251.230.14:8000/customer/activate/${token}">Click </a> Here.</p>
+            <p>To Activate Your Account  <a href="https://localhost:8000/customer/activate/${token}">Click </a> Here.</p>
             <p>Thanks & regards,<br>LDP Finanserv.</p>`,
         
         
@@ -2413,7 +2408,7 @@ app.post('/api/uksregister', async (req, res) => {
     try {
         await newUser.save();
 
-        const confirmationUrl = `http://148.251.230.14:8000/uks/activate/${token}`;
+        const confirmationUrl = `https://localhost:8000/uks/activate/${token}`;
         const mailOptions = {
             from: process.env.EMAIL_USER,
             to: email,
@@ -2421,7 +2416,7 @@ app.post('/api/uksregister', async (req, res) => {
             html: `
             <p>Hello ${name},</p>
             <p>Welcome to LDP Finanserv</p>
-            <p>To Activate Your Account <a href="http://148.251.230.14:8000/uks/activate/${token}">Click Here</a>.</p>
+            <p>To Activate Your Account <a href="https://localhost:8000/uks/activate/${token}">Click Here</a>.</p>
             <p>Thanks & regards,<br>LDP Finanserv.</p>`,
         };
 
@@ -2454,7 +2449,6 @@ app.get('/uks/activate/:token', async (req, res) => {
         user.isActive = true;
         user.activationToken = undefined;
         await user.save();
-        // res.redirect(`${process.env.BASE_URL}/uks/login`);
 
         // Send a JSON response indicating success and a redirect URL
         return res.status(200).json('Email confirmed successfully');
@@ -2558,7 +2552,7 @@ app.post('/uks/forgotpassword', async (req, res) => {
             subject: 'Password Reset',
             html: `
             <p>Hi ${user.name},</p>
-            <p><a href="http://148.251.230.14:8000/uks/reset/password/${token}">Click</a> to Reset Your Account (UKS-00${user.UKSNumber}) Password.</p>
+            <p><a href="https://localhost:8000/uks/reset/password/${token}">Click</a> to Reset Your Account (UKS-00${user.UKSNumber}) Password.</p>
             <p>Thanks & regards,<br>LDP Finanserv.</p>`,
         };
 

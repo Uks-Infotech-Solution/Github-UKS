@@ -51,7 +51,11 @@ function Dsa_cus_prf_down( ) {
     useEffect(() => {
         const fetchCustomerDetails = async () => {
             try {
+<<<<<<< HEAD
                 const response = await axios.get('https://uksinfotechsolution.in:8000/customer-details', {
+=======
+                const response = await axios.get('https://localhost:8000/customer-details', {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                     params: { email: customerEmail }
                 });
                 setCustomerDetails(response.data);
@@ -423,7 +427,11 @@ function Dsa_cus_prf_down( ) {
 
     const fetchLoanProcessingDetails = async () => {
         try {
+<<<<<<< HEAD
             const response = await axios.get('https://uksinfotechsolution.in:8000/get-loan-processing', {
+=======
+            const response = await axios.get('https://localhost:8000/get-loan-processing', {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 params: { email: customerEmail }
             });
             if (response.status === 200) {
@@ -458,7 +466,11 @@ function Dsa_cus_prf_down( ) {
 
     const fetchPreviousLoans = async () => {
         try {
+<<<<<<< HEAD
             const response = await axios.get('https://uksinfotechsolution.in:8000/get-previous-loans', {
+=======
+            const response = await axios.get('https://localhost:8000/get-previous-loans', {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 params: { email: customerEmail }
             });
             setPreviousLoanDetails(response.data);
@@ -533,7 +545,11 @@ function Dsa_cus_prf_down( ) {
     useEffect(() => {
         const fetchAddressDetails = async () => {
             try {
+<<<<<<< HEAD
                 const response = await axios.get(`https://uksinfotechsolution.in:8000/view-address?email=${customerEmail}`);
+=======
+                const response = await axios.get(`https://localhost:8000/view-address?email=${customerEmail}`);
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 // console.log('Response data:', response.data);
 
                 if (response.data) {
@@ -567,7 +583,11 @@ function Dsa_cus_prf_down( ) {
     // Function to fetch profile picture
     const fetchProfilePicture = async (customerEmail) => {
         try {
+<<<<<<< HEAD
             const response = await axios.get(`https://uksinfotechsolution.in:8000/api/profile/view-profile-picture/${customerEmail}`, {
+=======
+            const response = await axios.get(`https://localhost:8000/api/profile/view-profile-picture/${customerEmail}`, {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 responseType: 'arraybuffer'
             });
             const contentType = response.headers['content-type'];
@@ -598,7 +618,11 @@ function Dsa_cus_prf_down( ) {
     useEffect(() => {
         const fetchSalariedPersonDetails = async () => {
             try {
+<<<<<<< HEAD
                 const response = await axios.get('https://uksinfotechsolution.in:8000/salariedperson', {
+=======
+                const response = await axios.get('https://localhost:8000/salariedperson', {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                     params: { email: customerEmail }
                 });
 

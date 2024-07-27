@@ -33,7 +33,11 @@ function DSA_Packager_View() {
     useEffect(() => {
         const fetchSalesPersons = async () => {
             try {
+<<<<<<< HEAD
                 const response = await axios.get('https://uksinfotechsolution.in:8000/sales/person/list');
+=======
+                const response = await axios.get('https://localhost:8000/sales/person/list');
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 setSalesPersons(response.data);
             } catch (err) {
                 // setError(err.message);
@@ -48,7 +52,11 @@ function DSA_Packager_View() {
     useEffect(() => {
         const fetchUksdetails = async () => {
             try {
+<<<<<<< HEAD
                 const response = await axios.get('https://uksinfotechsolution.in:8000/uks/details', {
+=======
+                const response = await axios.get('https://localhost:8000/uks/details', {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                     params: {
                         uksId: uksId
                     }
@@ -67,7 +75,11 @@ function DSA_Packager_View() {
     useEffect(() => {
         const fetchPackages = async () => {
             try {
+<<<<<<< HEAD
                 const response = await axios.get(`https://uksinfotechsolution.in:8000/api/package/details?pkgId=${pkgId}`);
+=======
+                const response = await axios.get(`https://localhost:8000/api/package/details?pkgId=${pkgId}`);
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 const packageData = response.data.data;
                 setPackage(packageData);
                 setDsaId(packageData.dsaId);
@@ -85,7 +97,11 @@ function DSA_Packager_View() {
         const fetchDSADetails = async () => {
             try {
                 if (dsaId) {
+<<<<<<< HEAD
                     const response = await axios.get(`https://uksinfotechsolution.in:8000/api/dsa?dsaId=${dsaId}`);
+=======
+                    const response = await axios.get(`https://localhost:8000/api/dsa?dsaId=${dsaId}`);
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                     const dsaDetails = response.data;
 
                     setFormData({
@@ -112,7 +128,11 @@ function DSA_Packager_View() {
         const fetchAddressDetails = async () => {
             try {
                 if (dsaId) {
+<<<<<<< HEAD
                     const response = await axios.get(`https://uksinfotechsolution.in:8000/api/dsa/address?dsaId=${dsaId}`);
+=======
+                    const response = await axios.get(`https://localhost:8000/api/dsa/address?dsaId=${dsaId}`);
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                     const fetchedAddress = response.data;
 
                     setAddressDetails({
@@ -157,7 +177,11 @@ function DSA_Packager_View() {
         };
 
         try {
+<<<<<<< HEAD
             const response = await axios.post('https://uksinfotechsolution.in:8000/api/dsa/packager/activation', data);
+=======
+            const response = await axios.post('https://localhost:8000/api/dsa/packager/activation', data);
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
             console.log('Activation successful:', response.data);
             navigate('/uks/dashboard', { state: { uksId } });
             // Handle success, e.g., show a success message or navigate to another page

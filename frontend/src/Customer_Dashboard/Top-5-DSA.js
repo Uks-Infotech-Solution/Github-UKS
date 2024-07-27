@@ -20,6 +20,7 @@ const Top_5_DSA = () => {
 
     const fetchAllDSAs = async () => {
         try {
+<<<<<<< HEAD
             const response = await axios.get('https://uksinfotechsolution.in:8000/api/dsa/list');
             const dsas = response.data.dsa;
 
@@ -27,6 +28,15 @@ const Top_5_DSA = () => {
                 const addressResponse = await axios.get(`https://uksinfotechsolution.in:8000/api/dsa/address?dsaId=${dsa._id}`);
                 const loanResponse = await axios.get(`https://uksinfotechsolution.in:8000/api/dsa/${dsa._id}/loanDetails`);
                 const feedbackResponse = await axios.get(`https://uksinfotechsolution.in:8000/loan/api/feedback/${dsa._id}`);
+=======
+            const response = await axios.get('https://localhost:8000/api/dsa/list');
+            const dsas = response.data.dsa;
+
+            const dsaWithDetailsPromises = dsas.map(async (dsa) => {
+                const addressResponse = await axios.get(`https://localhost:8000/api/dsa/address?dsaId=${dsa._id}`);
+                const loanResponse = await axios.get(`https://localhost:8000/api/dsa/${dsa._id}/loanDetails`);
+                const feedbackResponse = await axios.get(`https://localhost:8000/loan/api/feedback/${dsa._id}`);
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
 
                 return {
                     ...dsa,

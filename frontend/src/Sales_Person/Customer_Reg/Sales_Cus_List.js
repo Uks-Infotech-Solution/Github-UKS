@@ -32,7 +32,11 @@ function Sales_Cus_List() {
   useEffect(() => {
     const fetchCustomers = async () => {
       try {
+<<<<<<< HEAD
         const response = await axios.get(`https://uksinfotechsolution.in:8000/sales/person/cus/reg/${uksId}`);
+=======
+        const response = await axios.get(`https://localhost:8000/sales/person/cus/reg/${uksId}`);
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
         const customersData = response.data;
         console.log(customersData);
         setCustomers(customersData);
@@ -52,7 +56,11 @@ function Sales_Cus_List() {
       const newAddresses = {};
       for (let customer of customers) {
         try {
+<<<<<<< HEAD
           const response = await axios.get('https://uksinfotechsolution.in:8000/view-address', {
+=======
+          const response = await axios.get('https://localhost:8000/view-address', {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
             params: { customerId: customer.customerId },
           });
           if (response.status === 200) {
@@ -75,7 +83,11 @@ function Sales_Cus_List() {
       const customerDetails = {};
       for (let customer of customers) {
         try {
+<<<<<<< HEAD
           const response = await axios.get('https://uksinfotechsolution.in:8000/customer-details', {
+=======
+          const response = await axios.get('https://localhost:8000/customer-details', {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
             params: { customerId: customer.customerId },
           });
           if (response.status === 200) {
@@ -96,7 +108,11 @@ function Sales_Cus_List() {
 
   const fetchProfilePicture = async (customerId) => {
     try {
+<<<<<<< HEAD
       const response = await axios.get(`https://uksinfotechsolution.in:8000/api/profile/view-profile-picture?customerId=${customerId}`, {
+=======
+      const response = await axios.get(`https://localhost:8000/api/profile/view-profile-picture?customerId=${customerId}`, {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
         responseType: 'arraybuffer'
       });
       const contentType = response.headers['content-type'];

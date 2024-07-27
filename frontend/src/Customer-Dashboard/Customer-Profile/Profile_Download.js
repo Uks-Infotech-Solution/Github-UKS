@@ -54,7 +54,11 @@ function Profile_View( ) {
     useEffect(() => {
         const fetchCustomerDetails = async () => {
             try {
+<<<<<<< HEAD
                 const response = await axios.get('https://uksinfotechsolution.in:8000/customer-details', {
+=======
+                const response = await axios.get('https://localhost:8000/customer-details', {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                     params: {customerId: customerId }
                 });
                 setCustomerDetails(response.data);
@@ -426,7 +430,11 @@ function Profile_View( ) {
 
     const fetchLoanProcessingDetails = async () => {
         try {
+<<<<<<< HEAD
             const response = await axios.get('https://uksinfotechsolution.in:8000/get-loan-processing', {
+=======
+            const response = await axios.get('https://localhost:8000/get-loan-processing', {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 params: { customerId: customerId }
             });
             if (response.status === 200) {
@@ -461,7 +469,11 @@ function Profile_View( ) {
 
     const fetchPreviousLoans = async () => {
         try {
+<<<<<<< HEAD
             const response = await axios.get('https://uksinfotechsolution.in:8000/get-previous-loans', {
+=======
+            const response = await axios.get('https://localhost:8000/get-previous-loans', {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 params: { customerId: customerId }
             });
             setPreviousLoanDetails(response.data);
@@ -539,7 +551,11 @@ function Profile_View( ) {
         const fetchAddressDetails = async () => {
             try {
                 console.log(`Fetching address details for customerId: ${customerId}`);
+<<<<<<< HEAD
                 const response = await axios.get(`https://uksinfotechsolution.in:8000/view-address`, {
+=======
+                const response = await axios.get(`https://localhost:8000/view-address`, {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                     params: { customerId: customerId }
                 });
                 if (response.data) {
@@ -570,7 +586,11 @@ function Profile_View( ) {
 
     const fetchProfilePicture = async (customerId) => {
         try {
+<<<<<<< HEAD
             const response = await axios.get(`https://uksinfotechsolution.in:8000/api/profile/view-profile-picture?customerId=${customerId}`, {
+=======
+            const response = await axios.get(`https://localhost:8000/api/profile/view-profile-picture?customerId=${customerId}`, {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 responseType: 'arraybuffer'
             });
             const contentType = response.headers['content-type'];
@@ -602,7 +622,11 @@ function Profile_View( ) {
         if (customerDetails?.customerType === 'Salaried Person') {
             const fetchSalariedPersonDetails = async () => {
                 try {
+<<<<<<< HEAD
                     const response = await axios.get('https://uksinfotechsolution.in:8000/salariedperson', {
+=======
+                    const response = await axios.get('https://localhost:8000/salariedperson', {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                         params: { customerId: customerId }
                     });
 

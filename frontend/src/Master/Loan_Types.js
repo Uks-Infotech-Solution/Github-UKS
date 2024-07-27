@@ -13,7 +13,11 @@ const Loan_Types = () => {
     e.preventDefault();
 
     try {
+<<<<<<< HEAD
       const response = await axios.post('https://uksinfotechsolution.in:8000/api/loan-types', { loanType: documentType });
+=======
+      const response = await axios.post('https://localhost:8000/api/loan-types', { loanType: documentType });
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
       setMessage(response.data.message);
       setDocumentType('');
       setError('');

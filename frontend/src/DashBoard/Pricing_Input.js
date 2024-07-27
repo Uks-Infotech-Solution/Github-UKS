@@ -23,7 +23,11 @@ const Pricing_Details = () => {
     useEffect(() => {
         const getLoanTypes = async () => {
             try {
+<<<<<<< HEAD
                 const response = await axios.get('https://uksinfotechsolution.in:8000/api/loan-types');
+=======
+                const response = await axios.get('https://localhost:8000/api/loan-types');
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 const loanTypesData = response.data.map(type => ({ value: type.type, label: type.type }));
                 setLoanTypes(loanTypesData);
                 console.log('Fetched loan types:', loanTypesData); // Debugging line
@@ -45,7 +49,11 @@ const Pricing_Details = () => {
     useEffect(() => {
         const fetchPackageDetails = async () => {
             try {
+<<<<<<< HEAD
                 const response = await axios.get(`https://uksinfotechsolution.in:8000/uks/PackageDetails/${uksId}`);
+=======
+                const response = await axios.get(`https://localhost:8000/uks/PackageDetails/${uksId}`);
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 const packageDetailsWithDefaults = response.data.data.map((packageDetail) => ({
                     ...packageDetail,
                     packageStatus: packageDetail.packageStatus || 'Active',
@@ -71,7 +79,11 @@ const Pricing_Details = () => {
 
     const deletePackageRow = async (index, packageId) => {
         try {
+<<<<<<< HEAD
             const response = await axios.delete(`https://uksinfotechsolution.in:8000/uks/PackageDetails/${packageId}`);
+=======
+            const response = await axios.delete(`https://localhost:8000/uks/PackageDetails/${packageId}`);
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
             if (response.status === 200) {
                 const updatedPackageDetails = [...PackageDetails];
                 updatedPackageDetails.splice(index, 1); // Remove the package from the state
@@ -97,7 +109,11 @@ const Pricing_Details = () => {
     const handlePackageSave = async () => {
         try {
             console.log('Sending package details:', { uksId, packageDetails: PackageDetails });
+<<<<<<< HEAD
             const response = await axios.post('https://uksinfotechsolution.in:8000/uks/savePackageDetails', { uksId, packageDetails: PackageDetails });
+=======
+            const response = await axios.post('https://localhost:8000/uks/savePackageDetails', { uksId, packageDetails: PackageDetails });
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
             if (response.status === 200) {
                 setModalMessage('Package details saved successfully.');
                 setModalType('success');

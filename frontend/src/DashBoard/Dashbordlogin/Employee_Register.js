@@ -31,7 +31,11 @@ const DashboardUserRegister = () => {
     useEffect(() => {
         const fetchEmployeeTypes = async () => {
             try {
+<<<<<<< HEAD
                 const response = await axios.get('https://uksinfotechsolution.in:8000/api/employee-type');
+=======
+                const response = await axios.get('https://localhost:8000/api/employee-type');
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 console.log(response.data);
                 setEmployeeTypes(response.data);
             } catch (error) {
@@ -50,7 +54,11 @@ const DashboardUserRegister = () => {
             setErrors(validationErrors);
         } else {
             try {
+<<<<<<< HEAD
                 const response = await axios.post('https://uksinfotechsolution.in:8000/api/uksregister', {
+=======
+                const response = await axios.post('https://localhost:8000/api/uksregister', {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                     name,
                     email,
                     password,

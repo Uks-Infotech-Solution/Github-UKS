@@ -28,7 +28,11 @@ const DSA_LoanGridView = () => {
 
     const fetchCustomers = async () => {
         try {
+<<<<<<< HEAD
             const response = await axios.get('https://uksinfotechsolution.in:8000/'); // Adjust the URL as needed
+=======
+            const response = await axios.get('https://localhost:8000/'); // Adjust the URL as needed
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
             const customersData = response.data;
             setCustomers(customersData);
             await fetchAddresses(customersData);
@@ -42,7 +46,11 @@ const DSA_LoanGridView = () => {
         const newAddresses = {};
         for (let customer of customers) {
             try {
+<<<<<<< HEAD
                 const response = await axios.get('https://uksinfotechsolution.in:8000/view-address', {
+=======
+                const response = await axios.get('https://localhost:8000/view-address', {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                     params: { customerId: customer._id },
                 });
                 if (response.status === 200) {
@@ -60,7 +68,11 @@ const DSA_LoanGridView = () => {
         const newCustomerDetails = {};
         for (let customer of customers) {
             try {
+<<<<<<< HEAD
                 const response = await axios.get('https://uksinfotechsolution.in:8000/customer-details', {
+=======
+                const response = await axios.get('https://localhost:8000/customer-details', {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                     params: { customerId: customer._id },
                 });
                 if (response.status === 200) {

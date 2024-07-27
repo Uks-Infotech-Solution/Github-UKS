@@ -16,7 +16,11 @@ const DSA_VerticalBoxes = () => {
 
     const fetchCustomers = async () => {
         try {
+<<<<<<< HEAD
             const response = await axios.get('https://uksinfotechsolution.in:8000/'); // Adjust the URL as needed
+=======
+            const response = await axios.get('https://localhost:8000/'); // Adjust the URL as needed
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
             setCustomers(response.data);
             await fetchAddresses(response.data);
         } 
@@ -30,7 +34,11 @@ const DSA_VerticalBoxes = () => {
         const newAddresses = {};
         for (let customer of customers) {
             try {
+<<<<<<< HEAD
                 const response = await axios.get('https://uksinfotechsolution.in:8000/view-address', {
+=======
+                const response = await axios.get('https://localhost:8000/view-address', {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                     params: { customerId: customer._id },
                 });
                 if (response.status === 200) {

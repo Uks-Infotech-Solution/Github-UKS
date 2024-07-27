@@ -22,7 +22,11 @@ function Sales_Person({ onSuccess,dsaId, dsaNo }) {
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const saveData = async () => {
         try {
+<<<<<<< HEAD
             const response = await axios.post('https://uksinfotechsolution.in:8000/sales/person/dsa/reg', {
+=======
+            const response = await axios.post('https://localhost:8000/sales/person/dsa/reg', {
+>>>>>>> eb7c52a19f1c5b021391d574ac9130ac7f2e9e9a
                 uksId,
                 salesPersonName,
                 dsaName,
