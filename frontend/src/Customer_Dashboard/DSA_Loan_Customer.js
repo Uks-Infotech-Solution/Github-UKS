@@ -86,7 +86,7 @@ const DSA_Loan_Customer = () => {
             try {
                 const response = await axios.get('https://uksinfotechsolution.in:8000/api/loan-levels');
                 setLoanLevels(response.data);
-                console.log(response.data);
+                // console.log(response.data);
                 setLoading(false);
             } catch (err) {
                 setError(err);

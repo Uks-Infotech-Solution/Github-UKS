@@ -13,6 +13,7 @@ const Top_5_DSA = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const { isSidebarExpanded } = useSidebar();
+    const { customerId } = location.state || {};
 
     useEffect(() => {
         fetchAllDSAs();
@@ -24,20 +25,33 @@ const Top_5_DSA = () => {
             const dsas = response.data.dsa;
 
             const dsaWithDetailsPromises = dsas.map(async (dsa) => {
-                const addressResponse = await axios.get(`https://uksinfotechsolution.in:8000/api/dsa/address?dsaId=${dsa._id}`);
-                const loanResponse = await axios.get(`https://uksinfotechsolution.in:8000/api/dsa/${dsa._id}/loanDetails`);
-                const feedbackResponse = await axios.get(`https://uksinfotechsolution.in:8000/loan/api/feedback/${dsa._id}`);
+                try {
+                    const addressResponse = await axios.get(`https://uksinfotechsolution.in:8000/api/dsa/address?dsaId=${dsa._id}`);
+                    const loanResponse = await axios.get(`https://uksinfotechsolution.in:8000/api/dsa/${dsa._id}/loanDetails`);
+                    const feedbackResponse = await axios.get(`https://uksinfotechsolution.in:8000/loan/api/feedback/${dsa._id}`);
 
-                return {
-                    ...dsa,
-                    permanentAddress: addressResponse.data.permanentAddress,
-                    loanDetails: loanResponse.data.loanDetails,
-                    feedbackDetails: feedbackResponse.data.feedbacks,
-                };
+                    const permanentAddress = addressResponse.data?.permanentAddress || null;
+                    const loanDetails = loanResponse.data?.loanDetails || [];
+                    const feedbackDetails = feedbackResponse.data?.feedbacks || [];
+
+                    if (!permanentAddress || loanDetails.length === 0) {
+                        return null;
+                    }
+
+                    return {
+                        ...dsa,
+                        permanentAddress,
+                        loanDetails,
+                        feedbackDetails,
+                    };
+                } catch (err) {
+                    console.error(`Error fetching details for DSA ${dsa._id}:`, err);
+                    return null;
+                }
             });
 
             const dsaWithDetails = await Promise.all(dsaWithDetailsPromises);
-            setDsaDetails(dsaWithDetails);
+            setDsaDetails(dsaWithDetails.filter(dsa => dsa !== null));
             setLoading(false);
         } catch (error) {
             console.error('Error fetching DSA details:', error);
@@ -46,7 +60,7 @@ const Top_5_DSA = () => {
     };
 
     const handleReadMore = (dsaId) => {
-        navigate(`/dsa/detail/view`, { state: { dsaId } });
+        navigate(`/dsa/detail/view`, { state: { dsaId, customerId } });
     };
 
     const renderStars = (rating) => {
@@ -63,10 +77,11 @@ const Top_5_DSA = () => {
     };
 
     const getTop5DSAs = () => {
-        const dsaRatings = dsaDetails.map(dsa => ({
-            ...dsa,
-            averageRating: getAverageRating(dsa.feedbackDetails)
-        }));
+        const dsaRatings = dsaDetails
+            .map(dsa => ({
+                ...dsa,
+                averageRating: getAverageRating(dsa.feedbackDetails)
+            }));
         return dsaRatings.sort((a, b) => b.averageRating - a.averageRating).slice(0, 10);
     };
 
@@ -76,7 +91,7 @@ const Top_5_DSA = () => {
 
     const top5DSAs = getTop5DSAs();
 
-    // Group DSAs into sets of 3
+    // Group DSAs into sets of 1 (assuming 3 is a typo since it's mentioned to show only 1 at a time)
     const groupedDSAs = [];
     for (let i = 0; i < top5DSAs.length; i += 1) {
         groupedDSAs.push(top5DSAs.slice(i, i + 1));
@@ -91,7 +106,7 @@ const Top_5_DSA = () => {
                         <Row style={{ justifyContent: 'center', alignItems: 'center' }}>
                             {group.map((dsa, idx) => (
                                 <Col key={idx} md={4} className="mb-4">
-                                    <Card className="loan-card " style={{ transition: '0.3s' }}>
+                                    <Card className="loan-card" style={{ transition: '0.3s' }}>
                                         <Card.Body>
                                             <Card.Title>{dsa.dsaCompanyName}</Card.Title>
                                             <Card.Subtitle className="mb-2 text-muted">{dsa.dsaName}</Card.Subtitle>

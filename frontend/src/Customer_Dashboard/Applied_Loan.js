@@ -9,7 +9,7 @@ import { GrView } from "react-icons/gr";
 import { useSidebar } from '../Customer/Navbar/SidebarContext';
 import './DSA_Table_view.css';
 
-function DsaTable() {
+function Applied_Loan() {
   const location = useLocation();
   const { customerId } = location.state || {};
   const { isSidebarExpanded } = useSidebar();
@@ -136,7 +136,7 @@ function DsaTable() {
 
   return (
     <>
-      <Container style={{ paddingTop: '20px' }}>
+      <Container fluid className={`apply-loan-view-container ${isSidebarExpanded ? 'sidebar-expanded' : ''}`}>
         <div className='dsa-table-container-second'>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '10px' }}>
             <span className='dsa-table-container-second-head'>Applied Loans</span>
@@ -253,4 +253,4 @@ function DsaTable() {
   );
 }
 
-export default DsaTable;
+export default Applied_Loan;

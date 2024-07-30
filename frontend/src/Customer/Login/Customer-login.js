@@ -35,7 +35,7 @@ function Customer_login() {
                     customerId,
                 },
             });
-            console.log(customerResponse.data.customerFname);
+            // console.log(customerResponse.data.customerFname);
 
             const loginDateTime = new Date().toISOString();
             await axios.post('https://uksinfotechsolution.in:8000/customer/login/session', {

@@ -31,7 +31,7 @@ const DSA_Loan_Details = () => {
             try {
                 const response = await axios.get('https://uksinfotechsolution.in:8000/api/dsa/required/type');
                 if (response.status === 200) {
-                    console.log(response.data);
+                    // console.log(response.data);
                     const options = response.data.map((type) => ({
                         value: type.requiredType,
                         label: type.requiredType

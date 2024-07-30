@@ -69,6 +69,8 @@ import Sales_Cus_List from './Sales_Person/Customer_Reg/Sales_Cus_List';
 import Sales_Dsa_list from './Sales_Person/DSA_Reg/Sales_Dsa_List';
 import Sales_Person_dashboard from './Sales_Person/Sales_Person_Dashboard';
 import Sales_Packagers from './Sales_Person/Sales_Packagers';
+import Applied_Loan from './Customer_Dashboard/Applied_Loan';
+import Purchased_Package from './DSA/DSA_Dashboard/Purchase_Package';
 
 function App() {
   return (
@@ -122,6 +124,10 @@ function App() {
             <Route path="/dsa/detail/view" element={<DSA_Detail_View />} />
             <Route path="/dsa/grid/view" element={<LoanGridView />} />
             <Route path="/Customer/Applied/dsalist" element={<Applied_Loan_View />} />
+            <Route path="/Dsa/List" element={<DsaTable />} />
+            <Route path="/Applied/Loan/List" element={<Applied_Loan />} />
+
+
             <Route path="/:loginType/login" element={<Login_Authenticate />} />
 
 
@@ -141,6 +147,7 @@ function App() {
             <Route path="/dsa/address" element={<DSA_AddressForm />} />
             <Route path="/dsa/loan/details" element={<DSA_Loan_Details />} />
             <Route path="/pricing" element={<PricingBox />} />
+            <Route path="/purchased/package" element={<Purchased_Package />} />
 
 
             <Route path="/dsa/customer/download" element={<Dsa_Profile_View />} />

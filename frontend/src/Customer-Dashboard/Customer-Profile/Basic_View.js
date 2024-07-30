@@ -52,8 +52,6 @@ function Profile_View() {
     const [citiesList, setCitiesList] = useState([]);
 
     const [isAccountDeleted, setIsAccountDeleted] = useState(false);
-
-
     // CUSTOMER ACOOUNT ACTIVE OR INACTIVE
 
     const handleDeleteAccount = async () => {
@@ -122,7 +120,7 @@ function Profile_View() {
                 setAddressDetails(response.data.address || {});
                 setLoading(false);
             } catch (error) {
-                console.error('Error fetching customer details:', error);
+                // console.error('Error fetching customer details:', error);
                 setLoading(false);
             }
         };
@@ -137,58 +135,26 @@ function Profile_View() {
 
 
     // FETCH LOAN TYPES IN MASTER  
-
     const [loanTypes, setLoanTypes] = useState([]);
 
     useEffect(() => {
-        const fetchLoanTypes = async () => {
-            try {
-                const response = await axios.get('https://uksinfotechsolution.in:8000/api/loan-types');
-                setLoanTypes(response.data);
-            } catch (error) {
-                console.error('Error fetching loan types:', error);
-            }
-        };
-
-        fetchLoanTypes();
+        axios.get('https://uksinfotechsolution.in:8000/api/loan-types')
+            .then(response => {
+                setLoanTypes(response.data.map(type => ({
+                    value: type.id,
+                    label: type.type
+                })));
+            })
+            .catch(error => {
+                setError(error.message);
+            });
     }, []);
-
-
-
-    // FETCH LEVEL OF LOAN AMOUNT FROM MASTER
-
-    const [level, setLevel] = useState('');
-    const determineLevel = async (amount) => {
-        try {
-            const response = await axios.post('https://uksinfotechsolution.in:8000/api/determine-loan-level', { loanAmount: amount });
-            setLevel(response.data.loanLevel);
-        } catch (error) {
-            console.error('Error determining loan level:', error);
-        }
-    };
-    const [formattedLoanRequired, setFormattedLoanRequired] = useState('');
-
-    useEffect(() => {
-        if (customerDetails && customerDetails.loanRequired) {
-            let amount = customerDetails.loanRequired;
-            if (typeof amount === 'string') {
-                amount = amount.replace(/,/g, '');
-            }
-            amount = Number(amount);
-            if (!isNaN(amount)) {
-                determineLevel(amount);
-                setFormattedLoanRequired(formatAmountWithCommas(amount.toString()));
-            }
-        }
-    }, [customerDetails]);
-
     // SINGLE CUSTOMER DETAIL UPDATE
     const handleSaveClick = async () => {
         if (!customerDetails || !customerId) {
             alert("Customer details are not properly loaded.");
             return;
         }
-        determineLevel(customerDetails.loanRequired);
         const updatedDetails = {
             customerType: customerDetails.customerType,
             title: customerDetails.title,
@@ -201,9 +167,8 @@ function Profile_View() {
             customermailid: customerDetails.customermailid,
             typeofloan: customerDetails.typeofloan,
             loanRequired: customerDetails.loanRequired,
-            level: level
         };
-        console.log(updatedDetails);
+        // console.log(updatedDetails);
         try {
             const response = await axios.put('https://uksinfotechsolution.in:8000/update-customer-details', {
                 customerId: customerId, // Use the _id from customerDetails
@@ -238,7 +203,7 @@ function Profile_View() {
                     setShowDownloadLink(true);
                 }
             } catch (error) {
-                console.log('No existing PDF found for this customer');
+                // console.log('No existing PDF found for this customer');
             }
         };
 
@@ -316,8 +281,8 @@ function Profile_View() {
                 // Loan processing details not found
                 seteditiloanprocess(true);
             } else {
-                console.error('Error fetching loan processing details:', error);
-                alert('Failed to fetch loan processing details');
+                // console.error('Error fetching loan processing details:', error);
+                // alert('Failed to fetch loan processing details');
             }
         }
     };
@@ -452,7 +417,7 @@ function Profile_View() {
             });
             setPreviousLoanDetails(response.data);
         } catch (error) {
-            console.error('Error fetching previous loans:', error);
+            // console.error('Error fetching previous loans:', error);
         }
     };
 
@@ -579,7 +544,6 @@ function Profile_View() {
     useEffect(() => {
         const fetchAddressDetails = async () => {
             try {
-                console.log(`Fetching address details for customerId: ${customerId}`);
                 const response = await axios.get(`https://uksinfotechsolution.in:8000/view-address`, {
                     params: { customerId: customerId }
                 });
@@ -597,7 +561,7 @@ function Profile_View() {
                     setEditingModeAddress(true);
                 }
             } catch (error) {
-                console.error('Error fetching address details:', error);
+                // console.error('Error fetching address details:', error);
                 setEditingModeAddress(true);
             }
         };
@@ -658,8 +622,8 @@ function Profile_View() {
                 setImageSrc(null);
             }
         } catch (err) {
-            console.error('Error retrieving profile picture:', err);
-            setError('Failed to load profile picture');
+            // console.error('Error retrieving profile picture:', err);
+            // setError('Failed to load profile picture');
             setImageSrc(null);
         }
     };
@@ -695,10 +659,10 @@ function Profile_View() {
                     }
                 }
             } catch (error) {
-                setError('Error fetching Salaried Person details');
-                alert("Error fetching Salaried Person details")
+                // setError('Error fetching Salaried Person details');
+                // alert("Error fetching Salaried Person details")
 
-                console.error('Error fetching Salaried Person details:', error);
+                // console.error('Error fetching Salaried Person details:', error);
             } finally {
                 setLoading(false);
             }
@@ -799,7 +763,7 @@ function Profile_View() {
     return (
         <Container fluid className={`Customer-basic-view-container ${isSidebarExpanded ? 'sidebar-expanded' : ''}`}>
             <div style={{ paddingBottom: '18px' }}>
-            <PathnameUrlPath location={location} homepage={homepage} />
+                <PathnameUrlPath location={location} homepage={homepage} />
             </div>
             <Row className="Section-1-Row" >
                 <Col className="New-Customer-container-second basic-view-col">
@@ -886,7 +850,7 @@ function Profile_View() {
                         <>
                             <Row className="Row1 view-row-size">
                                 <Col className='basic-col-width' lg={2} ><span className="customer-sentence">Customer Type</span></Col>
-                                <Col lg={1}>
+                                <Col lg={2}>
                                     <input
                                         type="radio"
                                         value="Business"
@@ -939,8 +903,8 @@ function Profile_View() {
                                 </Col>
                             </Row>
                             <Row className="Row1 view-row-size">
-                                <Col className='basic-col-width' lg={3}><span className="customer-sentence">Primary Contact</span></Col>
-                                <Col lg={2}><input type="text" className="box" value={customerDetails.customerFname} onChange={(e) => handleInputChange('customerFname', e.target.value)} /></Col>
+                                <Col className='basic-col-width' lg={2}><span className="customer-sentence">Primary Contact</span></Col>
+                                <Col lg={3}><input type="text" className="box" value={customerDetails.customerFname} onChange={(e) => handleInputChange('customerFname', e.target.value)} /></Col>
                                 <Col  ><input type="text" className="box" value={customerDetails.customerLname} onChange={(e) => handleInputChange('customerLname', e.target.value)} /></Col>
                             </Row>
                             <Row className="Row1 view-row-size">
@@ -960,8 +924,8 @@ function Profile_View() {
                                 </Col>
                             </Row>
                             <Row className="Row1 view-row-size">
-                                <Col className='basic-col-width' lg={3}><span className="customer-sentence">Mobile Number</span></Col>
-                                <Col lg={2} ><input type="text" className="box" value={customerDetails.customercontact} onChange={(e) => handleInputChange('customercontact', e.target.value)} /></Col>
+                                <Col className='basic-col-width' lg={2}><span className="customer-sentence">Mobile Number</span></Col>
+                                <Col lg={3} ><input type="text" className="box" value={customerDetails.customercontact} onChange={(e) => handleInputChange('customercontact', e.target.value)} /></Col>
                                 <Col lg={2}><input type="text" className="box" value={customerDetails.customeralterno} onChange={(e) => handleInputChange('customeralterno', e.target.value)} /></Col>
                             </Row>
                             <Row className="Row1 view-row-size">
@@ -971,9 +935,29 @@ function Profile_View() {
                             <Row className="Row1 view-row-size">
                                 <Col className='basic-col-width' lg={2}><span className="customer-sentence">E-Mail</span></Col>
                                 <Col  ><input type="text" className="box" value={customerDetails.customermailid} onChange={(e) => handleInputChange('customermailid', e.target.value)} /></Col>
-
                             </Row>
-                            
+                            <Row className="Row1 view-row-size">
+                                <Col className='basic-col-width' lg={2}><span className="customer-sentence">Loan Amount</span></Col>
+                                <Col  ><input type="text" className="box" value={customerDetails.loanRequired} onChange={(e) => handleInputChange('loanRequired', e.target.value)} /></Col>
+                            </Row>
+                            <Row className="Row1 view-row-size">
+                                <Col className='basic-col-width' lg={2}><span className="customer-sentence">Type of Loan</span></Col>
+                                <Col >
+                                    <select
+                                        value={customerDetails.typeofloan || ''}
+                                        onChange={(e) => handleInputChange('typeofloan', e.target.value)}
+                                        style={{width:'200px'}}
+                                        className="dropdown box "
+                                    >
+                                        <option value="">Select Loan Type</option>
+                                        {loanTypes.map((type) => (
+                                            <option key={type.value} value={type.value}>
+                                                {type.label}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </Col>
+                            </Row>
                             {/* Add input fields for other customer details similarly */}
                         </>
                     ) : (
@@ -1009,8 +993,15 @@ function Profile_View() {
                                 <Col className='basic-col-width' lg={2}><span className="customer-sentence">E-Mail</span></Col>
                                 <Col><div className=" box customer-data-font">{customerDetails.customermailid}</div></Col>
                             </Row>
-                            
-                           
+                            <Row className="Row1 view-row-size">
+                                <Col className='basic-col-width' lg={2}><span className="customer-sentence">Loan Amount</span></Col>
+                                <Col><div className="box customer-data-font">{customerDetails.loanRequired}</div></Col>
+                            </Row>
+                            <Row className="Row1 view-row-size">
+                                <Col className='basic-col-width' lg={2}><span className="customer-sentence">Loan type</span></Col>
+                                <Col><div className=" box customer-data-font">{customerDetails.typeofloan}</div></Col>
+                            </Row>
+
                         </>
                     )}
 
@@ -1567,7 +1558,7 @@ function Profile_View() {
                                         </Row>
                                         <Row>
                                             <Col>
-                           
+
                                                 <Row className="Row1 view-row-size">
                                                     <Col lg={3}><span className="customer-sentence">Cibil Score</span></Col>
                                                     <Col lg={2}><div className="box customer-data-font">{loanProcessingDetails && loanProcessingDetails.cibilRecord}</div></Col>

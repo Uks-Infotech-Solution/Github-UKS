@@ -3,12 +3,9 @@ import { Container, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import '../DashBoard/DashBoardDesign/Header_Dashboard.css';
-import DsaTable from './DSA_Table_view';
 import './Customer_Login_Dashboard.css';
 import { useSidebar } from '../Customer/Navbar/SidebarContext';
-import Applied_Loan from './Applied_Loan';
 import Last_Div from './Last_div';
-import LoanGridView from './Gride_View_page';
 import { PiCircleFill } from "react-icons/pi";
 import VerticalBoxes from './Vertical_Box'; // Import the new component
 import PathnameUrlPath from '../URL_Path/Url_Path';
@@ -69,7 +66,7 @@ function Customer_Login_Dashboard() {
                 params: { customerId: customerId }
             });
             setLastLoginDateTime(response.data.loginDateTime);
-            console.log(response.data.loginDateTime);
+            // console.log(response.data.loginDateTime);
         } catch (error) {
             console.error('Error fetching last login session:', error.message);
         }
@@ -142,8 +139,6 @@ function Customer_Login_Dashboard() {
                                 </div>
                             </div>
                         </Col>
-                        <DsaTable />
-                        <Applied_Loan />
                         <Last_Div />
                         <Top_5_DSA/>
                     </Row>

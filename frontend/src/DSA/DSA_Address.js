@@ -74,7 +74,7 @@ const DSA_AddressForm = () => {
         try {
             const response = await axios.get(`https://uksinfotechsolution.in:8000/api/dsa/address?dsaId=${dsaId}`);
             const fetchedAddress = response.data;
-            console.log(response.data);
+            // console.log(response.data);
             if (fetchedAddress.aadharAddress.state) {
                 const updatedCities = City.getCitiesOfState('IN', fetchedAddress.aadharAddress.state).map(city => ({
                     label: city.name,
@@ -98,7 +98,7 @@ const DSA_AddressForm = () => {
                 
             });
         } catch (error) {
-            console.error('Error fetching address details:', error);
+            // console.error('Error fetching address details:', error);
             // Handle error fetching address details
         }
     };

@@ -16,6 +16,8 @@ const LoanGridView = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const { area } = location.state || {};
+    const { customerId } = location.state || {};
+
     const { isSidebarExpanded } = useSidebar();
 
     useEffect(() => {
@@ -83,7 +85,7 @@ const LoanGridView = () => {
     };
 
     const handleReadMore = (dsaId) => {
-        navigate(`/dsa/detail/view`, { state: { dsaId } });
+        navigate(`/dsa/detail/view`, { state: { dsaId,customerId } });
     };
 
     const renderStars = (rating) => {

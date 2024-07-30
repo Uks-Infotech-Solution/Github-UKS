@@ -37,7 +37,6 @@ function Uks_Customer_List() {
   const [loanProcessingDetails, setLoanProcessingDetails] = useState({});
   const [error, setError] = useState(null);
   const { isSidebarExpanded } = useSidebar();
-
   const { uksId } = location.state || {};
 
   // Fetch customers and initialize checked items
@@ -77,7 +76,7 @@ function Uks_Customer_List() {
             newAddresses[customer._id] = response.data;
           }
         } catch (error) {
-          console.error(`Failed to fetch address for ${customer._id}:`, error);
+          // console.error(`Failed to fetch address for ${customer._id}:`, error);
         }
       }
       setAddresses(newAddresses);
@@ -101,7 +100,7 @@ function Uks_Customer_List() {
             newCustomerStatuses[customer._id] = response.data.status;
           }
         } catch (error) {
-          console.error(`Error fetching customer status for ${customer._id}:`, error);
+          // console.error(`Error fetching customer status for ${customer._id}:`, error);
         }
       }
       setCustomerStatuses(newCustomerStatuses);
@@ -125,7 +124,7 @@ function Uks_Customer_List() {
             newLoanProcessingDetails[customer._id] = response.data;
           }
         } catch (error) {
-          console.error(`Error fetching loan processing details for ${customer._id}:`, error);
+          // console.error(`Error fetching loan processing details for ${customer._id}:`, error);
         }
       }
       setLoanProcessingDetails(newLoanProcessingDetails);
@@ -136,57 +135,47 @@ function Uks_Customer_List() {
     }
   }, [customers]);
 
-
-
   const fetchProfilePicture = async (customerId) => {
     try {
       const response = await axios.get(`https://uksinfotechsolution.in:8000/api/profile/view-profile-picture?customerId=${customerId}`, {
         responseType: 'arraybuffer'
       });
       const contentType = response.headers['content-type'];
-  
       if (contentType && contentType.startsWith('image')) {
         const base64Image = `data:${contentType};base64,${btoa(
           String.fromCharCode(...new Uint8Array(response.data))
         )}`;
-        return base64Image; // Return base64 image data
+        return base64Image;
       } else {
-        console.error('Response is not an image');
-        return null; // Handle case where response is not an image
+        return null;
       }
     } catch (err) {
-      // console.error('Error retrieving profile picture:', err);
-      return null; // Handle error case
+      return null;
     }
   };
-  
+
   useEffect(() => {
     const fetchProfilePictures = async () => {
       const newProfilePictures = {};
-  
       for (let customer of customers) {
         try {
           const base64Image = await fetchProfilePicture(customer._id);
           if (base64Image !== null) {
             newProfilePictures[customer._id] = base64Image;
           } else {
-            // Handle case where image fetching failed
             newProfilePictures[customer._id] = null;
           }
         } catch (error) {
-          console.error(`Error fetching profile picture for ${customer._id}:`, error);
-          newProfilePictures[customer._id] = null; // Set to null on error
+          newProfilePictures[customer._id] = null;
         }
       }
-  
       setProfilePictures(newProfilePictures);
     };
-  
+
     if (customers.length > 0) {
       fetchProfilePictures();
     }
   }, [customers]);
-  
 
   // Handle outside click for filter dropdown
   useEffect(() => {
@@ -212,6 +201,7 @@ function Uks_Customer_List() {
       return 0;
     }));
   };
+
   // Handle filtering
   const filteredCustomers = customers.filter((customer) => {
     if (filterOption === 'District') {
@@ -246,7 +236,7 @@ function Uks_Customer_List() {
       console.error("Selected customer not found");
       return;
     }
-    navigate('/uks/customer/detail/view', { state: { customerId: selectedCustomer._id,uksId } });
+    navigate('/uks/customer/detail/view', { state: { customerId: selectedCustomer._id, uksId } });
   };
 
   // Handle rows per page change
@@ -259,17 +249,32 @@ function Uks_Customer_List() {
     setFilterOption(option);
     setShowFilterDropdown(true);
   };
+
   const [allChecked, setAllChecked] = useState(false);
 
   const handleAllChecked = (event) => {
     const isChecked = event.target.checked;
-    const newCheckedItems = {};
-    customers.forEach((customer) => {
-      newCheckedItems[customer._id] = isChecked;
-    });
-    setCheckedItems(newCheckedItems);
     setAllChecked(isChecked);
+    setCheckedItems((prevState) => {
+      const newCheckedItems = {};
+      Object.keys(prevState).forEach((key) => {
+        newCheckedItems[key] = isChecked;
+      });
+      return newCheckedItems;
+    });
   };
+
+  // Handle previous page button click
+  const handlePrevPage = () => {
+    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+  };
+
+  // Handle next page button click
+  const handleNextPage = () => {
+    const totalPages = Math.ceil(filteredCustomers.length / rowsPerPage);
+    setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
+  };
+
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
   };

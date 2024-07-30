@@ -10,7 +10,7 @@ export const SidebarProvider = ({ children }) => {
   const [isSidebarExpanded, setSidebarExpanded] = useState(true);
 
   const toggleSidebar = () => {
-    // setSidebarExpanded(prevState => !prevState);
+    setSidebarExpanded(prevState => !prevState);
   };
 
   return (

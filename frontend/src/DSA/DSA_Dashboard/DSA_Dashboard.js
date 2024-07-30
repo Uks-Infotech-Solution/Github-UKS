@@ -86,7 +86,7 @@ function DSA_Login_Dashboard() {
                 params: { dsaId: dsaId }
             });
             setLastLoginDateTime(response.data.loginDateTime);
-            console.log(response.data.loginDateTime);
+            // console.log(response.data.loginDateTime);
         } catch (error) {
             console.error('Error fetching last login session:', error.message);
         }
@@ -97,7 +97,7 @@ function DSA_Login_Dashboard() {
             try {
                 const response = await axios.get(`https://uksinfotechsolution.in:8000/buy_packages/dsa/${dsaId}`);
                 setPackages(response.data);
-                console.log(response.data);
+                // console.log(response.data);
             } catch (err) {
                 console.log(err);
             }

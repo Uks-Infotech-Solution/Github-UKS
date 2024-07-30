@@ -8,7 +8,7 @@ const AutoIncrement = require('mongoose-sequence')(mongoose);
 const LoanType = require('./models/LoanType');
 const Address = require('./models/Address_Schema') // Adjust the path as per your file structure
 const PreviousLoan = require('./models/Previousloan');
-const multer = require('multer');   
+const multer = require('multer');
 const ProfilePicture = require('./models/ProfilePicture_Schema');
 const PdfModel = require('./models/Pdf_Model'); // Import the PdfModel
 const LoanProcessing = require('./models/Loan_Processing_Schema');
@@ -17,7 +17,7 @@ const DocumentType = require('./models/DocumentType');
 const Unsecured_DocumentType = require('./models/Unsecured_Document_Type');
 
 const CustomerStatus = require('./models/Customer_status_Schema');
-const LoanLevel = require('./models/Loan_Level_schema')     
+const LoanLevel = require('./models/Loan_Level_schema')
 const FileStatus = require('./models/File_types_Schema');
 const DSA_Customer_Table = require('./models/Dsa-Customer-table')
 const DSA_Customer_downloadTable = require('./models/Dsa-Customer-downloadtable')
@@ -25,7 +25,7 @@ const DSAAddress = require('./DSA/models/Address_Schema');
 const Rejected = require('./models/Rejected_reson');
 const LoanDetails = require('./DSA/models/DSA_Loan_Details_Schema');
 const DSA_RequiredType = require('./DSA/models/DSA_Loan_File_type');
-const EmployeeType=require('./models/Employee_Type');
+const EmployeeType = require('./models/Employee_Type');
 const LoanApplication = require('./Loan_Application/Loan_Application_Schema')
 const loanApplicationRoutes = require('../backend/Loan_Application/Get_Loan_Details');
 const Feedback = require('./Loan_Application/feedback');
@@ -42,7 +42,7 @@ const PackageDetail = require('./UKS/Package');
 const BuyPackage = require('./UKS/Buy_Packegers');
 const Package_Activation = require('../backend/UKS/Dsa_Package_Activation');
 const SalesPerson = require('./UKS/Sales_person_cus_reg');
-const SalesPersonDSA= require('./UKS/Sales_person_dsa_reg');
+const SalesPersonDSA = require('./UKS/Sales_person_dsa_reg');
 
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
@@ -75,7 +75,6 @@ const server = https.createServer({
     cert: fs.readFileSync('/www/server/panel/vhost/cert/frontend/fullchain.pem'),
     key: fs.readFileSync('/www/server/panel/vhost/cert/frontend/privkey.pem')
 }, app);
-
 const wss = new WebSocket.Server({ server });
 
 wss.on('connection', function connection(ws) {
@@ -92,7 +91,7 @@ const customerSchema = new Schema({
     customerFname: String,
     customerLname: String,
     gender: String,
-    customerType:String,
+    customerType: String,
     customercontact: String,
     customeralterno: String,
     customerwhatsapp: String,
@@ -133,14 +132,14 @@ app.use('/api', loanApplicationRoutes);
 
 app.get('/sales/person/list', async (req, res) => {
     try {
-      const salesperson = await User.find({ employeeType: 'Sales' });
-      console.log(salesperson);
-      res.status(200).json(salesperson);
+        const salesperson = await User.find({ employeeType: 'Sales' });
+        console.log(salesperson);
+        res.status(200).json(salesperson);
     } catch (error) {
-      res.status(500).json({ message: 'Error fetching salesperson', error });
+        // res.status(500).json({ message: 'Error fetching salesperson', error });
     }
-  });
-  
+});
+
 
 app.get('/sales/person/dsa/count/:uksId', async (req, res) => {
     try {
@@ -150,7 +149,7 @@ app.get('/sales/person/dsa/count/:uksId', async (req, res) => {
 
         res.status(200).json({ count, createdDates });
     } catch (error) {
-        res.status(500).json({ message: 'Error fetching count and created dates', error });
+        // res.status(500).json({ message: 'Error fetching count and created dates', error });
     }
 });
 
@@ -162,25 +161,25 @@ app.get('/sales/person/cus/count/:uksId', async (req, res) => {
 
         res.status(200).json({ count, createdDates });
     } catch (error) {
-        res.status(500).json({ message: 'Error fetching count and created dates', error });
+        // res.status(500).json({ message: 'Error fetching count and created dates', error });
     }
 });
- 
-  
+
+
 app.get('/sales/person/dsa/reg/:uksId', async (req, res) => {
     console.log(req.body);
     try {
-      const dsa = await SalesPersonDSA.find({ uksId: req.params.uksId });
-      console.log(dsa);
-      res.status(200).json(dsa);
+        const dsa = await SalesPersonDSA.find({ uksId: req.params.uksId });
+        console.log(dsa);
+        res.status(200).json(dsa);
     } catch (error) {
-      res.status(500).json({ message: 'Error fetching dsa', error });
+        // res.status(500).json({ message: 'Error fetching dsa', error });
     }
-  });
-  
+});
+
 
 app.post('/sales/person/dsa/reg', async (req, res) => {
-    const { salesPersonName,uksId,dsaName,dsaId } = req.body;
+    const { salesPersonName, uksId, dsaName, dsaId } = req.body;
     console.log(req.body);
     const newDsa = new SalesPersonDSA({
         uksId,
@@ -201,16 +200,16 @@ app.post('/sales/person/dsa/reg', async (req, res) => {
 app.get('/sales/person/cus/reg/:uksId', async (req, res) => {
     console.log(req.body);
     try {
-      const customers = await SalesPerson.find({ uksId: req.params.uksId });
-    //   console.log(customers);
-      res.status(200).json(customers);
+        const customers = await SalesPerson.find({ uksId: req.params.uksId });
+        //   console.log(customers);
+        res.status(200).json(customers);
     } catch (error) {
-      res.status(500).json({ message: 'Error fetching customers', error });
+        // res.status(500).json({ message: 'Error fetching customers', error });
     }
-  });
-  
+});
+
 app.post('/sales/person/cus/reg', async (req, res) => {
-    const { salesPersonName,uksId,customerName,customerId } = req.body;
+    const { salesPersonName, uksId, customerName, customerId } = req.body;
     console.log(req.body);
     const newCustomer = new SalesPerson({
         uksId,
@@ -236,35 +235,35 @@ app.get('/sales/packagers', async (req, res) => {
         res.status(200).json({ data: packagers });
     } catch (error) {
         console.error('Error fetching package details:', error);
-        res.status(500).json({ message: 'Error fetching package details.', error });
+        // res.status(500).json({ message: 'Error fetching package details.', error });
     }
 });
 
 app.get('/api/package/details', async (req, res) => {
     const { pkgId } = req.query; // Use req.query to get query parameters
     console.log("Fetching package details for pkgId:", pkgId);
-  
-    try {
-      const packageDetails = await BuyPackage.findById(pkgId);
-      if (!packageDetails) {
-        return res.status(404).send({ error: 'Package not found' });
-      }
-      res.status(200).json({ data: packageDetails });
-    } catch (error) {
-      console.error('Error fetching package details:', error);
-      res.status(500).send({ error: 'Server error' });
-    }
-  });
-  
 
-  app.get('/Inactive/packagers', async (req, res) => {
+    try {
+        const packageDetails = await BuyPackage.findById(pkgId);
+        if (!packageDetails) {
+            // return res.status(404).send({ error: 'Package not found' });
+        }
+        res.status(200).json({ data: packageDetails });
+    } catch (error) {
+        console.error('Error fetching package details:', error);
+        // res.status(500).send({ error: 'Server error' });
+    }
+});
+
+
+app.get('/Inactive/packagers', async (req, res) => {
     // console.log("Fetching inactive package details");
     try {
         const inactive_dsa = await BuyPackage.find({ packageStatus: 'Inactive' });
         res.status(200).json({ data: inactive_dsa });
     } catch (error) {
         console.error('Error fetching package details:', error);
-        res.status(500).json({ message: 'Error fetching package details.', error });
+        // res.status(500).json({ message: 'Error fetching package details.', error });
     }
 });
 
@@ -272,15 +271,15 @@ app.get('/api/package/details', async (req, res) => {
 // Route to get packages by dsaId
 app.get('/buy_packages/dsa/:dsaId', async (req, res) => {
     try {
-      const packages = await BuyPackage.find({ dsaId: req.params.dsaId });
-      if (!packages || packages.length === 0) {
-        return res.status(404).json({ message: 'No packages found for this DSA ID' });
-      }
-      res.status(200).json(packages);
+        const packages = await BuyPackage.find({ dsaId: req.params.dsaId });
+        if (!packages || packages.length === 0) {
+            // return res.status(404).json({ message: 'No packages found for this DSA ID' });
+        }
+        res.status(200).json(packages);
     } catch (error) {
-      res.status(500).json({ message: 'Error fetching packages', error });
+        // res.status(500).json({ message: 'Error fetching packages', error });
     }
-  }); 
+});
 
 // Activation Via Employee
 
@@ -353,47 +352,29 @@ app.post('/package/activate/:token', async (req, res) => {
     const { token } = req.params;
     const { transferAmountRefNumber } = req.body;
     console.log(req.body, token); // Log request body and token for debugging
-  
+
     try {
-      const newBuyPackage = await BuyPackage.findOne({ activationToken: token });
-  
-      if (!newBuyPackage) {
-        return res.status(400).json({ error: 'Invalid or expired confirmation token' });
-      }
-  
-      newBuyPackage.packageStatus = 'Active';
-      newBuyPackage.activationToken = undefined;
-      newBuyPackage.transferAmountRefNumber = transferAmountRefNumber;
-  
-      await newBuyPackage.save();
-  
-      return res.status(200).json({ message: 'Package activated successfully' });
+        const newBuyPackage = await BuyPackage.findOne({ activationToken: token });
+
+        if (!newBuyPackage) {
+            return res.status(400).json({ error: 'Invalid or expired confirmation token' });
+        }
+
+        newBuyPackage.packageStatus = 'Active';
+        newBuyPackage.activationToken = undefined;
+        newBuyPackage.transferAmountRefNumber = transferAmountRefNumber;
+
+        await newBuyPackage.save();
+
+        return res.status(200).json({ message: 'Package activated successfully' });
     } catch (err) {
-      return res.status(400).json({ error: 'Error activating package: ' + err.message });
+        return res.status(400).json({ error: 'Error activating package: ' + err.message });
     }
-  });
-  
-  
-  app.post('/buy_packagers', async (req, res) => {
+});
+
+
+app.post('/buy_packagers', async (req, res) => {
     const {
-      dsaId,
-      dsaNumber,
-      dsaName,
-      dsaCompanyName,
-      email,
-      primaryNumber,
-      packageName,
-      downloadAccess,
-      packageAmount,
-      transferAmountRefNumber,
-      loanTypes,
-      additionalInputs
-    } = req.body;
-  
-    const token = crypto.randomBytes(32).toString('hex');
-  
-    try {
-      const newPurchase = new BuyPackage({
         dsaId,
         dsaNumber,
         dsaName,
@@ -404,42 +385,60 @@ app.post('/package/activate/:token', async (req, res) => {
         downloadAccess,
         packageAmount,
         transferAmountRefNumber,
-        activationToken: token,
         loanTypes,
-        additionalInputs,
-        packageStatus: 'Inactive' // Default to 'Inactive' if not provided in req.body
-      });
-  
-      await newPurchase.save();
-  
-      // Prepare email to be sent to customer
-      const mailOptions = {
-        from: process.env.EMAIL_USER,
-        to:  process.env.EMAIL_USER, // Send email to the customer's email address
-        subject: 'Package Activation',
-        html: `
+        additionalInputs
+    } = req.body;
+
+    const token = crypto.randomBytes(32).toString('hex');
+
+    try {
+        const newPurchase = new BuyPackage({
+            dsaId,
+            dsaNumber,
+            dsaName,
+            dsaCompanyName,
+            email,
+            primaryNumber,
+            packageName,
+            downloadAccess,
+            packageAmount,
+            transferAmountRefNumber,
+            activationToken: token,
+            loanTypes,
+            additionalInputs,
+            packageStatus: 'Inactive' // Default to 'Inactive' if not provided in req.body
+        });
+
+        await newPurchase.save();
+
+        // Prepare email to be sent to customer
+        const mailOptions = {
+            from: process.env.EMAIL_USER,
+            to: process.env.EMAIL_USER, // Send email to the customer's email address
+            subject: 'Package Activation',
+            html: `
           <h4>${dsaName} (UKS-DSA_0${dsaNumber}) Package Activation Mail,</h4>
           <p>${dsaName} has selected the ${packageName} (${packageAmount}) Package,</p>
-          <p>To activate this package <a href="https://localhost:8000/package/activate/${token}">Click Here</a>.</p>
+          <p>To activate this package <a href="https://uksinfotechsolution.in:3000/package/activate/${token}">Click Here</a>.</p>
           <p>Thanks & regards,<br>LDP Finanserv.</p>`,
-      };
-  
-      transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-          console.error('Error sending email:', error);
-        } else {
-          console.log('DSA Email sent: ' + info.response);
-        }
-      });
-  
-      // Send success response with the generated activation token
-      res.status(201).json({ message: 'Package purchased successfully', token: token });
+        };
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.error('Error sending email:', error);
+            } else {
+                console.log('DSA Email sent: ' + info.response);
+            }
+        });
+
+        // Send success response with the generated activation token
+        res.status(201).json({ message: 'Package purchased successfully', token: token });
     } catch (error) {
-      console.error('Error saving purchase:', error);
-      res.status(500).json({ error: 'Failed to purchase package' });
+        console.error('Error saving purchase:', error);
+        res.status(500).json({ error: 'Failed to purchase package' });
     }
-  });
-  
+});
+
 
 
 app.get('/PackageDetails', async (req, res) => {
@@ -457,18 +456,19 @@ app.get('/PackageDetails', async (req, res) => {
 app.get('/uks/PackageDetails/:uksId', async (req, res) => {
     const { uksId } = req.params;
     try {
-        const packageDetails = await PackageDetail.find({ uksId }).sort({ createdAt: -1 });
+        const packageDetails = await PackageDetail.find().sort({ createdAt: -1 });
         res.status(200).json({ data: packageDetails });
+        console.log(packageDetails);
     } catch (error) {
         console.error('Error fetching package details:', error);
-        res.status(500).json({ message: 'Error fetching package details.', error });
+        // res.status(500).json({ message: 'Error fetching package details.', error });
     }
 });
 
 // Save or update package details
 app.post('/uks/savePackageDetails', async (req, res) => {
     const { uksId, packageDetails } = req.body;
-console.log(packageDetails);
+    console.log(packageDetails);
     try {
         for (let detail of packageDetails) {
             if (detail._id) {
@@ -523,7 +523,7 @@ app.get('/dsa/BranchDetails/:dsaId', async (req, res) => {
         res.status(200).json({ data: branchDetails });
     } catch (error) {
         console.error('Error retrieving branch details:', error);
-        res.status(500).json({ message: 'Error retrieving branch details.', error });
+        // res.status(500).json({ message: 'Error retrieving branch details.', error });
     }
 });
 
@@ -594,7 +594,7 @@ app.get('/api/dsa/loan/status/count/customer:customerId', async (req, res) => {
         });
     } catch (error) {
         console.error('Error fetching loan status counts:', error);
-        res.status(500).json({ error: 'Failed to fetch loan status counts' });
+        // res.status(500).json({ error: 'Failed to fetch loan status counts' });
     }
 });
 
@@ -611,7 +611,7 @@ app.get('/api/dsa/loan/status/count/:dsaId', async (req, res) => {
         });
     } catch (error) {
         console.error('Error fetching loan status counts:', error);
-        res.status(500).json({ error: 'Failed to fetch loan status counts' });
+        // res.status(500).json({ error: 'Failed to fetch loan status counts' });
     }
 });
 
@@ -670,7 +670,7 @@ app.get('/dsa/customer/apply/view/count/:dsaId', async (req, res) => {
         res.status(200).send({ message: 'Count retrieved successfully', count });
     } catch (error) {
         console.error('Error retrieving count:', error.message);
-        res.status(500).send({ error: 'Server error' });
+        // res.status(500).send({ error: 'Server error' });
     }
 });
 
@@ -711,12 +711,12 @@ app.get('/api/dsa/applications/loan/:loanId', async (req, res) => {
     try {
         const loanApplication = await LoanApplication.findById(loanId);
         if (!loanApplication) {
-            return res.status(404).send({ error: 'Loan application not found' });
+            // return res.status(404).send({ error: 'Loan application not found' });
         }
         res.status(200).json({ loanApplication });
     } catch (error) {
         console.error('Error finding loan applications:', error);
-        res.status(500).send({ error: 'Server error' });
+        // res.status(500).send({ error: 'Server error' });
     }
 });
 
@@ -732,7 +732,7 @@ app.get('/api/dsa/applications/count/:dsaId', async (req, res) => {
         res.status(200).json({ count });
     } catch (error) {
         console.error('Error fetching loan application count:', error);
-        res.status(500).json({ error: 'Server error' });
+        // res.status(500).json({ error: 'Server error' });
     }
 });
 
@@ -768,14 +768,14 @@ app.get('/dsa/login/last-session', async (req, res) => {
         const sessions = await DSA_LoginSession.find({ dsaId }).sort({ loginDateTime: -1 }).limit(2);
 
         if (sessions.length < 2) {
-            return res.status(404).json({ error: 'No previous login session found for the given DSA ID' });
+            // return res.status(404).json({ error: 'No previous login session found for the given DSA ID' });
         }
 
         const lastSession = sessions[1]; // The second most recent session
         res.status(200).json(lastSession);
     } catch (error) {
         console.error('Error fetching last login session:', error);
-        res.status(500).json({ error: 'An error occurred while fetching the last login session' });
+        // res.status(500).json({ error: 'An error occurred while fetching the last login session' });
     }
 });
 
@@ -810,14 +810,14 @@ app.get('/customer/login/last-session', async (req, res) => {
         const sessions = await LoginSession.find({ customerId }).sort({ loginDateTime: -1 }).limit(2);
 
         if (sessions.length < 2) {
-            return res.status(404).json({ error: 'No previous login session found for the given customer ID' });
+            // return res.status(404).json({ error: 'No previous login session found for the given customer ID' });
         }
 
         const lastSession = sessions[1]; // The second most recent session
         res.status(200).json(lastSession);
     } catch (error) {
         console.error('Error fetching last login session:', error);
-        res.status(500).json({ error: 'An error occurred while fetching the last login session' });
+        // res.status(500).json({ error: 'An error occurred while fetching the last login session' });
     }
 });
 
@@ -832,7 +832,7 @@ app.get('/loan/api/feedback/:dsaId', async (req, res) => {
         res.status(200).json({ feedbacks });
     } catch (error) {
         console.error('Error fetching feedbacks:', error);
-        res.status(500).json({ error: 'Failed to fetch feedbacks' });
+        // res.status(500).json({ error: 'Failed to fetch feedbacks' });
     }
 });
 
@@ -877,13 +877,13 @@ app.get('/api/customer/dsa/loans/:loanId', async (req, res) => {
         const loanApplication = await LoanApplication.findById(loanId);
 
         if (!loanApplication) {
-            return res.status(404).json({ success: false, message: 'No loan application found for this loan ID.' });
+            // return res.status(404).json({ success: false, message: 'No loan application found for this loan ID.' });
         }
 
         res.status(200).json({ success: true, data: loanApplication });
     } catch (error) {
         console.error('Error fetching loan application:', error);
-        res.status(500).json({ success: false, error: 'Failed to fetch loan application.' });
+        // res.status(500).json({ success: false, error: 'Failed to fetch loan application.' });
     }
 });
 
@@ -895,7 +895,7 @@ app.get('/customer/loan/application', async (req, res) => {
         const loanApplications = await LoanApplication.find();
         res.status(200).json(loanApplications);
     } catch (error) {
-        res.status(500).json({ error: "Error fetching loan applications" });
+        // res.status(500).json({ error: "Error fetching loan applications" });
     }
 });
 
@@ -907,7 +907,7 @@ app.get('/dsa/customer/applied/loan/:dsaId', async (req, res) => {
         const loanApplications = await LoanApplication.find({ dsaId: dsaId });
         res.status(200).json(loanApplications);
     } catch (error) {
-        res.status(500).json({ error: "Error fetching loan applications" });
+        // res.status(500).json({ error: "Error fetching loan applications" });
     }
 });
 
@@ -1045,7 +1045,7 @@ app.get('/api/dsa/:dsaId/loanDetails', async (req, res) => {
         res.status(200).json({ loanDetails });
     } catch (error) {
         console.error('Error fetching loan details:', error);
-        res.status(500).json({ error: 'Failed to fetch loan details' });
+        // res.status(500).json({ error: 'Failed to fetch loan details' });
     }
 });
 
@@ -1066,15 +1066,10 @@ app.get('/api/dsa/getLoanDetails/:dsaId', async (req, res) => {
 
     try {
         const loanDetails = await LoanDetails.find({ dsaId });
-
-        if (!loanDetails || loanDetails.length === 0) {
-            return res.status(404).json({ error: 'No loan details found for this DSA' });
-        }
-
         res.status(200).json({ loanDetails });
     } catch (error) {
-        console.error('Error fetching loan details:', error);
-        res.status(500).json({ error: 'Failed to fetch loan details' });
+        console.error('No Loan details of DSA:', error);
+        // res.status(500).json({ error: 'Failed to fetch loan details' });
     }
 });
 
@@ -1143,12 +1138,12 @@ app.get('/api/dsa', async (req, res) => {
         const dsa = await DSA.findById(dsaId);
 
         if (!dsa) {
-            return res.status(404).json({ error: 'DSA not found' });
+            // return res.status(404).json({ error: 'DSA not found' });
         }
         res.status(200).json(dsa);
     } catch (error) {
         console.error('Error fetching DSA details:', error);
-        res.status(500).json({ error: 'Internal server error' });
+        // res.status(500).json({ error: 'Internal server error' });
     }
 });
 
@@ -1158,7 +1153,7 @@ app.get('/api/dsa/list', async (req, res) => {
         res.status(200).json({ dsa: dsaList });
     } catch (error) {
         console.error('Error fetching DSA list:', error);
-        res.status(500).json({ message: 'Error fetching DSA list' });
+        // res.status(500).json({ message: 'Error fetching DSA list' });
     }
 });
 
@@ -1187,7 +1182,7 @@ app.post('/api/dsa/register', async (req, res) => {
         const token = crypto.randomBytes(32).toString('hex');
         const { dsaName, dsaCompanyName, primaryNumber, alternateNumber, whatsappNumber, email, website, password } = req.body;
         // console.log(req.body);
-    const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword = await bcrypt.hash(password, 10);
 
         // Create a new DSA instance
         const newDSA = new DSA({
@@ -1198,14 +1193,13 @@ app.post('/api/dsa/register', async (req, res) => {
             whatsappNumber,
             email,
             website,
-            password : hashedPassword,
+            password: hashedPassword,
             activationToken: token,
             dsa_status: 'Inactive'
         });
 
         // Save the new DSA to the database
         const savedDSA = await newDSA.save();
-        const confirmationUrl = `https://localhost:8000/dsa/activate/${token}`;
         // Send confirmation email
         const mailOptions = {
             from: process.env.EMAIL_USER,
@@ -1215,10 +1209,10 @@ app.post('/api/dsa/register', async (req, res) => {
             html: `
             <p>Hello ${dsaName},</p>
             <p>Welcome to LDP Finanserv ,</p>
-            <p>To Activate Your Account  <a href="https://localhost:8000/dsa/activate/${token}">Click </a> Here.</p>
+            <p>To Activate Your Account  <a href="https://uksinfotechsolution.in:3000/dsa/activate/${token}">Click </a> Here.</p>
             <p>Thanks & regards,<br>LDP Finanserv.</p>`,
-        
-        
+
+
         };
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
@@ -1284,7 +1278,7 @@ app.get('/api/dsa/address', async (req, res) => {
         res.json(address);
     } catch (error) {
         console.error('Error fetching address:', error);
-        res.status(500).send('Server Error');
+        // res.status(500).send('Server Error');
     }
 });
 
@@ -1328,7 +1322,7 @@ app.put('/api/dsa/:id', async (req, res) => {
 app.get('/api/dsa-login', async (req, res) => {
     try {
         const { email, password } = req.query;
-        
+
         // Validate user input
         if (!email || !password) {
             return res.status(400).json({ error: 'Email and password are required' });
@@ -1361,6 +1355,7 @@ app.get('/api/dsa-login', async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+
 app.post('/dsa/forgotpassword', async (req, res) => {
     const { email } = req.body;
     console.log('Received email:', email);
@@ -1386,10 +1381,9 @@ app.post('/dsa/forgotpassword', async (req, res) => {
             subject: 'Password Reset',
             html: `
             <p>Hi ${dsa.dsaName},</p>
-            <p><a href="https://localhost:8000/dsa/reset/password/${token}">Click</a> to Reset Your Account (UKS-DSA-00${dsa.dsaNumber}) Password.</p>
-            <p>Thanks & regards,<br>LDP Finanserv.</p>
-        `,
-        
+    <p><a href="https://uksinfotechsolution.in:3000/dsa/reset/password/${token}">Click</a> to Reset Your Account (UKS-DSA-00${dsa.dsaNumber}) Password.</p>
+            <p>Thanks & regards,<br>LDP Finanserv.</p>`,
+
         };
 
         transporter.sendMail(mailOptions, (error, info) => {
@@ -1426,8 +1420,9 @@ app.post('/dsa/resetpassword/:token', async (req, res) => {
 
         // Hash the new password before saving
         // const hashedPassword = await bcrypt.hash(password, 12);
+        const hashedPassword = await bcrypt.hash(password, 10);
 
-        dsa.password = password;
+        dsa.password = hashedPassword;
         dsa.resetToken = undefined;
         dsa.resetTokenExpiration = undefined;
 
@@ -1520,7 +1515,7 @@ app.get('/dsa/download/count', async (req, res) => {
 
         // Validate the query parameter
         if (!dsaId) {
-            return res.status(400).json({ message: 'Dsa ID is required' });
+            // return res.status(400).json({ message: 'Dsa ID is required' });
         }
 
         // Count the number of documents with the provided customerId
@@ -1530,7 +1525,7 @@ app.get('/dsa/download/count', async (req, res) => {
         res.status(200).json({ count });
     } catch (error) {
         console.error('Error counting documents in DSA_Customer_downloadTable:', error);
-        res.status(500).json({ message: 'Internal server error' });
+        // res.status(500).json({ message: 'Internal server error' });
     }
 });
 
@@ -1540,7 +1535,7 @@ app.get('/dsa/table/count', async (req, res) => {
 
         // Validate the query parameter
         if (!dsaId) {
-            return res.status(400).json({ message: 'Dsa ID is required' });
+            // return res.status(400).json({ message: 'Dsa ID is required' });
         }
 
         // Count the number of documents with the provided customerId
@@ -1549,7 +1544,7 @@ app.get('/dsa/table/count', async (req, res) => {
         res.status(200).json({ count });
     } catch (error) {
         console.error('Error counting documents in DSA_Customer_Table:', error);
-        res.status(500).json({ message: 'Internal server error' });
+        // res.status(500).json({ message: 'Internal server error' });
     }
 });
 app.get('/dsa-customer/downloadtable/count', async (req, res) => {
@@ -1558,7 +1553,7 @@ app.get('/dsa-customer/downloadtable/count', async (req, res) => {
 
         // Validate the query parameter
         if (!customerId) {
-            return res.status(400).json({ message: 'Customer ID is required' });
+            // return res.status(400).json({ message: 'Customer ID is required' });
         }
 
         // Count the number of documents with the provided customerId
@@ -1568,7 +1563,7 @@ app.get('/dsa-customer/downloadtable/count', async (req, res) => {
         res.status(200).json({ count });
     } catch (error) {
         console.error('Error counting documents in DSA_Customer_downloadTable:', error);
-        res.status(500).json({ message: 'Internal server error' });
+        // res.status(500).json({ message: 'Internal server error' });
     }
 });
 
@@ -1579,7 +1574,7 @@ app.get('/dsa-customer/table/count', async (req, res) => {
 
         // Validate the query parameter
         if (!customerId) {
-            return res.status(400).json({ message: 'Customer ID is required' });
+            // return res.status(400).json({ message: 'Customer ID is required' });
         }
 
         // Count the number of documents with the provided customerId
@@ -1588,7 +1583,7 @@ app.get('/dsa-customer/table/count', async (req, res) => {
         res.status(200).json({ count });
     } catch (error) {
         console.error('Error counting documents in DSA_Customer_Table:', error);
-        res.status(500).json({ message: 'Internal server error' });
+        // res.status(500).json({ message: 'Internal server error' });
     }
 });
 app.post('/dsa-customer/downloadtable', async (req, res) => {
@@ -1702,8 +1697,8 @@ app.get('/customer/status', async (req, res) => {
         // Update this line to return only the status field
         //   res.json({ status: customerStatus.status });
     } catch (error) {
-        console.error('Error fetching Salaried Person details:', error.message);
-        res.status(500).json({ error: 'Error fetching Salaried Person details', details: error.message });
+        console.error('Error fetching Customer status details:', error.message);
+        // res.status(500).json({ error: 'Error fetching Customer Status details', details: error.message });
     }
 });
 
@@ -1718,20 +1713,20 @@ app.get('/customer/status/table', async (req, res) => {
 
 
         if (!customer) {
-            return res.status(404).json({ message: 'Customer not found' });
+            // return res.status(404).json({ message: 'Customer not found' });
         }
 
         // Find the customer status by customerId
         const customerStatus = await CustomerStatus.findOne({ customerId: customer._id });
 
         if (!customerStatus) {
-            return res.status(404).json({ message: 'Customer status not found' });
+            // return res.status(404).json({ message: 'Customer status not found' });
         }
 
         res.json({ status: customerStatus.status });
     } catch (error) {
         console.error('Error fetching customer status:', error);
-        res.status(500).json({ message: 'Failed to fetch customer status' });
+        // res.status(500).json({ message: 'Failed to fetch customer status' });
     }
 });
 
@@ -1818,7 +1813,7 @@ app.get('/salariedperson', async (req, res) => {
         const customer = await Customer.findById(customerId);
 
         if (!customer) {
-            return res.status(404).json({ error: 'Customer not found' });
+            // return res.status(404).json({ error: 'Customer not found' });
         }
 
         // Find salaried person details for the customer
@@ -1828,34 +1823,9 @@ app.get('/salariedperson', async (req, res) => {
         // console.log(salariedPersons);
     } catch (error) {
         console.error('Error fetching Salaried Person details:', error.message);
-        res.status(500).json({ error: 'Error fetching Salaried Person details', details: error.message });
+        // res.status(500).json({ error: 'Error fetching Salaried Person details', details: error.message });
     }
 });
-
-// app.get('/customer/:customerId/pdf', async (req, res) => {
-//     try {
-//         const customerId = req.params.customerId;
-//         const customer = await Customer.findById(customerId);
-
-//         if (!customer || !customer.pdfData) {
-//             return res.status(404).send('PDF not found');
-//         }
-
-//         res.set({
-//             'Content-Type': 'application/pdf',
-//             'Content-Length': customer.pdfData.length
-//         });
-//         res.send(customer.pdfData);
-//         // console.log(customer.pdfData);
-//     } catch (error) {
-//         console.error('Error retrieving PDF:', error);
-//         res.status(500).send('Internal Server Error');
-//     }
-// });
-
-
-
-
 
 // CUSTOMER ADDRESS
 app.post('/add-address', async (req, res) => {
@@ -1893,17 +1863,17 @@ app.get('/view-address', async (req, res) => {
     try {
         const customer = await Customer.findById(customerId);
         if (!customer) {
-            return res.status(404).json({ error: 'Customer not found' });
+            // return res.status(404).json({ error: 'Customer not found' });
         }
 
         const address = await Address.findOne({ customerId: customer._id });
         if (!address) {
-            return res.status(404).json({ error: 'Address not found' });
+            // return res.status(404).json({ error: 'Address not found' });
         }
 
         res.json(address);
     } catch (error) {
-        res.status(500).json({ error: 'Server error' });
+        // res.status(500).json({ error: 'Server error' });
     }
 });
 
@@ -1942,14 +1912,14 @@ app.get('/get-previous-loans', async (req, res) => {
         const customer = await Customer.findById(customerId);
 
         if (!customer) {
-            return res.status(404).json({ message: 'Customer not found' });
+            // return res.status(404).json({ message: 'Customer not found' });
         }
 
         const previousLoans = await PreviousLoan.find({ customerId: customer._id });
         res.status(200).json(previousLoans);
     } catch (error) {
         console.error('Error fetching previous loans:', error);
-        res.status(500).json({ message: 'Failed to fetch previous loans' });
+        // res.status(500).json({ message: 'Failed to fetch previous loans' });
     }
 });
 // Endpoint to delete a previous loan
@@ -2018,21 +1988,21 @@ app.get('/get-loan-processing', async (req, res) => {
         const customer = await Customer.findById(customerId);
 
         if (!customer) {
-            return res.status(404).json({ message: 'Customer not found' });
+            // return res.status(404).json({ message: 'Customer not found' });
         }
 
         // Find the loan processing details using customerId
         const loanProcessingDetails = await LoanProcessing.findOne({ customerId: customer._id });
         if (!loanProcessingDetails) {
-            return res.status(404).json({ message: 'Loan processing details not found' });
+            // return res.status(404).json({ message: 'Loan processing details not found' });
             console.log("not fount");
         }
 
         res.status(200).json(loanProcessingDetails);
         // console.log(loanProcessingDetails);
     } catch (error) {
-        console.error('Error fetching loan processing details:', error);
-        res.status(500).json({ message: 'Failed to fetch loan processing details' });
+        // console.error('Error fetching loan processing details:', error);
+        // res.status(500).json({ message: 'Failed to fetch loan processing details' });
     }
 });
 
@@ -2069,7 +2039,7 @@ app.post('/customer/forgotpassword', async (req, res) => {
             subject: 'Password Reset',
             html: `
     <p>Hi ${customer.customerFname},</p>
-    <p><a href="https://localhost:8000/customer/reset/password/${token}">Click</a> to Reset Your Account (UKS-CUS-00${customer.customerNo}) Password.</p>
+    <p><a href="https://uksinfotechsolution.in:3000/customer/reset/password/${token}">Click</a> to Reset Your Account (UKS-CUS-00${customer.customerNo}) Password.</p>
     <p>Thanks & regards,<br>LDP Finanserv.</p>
 `,
 
@@ -2110,8 +2080,9 @@ app.post('/customer/resetpassword/:token', async (req, res) => {
 
         // Hash the new password before saving
         // const hashedPassword = await bcrypt.hash(password, 12);
+        const hashedPassword = await bcrypt.hash(password, 10);
 
-        customer.userpassword = password;
+        customer.userpassword = hashedPassword;
         customer.resetToken = undefined;
         customer.resetTokenExpiration = undefined;
 
@@ -2186,7 +2157,7 @@ app.get('/customer/activate/:token', async (req, res) => {
 
 app.post('/register', async (req, res) => {
     const { title, customerFname, customerLname, gender, customercontact, customeralterno, customerwhatsapp, customermailid, typeofloan, userpassword, customerType, loanRequired, level } = req.body;
-console.log(req.body);
+    console.log(req.body);
     try {
         const token = crypto.randomBytes(32).toString('hex');
 
@@ -2206,7 +2177,7 @@ console.log(req.body);
             customerwhatsapp,
             customermailid,
             typeofloan,
-            userpassword :hashedPassword,
+            userpassword: hashedPassword,
             customerType,
             loanRequired,
             level,
@@ -2214,7 +2185,7 @@ console.log(req.body);
         });
 
         const savedCustomer = await customer.save();
-        const confirmationUrl = `https://localhost:8000/customer/activate/${token}`;
+        const confirmationUrl = `https://uksinfotechsolution.in:3000/customer/activate/${token}`;
 
         const mailOptions = {
             from: process.env.EMAIL_USER,
@@ -2224,10 +2195,10 @@ console.log(req.body);
             html: `
             <p>Hello ${customerFname},</p>
             <p>Welcome to LDP Finanserv ,</p>
-            <p>To Activate Your Account  <a href="https://localhost:8000/customer/activate/${token}">Click </a> Here.</p>
+            <p>To Activate Your Account  <a href="https://uksinfotechsolution.in:3000/customer/activate/${token}">Click </a> Here.</p>
             <p>Thanks & regards,<br>LDP Finanserv.</p>`,
-        
-        
+
+
         };
 
         transporter.sendMail(mailOptions, (error, info) => {
@@ -2240,9 +2211,9 @@ console.log(req.body);
 
         const formattedCustomerNo = savedCustomer.customerNo.toString().padStart(3, '0');
         const customerId = savedCustomer._id;
-        const savedCustomerType = savedCustomer.customerType; 
+        const savedCustomerType = savedCustomer.customerType;
 
-        res.json({ message: 'Customer added successfully', customerNo: formattedCustomerNo,customerId,customerType: savedCustomerType  });
+        res.json({ message: 'Customer added successfully', customerNo: formattedCustomerNo, customerId, customerType: savedCustomerType });
     } catch (error) {
         console.error('Error Saving Customer:', error.message);
         res.status(500).json({ error: 'Error saving customer', details: error.message });
@@ -2284,19 +2255,19 @@ app.get('/customer-details', async (req, res) => {
     // console.log('Received query:', req.query); // Log to check if customerId is received
 
     if (!customerId) {
-        return res.status(400).json({ error: 'Customer ID is required' });
+        // return res.status(400).json({ error: 'Customer ID is required' });
     }
 
     try {
-        const customer = await Customer.findById(customerId).populate('address');
+        const customer = await Customer.findById(customerId);
         if (!customer) {
-            return res.status(404).json({ error: 'Customer not found' });
+            // return res.status(404).json({ error: 'Customer not found' });
         }
         res.json(customer);
         console.log('Customer details:', customer);
     } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
-        console.error('Error fetching customer details:', error);
+        // res.status(500).json({ error: 'Internal server error' });
+        // console.error('Error fetching customer details:', error);
     }
 });
 
@@ -2359,22 +2330,22 @@ const User = mongoose.model('UKS_Employees', userSchema);
 
 app.get('/uks/details', async (req, res) => {
     const { uksId } = req.query;
-    console.log('Received query uks:', req.query); // Log to check if customerId is received
+    // console.log('Received query uks:', req.query); 
 
     if (!uksId) {
-        return res.status(400).json({ error: 'Uks ID is required' });
+        // return res.status(400).json({ error: 'Uks ID is required' });
     }
 
     try {
         const uks = await User.findById(uksId);
         if (!uks) {
-            return res.status(404).json({ error: 'Uks not found' });
+            // return res.status(404).json({ error: 'Uks not found' });
         }
         res.json(uks);
-        console.log('Uks details:', uks);
+        // console.log('Uks details:', uks);
     } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
-        console.error('Error fetching customer details:', error);
+        // res.status(500).json({ error: 'Internal server error' });
+        console.error('Error fetching uks details:', error);
     }
 });
 
@@ -2408,7 +2379,7 @@ app.post('/api/uksregister', async (req, res) => {
     try {
         await newUser.save();
 
-        const confirmationUrl = `https://localhost:8000/uks/activate/${token}`;
+        const confirmationUrl = `https://uksinfotechsolution.in:3000/uks/activate/${token}`;
         const mailOptions = {
             from: process.env.EMAIL_USER,
             to: email,
@@ -2416,7 +2387,7 @@ app.post('/api/uksregister', async (req, res) => {
             html: `
             <p>Hello ${name},</p>
             <p>Welcome to LDP Finanserv</p>
-            <p>To Activate Your Account <a href="https://localhost:8000/uks/activate/${token}">Click Here</a>.</p>
+            <p>To Activate Your Account <a href="https://uksinfotechsolution.in:3000/uks/activate/${token}">Click Here</a>.</p>
             <p>Thanks & regards,<br>LDP Finanserv.</p>`,
         };
 
@@ -2552,7 +2523,7 @@ app.post('/uks/forgotpassword', async (req, res) => {
             subject: 'Password Reset',
             html: `
             <p>Hi ${user.name},</p>
-            <p><a href="https://localhost:8000/uks/reset/password/${token}">Click</a> to Reset Your Account (UKS-00${user.UKSNumber}) Password.</p>
+            <p><a href="https://uksinfotechsolution.in:3000/uks/reset/password/${token}">Click</a> to Reset Your Account (UKS-00${user.UKSNumber}) Password.</p>
             <p>Thanks & regards,<br>LDP Finanserv.</p>`,
         };
 
@@ -2590,8 +2561,8 @@ app.post('/uks/resetpassword/:token', async (req, res) => {
 
         // Hash the new password before saving
         // const hashedPassword = await bcrypt.hash(password, 12);
-
-        user.password = password;
+        const hashedPassword = await bcrypt.hash(password, 10);
+        user.password = hashedPassword;
         user.resetToken = undefined;
         user.resetTokenExpiration = undefined;
 
@@ -2660,9 +2631,9 @@ app.get('/api/profile/view-profile-picture', async (req, res) => {
         const customer = await Customer.findById(customerId);
 
         if (!customer) {
-            console.log("customer not found");
+            // console.log("customer not found");
 
-            return res.status(404).json({ error: 'Customer not found' });
+            // return res.status(404).json({ error: 'Customer not found' });
         }
 
         // Once customer is found, get the customer ID
@@ -2672,9 +2643,9 @@ app.get('/api/profile/view-profile-picture', async (req, res) => {
         const profilePicture = await ProfilePicture.findOne({ customerId });
 
         if (!profilePicture) {
-            console.log("picture not found");
+            // console.log("picture not found");
 
-            return res.status(404).json({ error: 'Profile picture not found' });
+            // return res.status(404).json({ error: 'Profile picture not found' });
         }
 
         // Send the profile picture data
@@ -2684,8 +2655,8 @@ app.get('/api/profile/view-profile-picture', async (req, res) => {
         // console.log(profilePicture.imageData);
 
     } catch (error) {
-        console.error('Error retrieving profile picture:', error);
-        res.status(500).json({ error: 'Failed to retrieve profile picture' });
+        // console.error('Error retrieving profile picture:', error);
+        // res.status(500).json({ error: 'Failed to retrieve profile picture' });
     }
 });
 
@@ -2736,19 +2707,19 @@ app.get('/api/check-pdf', async (req, res) => {
 
 
         if (!customer) {
-            return res.status(404).json({ message: 'Customer not found' });
+            // return res.status(404).json({ message: 'Customer not found' });
         }
 
         const pdf = await PdfModel.findOne({ customerId: customer._id });
 
         if (!pdf) {
-            return res.status(404).json({ message: 'No PDF found for this customer' });
+            // return res.status(404).json({ message: 'No PDF found for this customer' });
         }
 
         res.status(200).json({ message: 'PDF exists', customerId: customer._id });
     } catch (error) {
-        console.error('Error checking PDF:', error);
-        res.status(500).json({ error: 'Failed to check PDF' });
+        // console.error('Error checking PDF:', error);
+        // res.status(500).json({ error: 'Failed to check PDF' });
     }
 });
 app.get('/api/download-pdf/:customerId', async (req, res) => {
@@ -2757,7 +2728,7 @@ app.get('/api/download-pdf/:customerId', async (req, res) => {
         const pdf = await PdfModel.findOne({ customerId });
 
         if (!pdf) {
-            return res.status(404).json({ error: 'PDF not found' });
+            // return res.status(404).json({ error: 'PDF not found' });
         }
 
         res.set({
@@ -2774,19 +2745,26 @@ app.get('/api/download-pdf/:customerId', async (req, res) => {
 
 
 // MASTER STORAGES API'
+
+app.get('/api/dsa/required/type', async (req, res) => {
+    try {
+        const requiredTypes = await DSA_RequiredType.find();
+        res.json(requiredTypes);
+    } catch (error) {
+        console.error('Error fetching required types:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 app.post('/api/dsa/required/type', async (req, res) => {
     const { requiredType } = req.body;
 
     try {
-        // Create a new instance of DSA_RequiredType and save it to the database
         const newRequiredType = new DSA_RequiredType({ requiredType });
         await newRequiredType.save();
-
-        res.status(201).json({ message: 'Required Type saved successfully' });
+        res.status(201).json({ message: 'Required Type saved successfully', _id: newRequiredType._id });
     } catch (error) {
         console.error('Error saving required type:', error);
-
-        // Check for duplicate key error (MongoDB error code 11000)
         if (error.code === 11000) {
             res.status(400).json({ error: 'Required Type already exists' });
         } else {
@@ -2795,96 +2773,203 @@ app.post('/api/dsa/required/type', async (req, res) => {
     }
 });
 
+app.put('/api/dsa/required/type/:id', async (req, res) => {
+    const { requiredType } = req.body;
+    const { id } = req.params;
 
-app.get('/api/dsa/required/type', async (req, res) => {
     try {
-        const requiredTypes = await DSA_RequiredType.find();
-        console.log('File statuses fetched:', requiredTypes); // Log the fetched data
-        res.json(requiredTypes);
-        console.log(requiredTypes);
+        await DSA_RequiredType.findByIdAndUpdate(id, { requiredType });
+        res.json({ message: 'Required Type updated successfully' });
     } catch (error) {
-        console.error('Error fetching file statuses:', error);
+        console.error('Error updating required type:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+
+app.delete('/api/dsa/required/type/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        await DSA_RequiredType.findByIdAndDelete(id);
+        res.json({ message: 'Required Type deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting required type:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
 app.get('/api/file-status', async (req, res) => {
     try {
         const fileStatuses = await FileStatus.find();
-        // console.log('File statuses fetched:', fileStatuses); // Log the fetched data
         res.json(fileStatuses);
     } catch (error) {
         console.error('Error fetching file statuses:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+
 app.post('/api/file-status', async (req, res) => {
     const { fileStatus } = req.body;
 
     try {
-        // Assuming you have a LoanType model/schema
-        // Create a new instance of LoanType and save it to the database
-        const fileStatuses = new FileStatus({ type: fileStatus });
-        await fileStatuses.save();
-
-        res.status(201).json({ message: 'Loan type saved successfully' });
+        const newFileStatus = new FileStatus({ type: fileStatus });
+        await newFileStatus.save();
+        res.status(201).json({ message: 'File status saved successfully', _id: newFileStatus._id });
     } catch (error) {
-        console.error('Error saving loan type:', error);
+        console.error('Error saving file status:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });
-// Route to handle POST request for adding employee type
+
+app.put('/api/file-status/:id', async (req, res) => {
+    const { fileStatus } = req.body;
+    const { id } = req.params;
+
+    try {
+        await FileStatus.findByIdAndUpdate(id, { type: fileStatus });
+        res.json({ message: 'File status updated successfully' });
+    } catch (error) {
+        console.error('Error updating file status:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+app.delete('/api/file-status/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        await FileStatus.findByIdAndDelete(id);
+        res.json({ message: 'File status deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting file status:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+// GET endpoint to fetch all employee types
+app.get('/api/employee-types', async (req, res) => {
+    try {
+        const employeeTypes = await EmployeeType.find();
+        res.json(employeeTypes);
+    } catch (error) {
+        console.error('Error fetching employee types:', error);
+        res.status(500).json({ message: 'Failed to fetch employee types' });
+    }
+});
+
+// POST endpoint to create a new employee type
 app.post('/api/employee-type', async (req, res) => {
     const { employeeType } = req.body;
-    // console.log(employeeType);
     if (!employeeType || typeof employeeType !== 'string' || !employeeType.trim()) {
-      return res.status(400).json({ message: 'Valid employee type is required' });
+        return res.status(400).json({ message: 'Valid employee type is required' });
     }
-  
+
     try {
-      const newEmployeeType = new EmployeeType({ type: employeeType.trim() });
-      await newEmployeeType.save();
-      res.json({ message: 'Employee type saved successfully' });
+        const newEmployeeType = new EmployeeType({ type: employeeType.trim() });
+        await newEmployeeType.save();
+        res.json({ message: 'Employee type saved successfully' });
     } catch (error) {
-      console.error('Error saving employee type:', error);
-      if (error.code === 11000) {
-        res.status(400).json({ message: 'Employee type already exists' });
-      } else {
-        res.status(500).json({ message: 'Failed to save employee type' });
-      }
+        console.error('Error saving employee type:', error);
+        if (error.code === 11000) {
+            res.status(400).json({ message: 'Employee type already exists' });
+        } else {
+            res.status(500).json({ message: 'Failed to save employee type' });
+        }
     }
-  });
-  // Assuming you're using Express and Mongoose
+});
+
+// PUT endpoint to update an existing employee type
+app.put('/api/employee-type/:id', async (req, res) => {
+    const { employeeType } = req.body;
+    if (!employeeType || typeof employeeType !== 'string' || !employeeType.trim()) {
+        return res.status(400).json({ message: 'Valid employee type is required' });
+    }
+
+    try {
+        const updatedType = await EmployeeType.findByIdAndUpdate(req.params.id, { type: employeeType.trim() }, { new: true });
+        if (!updatedType) {
+            return res.status(404).json({ message: 'Employee type not found' });
+        }
+        res.json({ message: 'Employee type updated successfully' });
+    } catch (error) {
+        console.error('Error updating employee type:', error);
+        res.status(500).json({ message: 'Failed to update employee type' });
+    }
+});
+
+// DELETE endpoint to delete an existing employee type
+app.delete('/api/employee-type/:id', async (req, res) => {
+    try {
+        const deletedType = await EmployeeType.findByIdAndDelete(req.params.id);
+        if (!deletedType) {
+            return res.status(404).json({ message: 'Employee type not found' });
+        }
+        res.json({ message: 'Employee type deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting employee type:', error);
+        res.status(500).json({ message: 'Failed to delete employee type' });
+    }
+});
+// Assuming you're using Express and Mongoose
 app.get('/api/employee-type', async (req, res) => {
     try {
-      const employeeTypes = await EmployeeType.find();
-      res.json(employeeTypes);
+        const employeeTypes = await EmployeeType.find();
+        res.json(employeeTypes);
     } catch (error) {
-      console.error('Error retrieving employee types:', error);
-      res.status(500).json({ message: 'Failed to retrieve employee types' });
+        console.error('Error retrieving employee types:', error);
+        res.status(500).json({ message: 'Failed to retrieve employee types' });
     }
-  });
-  
+});
+
 app.post('/api/loan-types', async (req, res) => {
     const { loanType } = req.body;
 
     try {
-        // Assuming you have a LoanType model/schema
-        // Create a new instance of LoanType and save it to the database
         const newLoanType = new LoanType({ type: loanType });
         await newLoanType.save();
-
-        res.status(201).json({ message: 'Loan type saved successfully' });
+        res.status(201).json({ message: 'Loan type saved successfully', _id: newLoanType._id });
     } catch (error) {
         console.error('Error saving loan type:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+
 app.get('/api/loan-types', async (req, res) => {
     try {
         const loanTypes = await LoanType.find();
         res.json(loanTypes);
     } catch (error) {
         console.error('Error fetching loan types:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+app.put('/api/loan-types/:id', async (req, res) => {
+    const { id } = req.params;
+    const { loanType } = req.body;
+
+    try {
+        const updatedLoanType = await LoanType.findByIdAndUpdate(id, { type: loanType }, { new: true });
+        if (!updatedLoanType) {
+            return res.status(404).json({ error: 'Loan type not found' });
+        }
+        res.json({ message: 'Loan type updated successfully' });
+    } catch (error) {
+        console.error('Error updating loan type:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+app.delete('/api/loan-types/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const deletedLoanType = await LoanType.findByIdAndDelete(id);
+        if (!deletedLoanType) {
+            return res.status(404).json({ error: 'Loan type not found' });
+        }
+        res.json({ message: 'Loan type deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting loan type:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });
@@ -2915,7 +3000,32 @@ app.get('/api/loan-levels', async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+app.put('/api/loan-levels/:id', async (req, res) => {
+    const { id } = req.params;
+    const { loanLevel } = req.body;
 
+    try {
+        const updatedLoanLevel = await LoanLevel.findByIdAndUpdate(id, { type: loanLevel }, { new: true });
+        res.status(200).json({ message: 'Loan Level updated successfully', loanLevel: updatedLoanLevel });
+    } catch (error) {
+        console.error('Error updating loan level:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+app.delete('/api/loan-levels/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        await LoanLevel.findByIdAndDelete(id);
+        res.status(200).json({ message: 'Loan Level deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting loan level:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+
+// Create a new document type
 app.post('/api/document-type', async (req, res) => {
     const { documenttype } = req.body;
 
@@ -2928,6 +3038,56 @@ app.post('/api/document-type', async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+
+// Get all document types
+app.get('/api/document-type', async (req, res) => {
+    try {
+        const documentTypes = await DocumentType.find();
+        res.json(documentTypes);
+    } catch (error) {
+        console.error('Error fetching document types:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+// Update a document type
+app.put('/api/document-type/:id', async (req, res) => {
+    const { id } = req.params;
+    const { documenttype } = req.body;
+
+    if (!id || !documenttype || typeof documenttype !== 'string' || !documenttype.trim()) {
+        return res.status(400).json({ message: 'Valid document type and ID are required' });
+    }
+
+    try {
+        const updatedDocumentType = await DocumentType.findByIdAndUpdate(id, { type: documenttype.trim() }, { new: true });
+        if (!updatedDocumentType) {
+            return res.status(404).json({ message: 'Document type not found' });
+        }
+        res.json({ message: 'Document type updated successfully' });
+    } catch (error) {
+        console.error('Error updating document type:', error);
+        res.status(500).json({ message: 'Failed to update document type' });
+    }
+});
+
+// Delete a document type
+app.delete('/api/document-type/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const deletedDocumentType = await DocumentType.findByIdAndDelete(id);
+        if (!deletedDocumentType) {
+            return res.status(404).json({ message: 'Document type not found' });
+        }
+        res.json({ message: 'Document type deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting document type:', error);
+        res.status(500).json({ message: 'Failed to delete document type' });
+    }
+});
+
+// Route to create a new document type
 app.post('/api/unsecured/document-type', async (req, res) => {
     const { documenttype } = req.body;
 
@@ -2940,6 +3100,7 @@ app.post('/api/unsecured/document-type', async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+
 // Route to fetch all document types
 app.get('/api/unsecured/document-type', async (req, res) => {
     try {
@@ -2951,15 +3112,31 @@ app.get('/api/unsecured/document-type', async (req, res) => {
     }
 });
 
-app.get('/api/document-type', async (req, res) => {
+// Route to update a document type
+app.put('/api/unsecured/document-type/:id', async (req, res) => {
+    const { documenttype } = req.body;
+
     try {
-        const documentTypes = await DocumentType.find();
-        res.json(documentTypes);
+        const updatedDocumentType = await Unsecured_DocumentType.findByIdAndUpdate(req.params.id, { type: documenttype }, { new: true });
+        res.json({ message: 'Unsecured Document type updated successfully', updatedDocumentType });
     } catch (error) {
-        console.error('Error fetching document types:', error);
+        console.error('Error updating document type:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+
+// Route to delete a document type
+app.delete('/api/unsecured/document-type/:id', async (req, res) => {
+    try {
+        await Unsecured_DocumentType.findByIdAndDelete(req.params.id);
+        res.json({ message: 'Unsecured Document type deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting document type:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+
 
 
 server.listen(8000, () => {

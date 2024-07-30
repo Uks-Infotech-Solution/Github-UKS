@@ -33,7 +33,7 @@ function DSA_Last_Div() {
             try {
                 const response = await axios.get(`https://uksinfotechsolution.in:8000/dsa/customer/apply/view/count/${dsaId}`);
                 setTableCount(response.data.count);
-                console.log(response.data.count);
+                // console.log(response.data.count);
             } catch (error) {
                 console.error('Error fetching apply view count:', error);
             }

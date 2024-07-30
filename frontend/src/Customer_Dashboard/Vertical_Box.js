@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import './Vertical_Box.css'; // Assuming you create a CSS file for styling
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 
 const VerticalBoxes = () => {
     const [dsaData, setDsaData] = useState([]);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
-
+    const location = useLocation();
+    const { customerId } = location.state || {};
+    
     useEffect(() => {
         fetchDSADetails();
     }, []);
@@ -18,24 +20,33 @@ const VerticalBoxes = () => {
             const dsas = response.data.dsa;
 
             const dsaWithAddressPromises = dsas.map(async (dsa) => {
-                const addressResponse = await axios.get(`https://uksinfotechsolution.in:8000/api/dsa/address?dsaId=${dsa._id}`);
-                return {
-                    ...dsa,
-                    permanentAddress: addressResponse.data.permanentAddress
-                };
+                try {
+                    const addressResponse = await axios.get(`https://uksinfotechsolution.in:8000/api/dsa/address?dsaId=${dsa._id}`);
+                    if (addressResponse.data && addressResponse.data.permanentAddress) {
+                        return {
+                            ...dsa,
+                            permanentAddress: addressResponse.data.permanentAddress
+                        };
+                    }
+                } catch (error) {
+                    console.error(`Error fetching address for DSA ${dsa._id}:`, error);
+                }
+                return null;
             });
 
             const dsaWithAddress = await Promise.all(dsaWithAddressPromises);
-            setDsaData(dsaWithAddress);
+            const filteredDSAs = dsaWithAddress.filter(dsa => dsa && dsa.permanentAddress && dsa.permanentAddress.area);
+
+            setDsaData(filteredDSAs);
             setLoading(false);
         } catch (error) {
-            console.error('Error fetching DSA details:', error);
+            // console.error('Error fetching DSA details:', error);
             setLoading(false);
         }
     };
 
     const handleClick = (area) => {
-        navigate(`/dsa/grid/view`, { state: { area } });
+        navigate(`/dsa/grid/view`, { state: { area, customerId } });
     };
 
     const groupByArea = (data) => {

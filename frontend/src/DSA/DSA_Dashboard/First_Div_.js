@@ -21,7 +21,7 @@ function First_Div() {
       try {
         const response = await axios.get(`https://uksinfotechsolution.in:8000/dsa/customer/applied/loan/${dsaId}`);
         const loanApplicationsData = response.data;
-        console.log(response.data);
+        // console.log(response.data);
         setLoanApplications(loanApplicationsData);
       } catch (error) {
         console.error('Error fetching loan applications:', error);
@@ -53,7 +53,7 @@ function First_Div() {
       try {
         const response = await axios.get(`https://uksinfotechsolution.in:8000/dsa/customer/apply/view/count/${dsaId}`);
         setTableCount(response.data.count);
-        console.log(response.data.count);
+        // console.log(response.data.count);
       } catch (error) {
         console.error('Error fetching apply view count:', error);
       }

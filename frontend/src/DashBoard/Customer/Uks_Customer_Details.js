@@ -171,13 +171,17 @@ function Uks_Customer_View() {
 
     useEffect(() => {
         if (customerDetails && customerDetails.loanRequired) {
-            const amount = Number(customerDetails.loanRequired.replace(/,/g, ''));
-            if (!isNaN(amount)) {
-                determineLevel(amount);
-                setFormattedLoanRequired(formatAmountWithCommas(customerDetails.loanRequired));
+            const loanRequired = customerDetails.loanRequired;
+            if (typeof loanRequired === 'string' || typeof loanRequired === 'number') {
+                const amount = Number(String(loanRequired).replace(/,/g, ''));
+                if (!isNaN(amount)) {
+                    determineLevel(amount);
+                    setFormattedLoanRequired(formatAmountWithCommas(String(loanRequired)));
+                }
             }
         }
     }, [customerDetails]);
+    
 
     // SINGLE CUSTOMER DETAIL UPDATE
     const handleSaveClick = async () => {

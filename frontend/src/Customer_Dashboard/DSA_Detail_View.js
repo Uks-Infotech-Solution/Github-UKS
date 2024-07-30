@@ -48,7 +48,7 @@ function DSA_Detail_View() {
             try {
                 const response = await axios.get(`https://uksinfotechsolution.in:8000/api/dsa?dsaId=${dsaId}`);
                 const dsaDetails = response.data;
-                console.log('Fetched DSA Details:', dsaDetails); // Log fetched data to inspect
+                // console.log('Fetched DSA Details:', dsaDetails);
                 // Fetch branch details
                 const branchResponse = await axios.get(`https://uksinfotechsolution.in:8000/dsa/BranchDetails/${dsaId}`);
                 setBranchDetails(branchResponse.data.data);

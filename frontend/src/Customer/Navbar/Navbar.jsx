@@ -21,7 +21,7 @@ import { FcReading } from "react-icons/fc";
 import { FcApproval } from "react-icons/fc";
 import { FaPersonCircleCheck } from "react-icons/fa6";
 import { FcExport } from "react-icons/fc";
-
+import { HiViewGridAdd } from "react-icons/hi";
 
 
 const StickyNavbar = () => {
@@ -109,18 +109,18 @@ const StickyNavbar = () => {
     try {
       const response = await axios.get(`https://uksinfotechsolution.in:8000/api/dsa?dsaId=${dsaId}`);
       setDsaData(response.data);
-      console.log(response.data);
+      // console.log(response.data);
     } catch (error) {
       console.error('Error fetching DSA details:', error);
     }
   };
 
   const fetchCustomerDetails = async (customerId) => {
-    console.log({ customerId });
+    // console.log({ customerId });
     try {
       const response = await axios.get(`https://uksinfotechsolution.in:8000/customer-details`, { params: { customerId } });
       setCustomerDetails(response.data);
-      console.log('customer:', response.data); // Correct logging
+      // console.log('customer:', response.data);
     } catch (error) {
       console.error('Error fetching customer details:', error);
     }
@@ -130,7 +130,7 @@ const StickyNavbar = () => {
     try {
       const response = await axios.get(`https://uksinfotechsolution.in:8000/uks/details?uksId=${uksId}`);
       setUksData(response.data);
-      console.log(response.data);
+      // console.log(response.data);
     } catch (error) {
       console.error('Error fetching UKS details:', error);
     }
@@ -239,6 +239,10 @@ const StickyNavbar = () => {
 
   const Customer_List = () => { if (dsaId) { navigate('/customer/list', { state: { dsaId } }); } }
   const Applied_Customers = () => { if (dsaId) { navigate('/applied/customer/list', { state: { dsaId } }); } }
+  const DSA_Purchased_Package = () => { if (dsaId) { navigate('/purchased/package', { state: { dsaId } }); } }
+
+  const Customer_DSA_List = () => { if (customerId) { navigate('/Dsa/List', { state: { customerId } }); } }
+  const Customer_Applied_Loan_List = () => { if (customerId) { navigate('/Applied/Loan/List', { state: { customerId } }); } }
 
   return (
     <>
@@ -352,41 +356,41 @@ const StickyNavbar = () => {
                 <li>
                    <ul className='side-menu-customer-link'>
                     <li>
-                      <Nav.Link onClick={EmployeeType} className='font-size-dropdown'>Employee Type</Nav.Link>
+                      <Nav.Link onClick={EmployeeType} className='font-size-dropdown'><HiViewGridAdd   className='Customer-icon' />Employee Type</Nav.Link>
                     </li>
                   </ul>
                   <ul className='side-menu-customer-link'>
                     <li>
-                      <Nav.Link onClick={DocumentType} className='font-size-dropdown'>Document Type</Nav.Link>
+                      <Nav.Link onClick={DocumentType} className='font-size-dropdown'><HiViewGridAdd   className='Customer-icon' />Document Type</Nav.Link>
                     </li>
                   </ul>
                   <ul className='side-menu-customer-link'>
                     <li>
-                      <Nav.Link onClick={Unsecured_DocumentType} className='font-size-dropdown'>Unsecured Doc Type</Nav.Link>
+                      <Nav.Link onClick={Unsecured_DocumentType} className='font-size-dropdown'><HiViewGridAdd   className='Customer-icon' />Unsecure Doc Type</Nav.Link>
                     </li>
                   </ul>
                   <ul className='side-menu-customer-link'>
                     <li>
-                      <Nav.Link onClick={Loan_Level} className='font-size-dropdown'>Loan Level</Nav.Link>
+                      <Nav.Link onClick={Loan_Level} className='font-size-dropdown'><HiViewGridAdd   className='Customer-icon' />Loan Level</Nav.Link>
                     </li>
                   </ul>
                   <ul className='side-menu-customer-link'>
                     <li>
-                      <Nav.Link onClick={Loan_Type} className='font-size-dropdown'>Loan Type</Nav.Link>
+                      <Nav.Link onClick={Loan_Type} className='font-size-dropdown'><HiViewGridAdd   className='Customer-icon' />Loan Type</Nav.Link>
                     </li>
                   </ul>
                   <ul className='side-menu-customer-link'>
                     <li>
-                      <Nav.Link onClick={File_Status} className='font-size-dropdown'>File Status</Nav.Link>
+                      <Nav.Link onClick={File_Status} className='font-size-dropdown'><HiViewGridAdd   className='Customer-icon' />File Status</Nav.Link>
                     </li>
                   </ul><ul className='side-menu-customer-link'>
                     <li>
-                      <Nav.Link onClick={Required_Type} className='font-size-dropdown'>DSA Required Type</Nav.Link>
+                      <Nav.Link onClick={Required_Type} className='font-size-dropdown'><HiViewGridAdd   className='Customer-icon' />DSA Required Type</Nav.Link>
                     </li>
                   </ul>
                   <ul className='side-menu-customer-link'>
                     <li>
-                      <Nav.Link className='font-size-dropdown' onClick={Pricing}>Pricing</Nav.Link>
+                      <Nav.Link className='font-size-dropdown' onClick={Pricing}><HiViewGridAdd   className='Customer-icon' />Pricing</Nav.Link>
                     </li>
                   </ul>
 
@@ -483,53 +487,76 @@ const StickyNavbar = () => {
           {customerDetails && customerId && (
             <div>
               <div className='customer-menu' onClick={toggleCustomerMenu}>
-                <IoPeople className='Customer-icon' />Customer
+                <FcApproval className='Customer-icon' />Customer
               </div>
-              {showCustomerMenu && (
                 <li>
                   <ul className='side-menu-customer-link'>
                     <li>
-                      <Nav.Link className='font-size-dropdown' onClick={CustomersideDashboard}>Dashboard</Nav.Link>
+                      <Nav.Link className='font-size-dropdown' onClick={CustomersideDashboard}>
+                      <MdDashboard className='Customer-icon' style={{ color: 'white' }} />Dashboard</Nav.Link>
                     </li>
                   </ul>
                   <ul className='side-menu-customer-link'>
                     <li>
-                      <Nav.Link onClick={CustomersideProfile} className='font-size-dropdown'>Profile Updation</Nav.Link>
+                      <Nav.Link className='font-size-dropdown' onClick={CustomersideProfile}>
+                      <MdDashboard className='Customer-icon' style={{ color: 'white' }} />Profile Updation</Nav.Link>
+                    </li>
+                  </ul>
+                  <ul className='side-menu-customer-link'>
+                    <li>
+                      <Nav.Link className='font-size-dropdown' onClick={Customer_DSA_List}>
+                      <MdDashboard className='Customer-icon' style={{ color: 'white' }} />DSA List</Nav.Link>
+                    </li>
+                  </ul>
+                  <ul className='side-menu-customer-link'>
+                    <li>
+                      <Nav.Link className='font-size-dropdown' onClick={Customer_Applied_Loan_List}>
+                      <MdDashboard className='Customer-icon' style={{ color: 'white' }} />Applied Loan List</Nav.Link>
                     </li>
                   </ul>
                 </li>
-              )}
             </div>
           )}
           {dsaData && dsaId && (
             <div>
               <div className='customer-menu' onClick={toggleCustomerMenu}>
-                <IoPeople className='Customer-icon' />DSA</div>
-
+                <FcApproval className='Customer-icon' />DSA</div>
               <li>
                 <ul className='side-menu-customer-link'>
                   <li>
-                    <Nav.Link onClick={DsasideDashboard} className='font-size-dropdown'>Dashboard</Nav.Link>
+                    <Nav.Link onClick={DsasideDashboard} className='font-size-dropdown'>
+                    <MdDashboard className='Customer-icon' style={{ color: 'white' }} />
+                    Dashboard</Nav.Link>
                   </li>
                 </ul>
                 <ul className='side-menu-customer-link'>
                   <li>
-                    <Nav.Link onClick={Dsasideprofile} className='font-size-dropdown'>Profile Updation</Nav.Link>
+                    <Nav.Link onClick={Dsasideprofile} className='font-size-dropdown'>
+                    <MdDashboard className='Customer-icon' style={{ color: 'white' }} />Profile Updation</Nav.Link>
                   </li>
                 </ul>
                 <ul className='side-menu-customer-link'>
                   <li>
-                    <Nav.Link onClick={DsaPricing} className='font-size-dropdown'>Package Purchasing</Nav.Link>
+                    <Nav.Link onClick={DsaPricing} className='font-size-dropdown'>
+                    <MdDashboard className='Customer-icon' style={{ color: 'white' }} />Packages</Nav.Link>
                   </li>
                 </ul>
                 <ul className='side-menu-customer-link'>
                   <li>
-                    <Nav.Link onClick={Customer_List} className='font-size-dropdown'>Customer List</Nav.Link>
+                    <Nav.Link onClick={DSA_Purchased_Package} className='font-size-dropdown'>
+                    <MdDashboard className='Customer-icon' style={{ color: 'white' }} />Purchased Packages</Nav.Link>
                   </li>
                 </ul>
                 <ul className='side-menu-customer-link'>
                   <li>
-                    <Nav.Link onClick={Applied_Customers} className='font-size-dropdown'>Applied Customer List</Nav.Link>
+                    <Nav.Link onClick={Customer_List} className='font-size-dropdown'>
+                    <MdDashboard className='Customer-icon' style={{ color: 'white' }} />Customer List</Nav.Link>
+                  </li>
+                </ul>
+                <ul className='side-menu-customer-link'>
+                  <li>
+                    <Nav.Link onClick={Applied_Customers} className='font-size-dropdown'>
+                    <MdDashboard className='Customer-icon' style={{ color: 'white' }} />Applied Customer List</Nav.Link>
                   </li>
                 </ul>
               </li>

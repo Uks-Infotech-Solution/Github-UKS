@@ -63,7 +63,7 @@ function CustomerTable() {
         const response = await axios.get('https://uksinfotechsolution.in:8000/');
         const customersData = response.data;
         setCustomers(customersData);
-        console.log(response.data);
+        // console.log(response.data);
         setLoading(false);
         const initialCheckedItems = {};
         response.data.forEach((customer) => {
