@@ -72,8 +72,8 @@ const transporter = nodemailer.createTransport({
 });
 
 const server = https.createServer({
-    cert: fs.readFileSync('D:/Github-UKS-main/frontend/src/fullchain/fullchain.pem'),
-    key: fs.readFileSync('D:/Github-UKS-main/frontend/src/fullchain/privkey.pem')
+    cert: fs.readFileSync('/www/server/panel/vhost/cert/frontend/fullchain.pem'),
+    key: fs.readFileSync('/www/server/panel/vhost/cert/frontend/privkey.pem')
 }, app);
 
 const wss = new WebSocket.Server({ server });
