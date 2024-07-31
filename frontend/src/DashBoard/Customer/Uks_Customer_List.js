@@ -20,7 +20,6 @@ import { useSidebar } from '../../Customer/Navbar/SidebarContext';
 function Uks_Customer_List() {
   const location = useLocation();
   const navigate = useNavigate();
-  const [dsaData, setDsaData] = useState(null);
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [checkedItems, setCheckedItems] = useState({});
@@ -29,7 +28,6 @@ function Uks_Customer_List() {
   const [filterOption, setFilterOption] = useState('District');
   const [filterValue, setFilterValue] = useState('');
   const [showFilterDropdown, setShowFilterDropdown] = useState(false);
-  const [customerStatuses, setCustomerStatuses] = useState({});
   const [sortingOrder, setSortingOrder] = useState('asc');
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -87,29 +85,6 @@ function Uks_Customer_List() {
     }
   }, [customers]);
 
-  // Fetch customer statuses
-  useEffect(() => {
-    const fetchCustomerStatuses = async () => {
-      const newCustomerStatuses = {};
-      for (let customer of customers) {
-        try {
-          const response = await axios.get('https://uksinfotechsolution.in:8000/customer/status/table', {
-            params: { customerId: customer._id },
-          });
-          if (response.status === 200) {
-            newCustomerStatuses[customer._id] = response.data.status;
-          }
-        } catch (error) {
-          // console.error(`Error fetching customer status for ${customer._id}:`, error);
-        }
-      }
-      setCustomerStatuses(newCustomerStatuses);
-    };
-
-    if (customers.length > 0) {
-      fetchCustomerStatuses();
-    }
-  }, [customers]);
 
   // Fetch loan processing details
   useEffect(() => {
@@ -391,9 +366,9 @@ function Uks_Customer_List() {
                         'Loading...'
                       )}
                     </td>
-                    <td style={{}}>{customerStatuses[customer._id] && (
-                      customerStatuses[customer._id]
-                    )}</td>
+                    <td style={{ color: customer.isActive ? 'green' : 'red' }}>
+                      {customer.isActive ? 'Active' : 'Inactive'}
+                    </td>
                     <td>
                       <GrView  onClick={() => handleEditClick(customer._id)} style={{ cursor: 'pointer', color: '#2492eb' }} />
                     </td>

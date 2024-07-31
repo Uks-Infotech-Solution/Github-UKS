@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
-import Index_Navbar from "../Indexpage/Navbar/Index-Navbar";
 import Popup from './Register_popup'; // Import your Popup component
 import './DSA_register.css';
 import './New-Customer.css';
@@ -33,8 +32,24 @@ function DSA_Register() {
 
     const validate = () => {
         const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-            const passwordPattern = /^(?=.*[A-Z])(?=.*[\W_])(?=.*\d)[A-Za-z\d\W_]{8,}$/
+        const passwordPattern = /^(?=.*[A-Z])(?=.*[\W_])(?=.*\d)[A-Za-z\d\W_]{8,}$/;
         const newErrors = {};
+
+        if (!formData.dsaName.trim()) {
+            newErrors.dsaName = "Name is required";
+        }
+
+        if (!formData.dsaCompanyName.trim()) {
+            newErrors.dsaCompanyName = "Company Name is required";
+        }
+
+        if (!formData.primaryNumber.trim()) {
+            newErrors.primaryNumber = "Primary Number is required";
+        }
+
+        if (!formData.whatsappNumber.trim()) {
+            newErrors.whatsappNumber = "Whatsapp Number is required";
+        }
 
         if (!emailPattern.test(formData.email)) {
             newErrors.email = "Enter a valid email address";
@@ -94,6 +109,7 @@ function DSA_Register() {
                                         value={formData.dsaName}
                                         onChange={handleChange}
                                     />
+                                    {errors.dsaName && <span className="error-message">{errors.dsaName}</span>}
                                 </Col>
                             </Row>
                             <Row className="Row1">
@@ -106,22 +122,24 @@ function DSA_Register() {
                                         value={formData.dsaCompanyName}
                                         onChange={handleChange}
                                     />
+                                    {errors.dsaCompanyName && <span className="error-message">{errors.dsaCompanyName}</span>}
                                 </Col>
                             </Row>
                             <Row className="Row1">
                                 <Col lg={4}><span className="customer-sentence">Mobile Number</span></Col>
                                 <Col lg={4}>
                                     <input
-                                        type="text"
+                                        type="number"
                                         placeholder="Primary Number"
                                         name="primaryNumber"
                                         value={formData.primaryNumber}
                                         onChange={handleChange}
                                     />
+                                    {errors.primaryNumber && <span className="error-message">{errors.primaryNumber}</span>}
                                 </Col>
                                 <Col lg={4}>
                                     <input
-                                        type="text"
+                                        type="number"
                                         placeholder="Alternate Number"
                                         name="alternateNumber"
                                         value={formData.alternateNumber}
@@ -133,12 +151,13 @@ function DSA_Register() {
                                 <Col lg={4}><span className="customer-sentence">Whatsapp Number</span></Col>
                                 <Col lg={5}>
                                     <input
-                                        type="text"
+                                        type="number"
                                         placeholder="Whatsapp Number"
                                         name="whatsappNumber"
                                         value={formData.whatsappNumber}
                                         onChange={handleChange}
                                     />
+                                    {errors.whatsappNumber && <span className="error-message">{errors.whatsappNumber}</span>}
                                 </Col>
                             </Row>
                             <Row className="Row1">

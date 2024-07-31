@@ -72,9 +72,10 @@ const transporter = nodemailer.createTransport({
 });
 
 const server = https.createServer({
-    cert: fs.readFileSync('/www/server/panel/vhost/cert/frontend/fullchain.pem'),
-    key: fs.readFileSync('/www/server/panel/vhost/cert/frontend/privkey.pem')
+    cert: fs.readFileSync('D:/Github-UKS-main/frontend/src/fullchain/fullchain.pem'),
+    key: fs.readFileSync('D:/Github-UKS-main/frontend/src/fullchain/privkey.pem')
 }, app);
+
 const wss = new WebSocket.Server({ server });
 
 wss.on('connection', function connection(ws) {
@@ -419,7 +420,7 @@ app.post('/buy_packagers', async (req, res) => {
             html: `
           <h4>${dsaName} (UKS-DSA_0${dsaNumber}) Package Activation Mail,</h4>
           <p>${dsaName} has selected the ${packageName} (${packageAmount}) Package,</p>
-          <p>To activate this package <a href="https://uksinfotechsolution.in:3000/package/activate/${token}">Click Here</a>.</p>
+          <p>To activate this package <a href="https://uksinfotechsolution.in/package/activate/${token}">Click Here</a>.</p>
           <p>Thanks & regards,<br>LDP Finanserv.</p>`,
         };
 
@@ -659,6 +660,19 @@ app.post('/api/customer/dsa/updateStatus', async (req, res) => {
 });
 
 // Dsa_Customer_Applied_Loan_View_Count
+app.get('/customer/loan/apply/view/count/:customerId', async (req, res) => {
+    try {
+        const { customerId } = req.params;
+        console.log("view count");
+        // Count the number of documents with the specified dsaId
+        const count = await ApplyViewCount.countDocuments({ customerId });
+        console.log(count);
+        res.status(200).send({ message: 'Count retrieved successfully', count });
+    } catch (error) {
+        console.error('Error retrieving count:', error.message);
+        // res.status(500).send({ error: 'Server error' });
+    }
+});
 
 app.get('/dsa/customer/apply/view/count/:dsaId', async (req, res) => {
     try {
@@ -722,7 +736,17 @@ app.get('/api/dsa/applications/loan/:loanId', async (req, res) => {
 
 
 
+app.get('/api/customer/applications/count/:customerId', async (req, res) => {
+    const { customerId } = req.params;
 
+    try {
+        const count = await LoanApplication.countDocuments({ customerId });
+        res.status(200).json({ count });
+    } catch (error) {
+        console.error('Error fetching loan application count:', error);
+        // res.status(500).json({ error: 'Server error' });
+    }
+});
 
 app.get('/api/dsa/applications/count/:dsaId', async (req, res) => {
     const { dsaId } = req.params;
@@ -907,7 +931,7 @@ app.get('/dsa/customer/applied/loan/:dsaId', async (req, res) => {
         const loanApplications = await LoanApplication.find({ dsaId: dsaId });
         res.status(200).json(loanApplications);
     } catch (error) {
-        // res.status(500).json({ error: "Error fetching loan applications" });
+        res.status(500).json({ error: "Error fetching loan applications" });
     }
 });
 
@@ -1177,6 +1201,7 @@ app.get('/dsa/activate/:token', async (req, res) => {
         return res.status(400).json({ error: 'Error: ' + err });
     }
 });
+
 app.post('/api/dsa/register', async (req, res) => {
     try {
         const token = crypto.randomBytes(32).toString('hex');
@@ -1209,7 +1234,7 @@ app.post('/api/dsa/register', async (req, res) => {
             html: `
             <p>Hello ${dsaName},</p>
             <p>Welcome to LDP Finanserv ,</p>
-            <p>To Activate Your Account  <a href="https://uksinfotechsolution.in:3000/dsa/activate/${token}">Click </a> Here.</p>
+            <p>To Activate Your Account  <a href="https://uksinfotechsolution.in/dsa/activate/${token}">Click </a> Here.</p>
             <p>Thanks & regards,<br>LDP Finanserv.</p>`,
 
 
@@ -1238,6 +1263,8 @@ app.post('/api/dsa/register', async (req, res) => {
         return res.status(500).json({ error: 'Internal server error' });
     }
 });
+
+
 app.post('/api/dsa/address', async (req, res) => {
     const { dsaId, aadharAddress, permanentAddress } = req.body;
     // console.log(dsaId, aadharAddress, permanentAddress);
@@ -1301,6 +1328,7 @@ app.get('/api/dsa/address', async (req, res) => {
 //         res.status(500).json({ error: 'Internal server error' });
 //     }
 // });
+
 app.put('/api/dsa/:id', async (req, res) => {
     try {
         const { id } = req.params;
@@ -1381,7 +1409,7 @@ app.post('/dsa/forgotpassword', async (req, res) => {
             subject: 'Password Reset',
             html: `
             <p>Hi ${dsa.dsaName},</p>
-    <p><a href="https://uksinfotechsolution.in:3000/dsa/reset/password/${token}">Click</a> to Reset Your Account (UKS-DSA-00${dsa.dsaNumber}) Password.</p>
+    <p><a href="https://uksinfotechsolution.in/dsa/reset/password/${token}">Click</a> to Reset Your Account (UKS-DSA-00${dsa.dsaNumber}) Password.</p>
             <p>Thanks & regards,<br>LDP Finanserv.</p>`,
 
         };
@@ -2039,7 +2067,7 @@ app.post('/customer/forgotpassword', async (req, res) => {
             subject: 'Password Reset',
             html: `
     <p>Hi ${customer.customerFname},</p>
-    <p><a href="https://uksinfotechsolution.in:3000/customer/reset/password/${token}">Click</a> to Reset Your Account (UKS-CUS-00${customer.customerNo}) Password.</p>
+    <p><a href="https://uksinfotechsolution.in/customer/reset/password/${token}">Click</a> to Reset Your Account (UKS-CUS-00${customer.customerNo}) Password.</p>
     <p>Thanks & regards,<br>LDP Finanserv.</p>
 `,
 
@@ -2185,7 +2213,7 @@ app.post('/register', async (req, res) => {
         });
 
         const savedCustomer = await customer.save();
-        const confirmationUrl = `https://uksinfotechsolution.in:3000/customer/activate/${token}`;
+        const confirmationUrl = `https://uksinfotechsolution.in/customer/activate/${token}`;
 
         const mailOptions = {
             from: process.env.EMAIL_USER,
@@ -2195,7 +2223,7 @@ app.post('/register', async (req, res) => {
             html: `
             <p>Hello ${customerFname},</p>
             <p>Welcome to LDP Finanserv ,</p>
-            <p>To Activate Your Account  <a href="https://uksinfotechsolution.in:3000/customer/activate/${token}">Click </a> Here.</p>
+            <p>To Activate Your Account  <a href="https://uksinfotechsolution.in/customer/activate/${token}">Click </a> Here.</p>
             <p>Thanks & regards,<br>LDP Finanserv.</p>`,
 
 
@@ -2245,6 +2273,7 @@ app.put('/update-customer-details', async (req, res) => {
         res.status(500).json({ message: 'Failed to update customer details' });
     }
 });
+
 // Get all customers endpoint
 app.get('/', async (req, res) => {
     const customers = await Customer.find();
@@ -2270,30 +2299,6 @@ app.get('/customer-details', async (req, res) => {
         // console.error('Error fetching customer details:', error);
     }
 });
-
-// Get customer by ID endpoint
-app.get('/:id', async (req, res) => {
-    const customer = await Customer.findById(req.params.id);
-    res.json(customer);
-});
-
-app.put('/customers/:id', async (req, res) => {
-    try {
-        const { customerNo, ...rest } = req.body; // Exclude customerNo from the update data
-        const updatedCustomer = await Customer.findByIdAndUpdate(req.params.id, rest, { new: true });
-        res.json(updatedCustomer);
-    } catch (error) {
-        res.status(500).json({ error: 'Error updating customer' });
-    }
-});
-
-// Delete customer by ID endpoint
-app.delete('/:id', async (req, res) => {
-    await Customer.findByIdAndDelete(req.params.id);
-    res.json('success');
-});
-
-
 
 // UKS EMPLOYEE API'S 
 
@@ -2379,7 +2384,7 @@ app.post('/api/uksregister', async (req, res) => {
     try {
         await newUser.save();
 
-        const confirmationUrl = `https://uksinfotechsolution.in:3000/uks/activate/${token}`;
+        const confirmationUrl = `https://uksinfotechsolution.in/uks/activate/${token}`;
         const mailOptions = {
             from: process.env.EMAIL_USER,
             to: email,
@@ -2387,7 +2392,7 @@ app.post('/api/uksregister', async (req, res) => {
             html: `
             <p>Hello ${name},</p>
             <p>Welcome to LDP Finanserv</p>
-            <p>To Activate Your Account <a href="https://uksinfotechsolution.in:3000/uks/activate/${token}">Click Here</a>.</p>
+            <p>To Activate Your Account <a href="https://uksinfotechsolution.in/uks/activate/${token}">Click Here</a>.</p>
             <p>Thanks & regards,<br>LDP Finanserv.</p>`,
         };
 
@@ -2523,7 +2528,7 @@ app.post('/uks/forgotpassword', async (req, res) => {
             subject: 'Password Reset',
             html: `
             <p>Hi ${user.name},</p>
-            <p><a href="https://uksinfotechsolution.in:3000/uks/reset/password/${token}">Click</a> to Reset Your Account (UKS-00${user.UKSNumber}) Password.</p>
+            <p><a href="https://uksinfotechsolution.in/uks/reset/password/${token}">Click</a> to Reset Your Account (UKS-00${user.UKSNumber}) Password.</p>
             <p>Thanks & regards,<br>LDP Finanserv.</p>`,
         };
 
@@ -3141,5 +3146,5 @@ app.delete('/api/unsecured/document-type/:id', async (req, res) => {
 
 server.listen(8000, () => {
     console.log(`Server running on https://148.251.230.14:8000:${8000}`);
-  console.log('WebSocket server is running on wss://148.251.230.14:${8000}');
+    console.log('WebSocket server is running on wss://148.251.230.14:${8000}');
 });

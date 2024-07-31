@@ -28,7 +28,7 @@ function Last_Div() {
 
     const fetchDownloadTableCount = async (customerId) => {
         try {
-            const response = await axios.get(`https://uksinfotechsolution.in:8000/dsa-customer/downloadtable/count?customerId=${customerId}`);
+            const response = await axios.get(`https://uksinfotechsolution.in:8000/api/customer/applications/count/${customerId}`);
             setDownloadTableCount(response.data.count);
         } catch (error) {
             console.error('Error fetching download table count:', error.message);
@@ -37,7 +37,9 @@ function Last_Div() {
 
     const fetchTableCount = async (customerId) => {
         try {
-            const response = await axios.get(`https://uksinfotechsolution.in:8000/dsa-customer/table/count?customerId=${customerId}`);
+            const response = await axios.get(`https://uksinfotechsolution.in:8000/customer/loan/apply/view/count/${customerId}`);
+
+
             setTableCount(response.data.count);
         } catch (error) {
             console.error('Error fetching table count:', error.message);

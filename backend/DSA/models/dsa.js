@@ -11,14 +11,14 @@ const DSASchema = new mongoose.Schema({
         required: true
     },
     primaryNumber: {
-        type: String,
+        type: Number,
         required: true
     },
     alternateNumber: {
-        type: String
+        type: Number
     },
     whatsappNumber: {
-        type: String
+        type: Number
     },
     email: {
         type: String,

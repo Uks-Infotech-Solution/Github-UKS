@@ -8,19 +8,6 @@ import '../DashBoardDesign/Header_Dashboard.css'
 function HeaderDashboard() {
     const [customerCounts, setCustomerCounts] = useState({ total: 0, active: 0, inactive: 0 });
 
-    useEffect(() => {
-        fetchCustomerCounts();
-    }, []);
-
-    const fetchCustomerCounts = async () => {
-        try {
-            const response = await axios.get(`https://uksinfotechsolution.in:8000/customer/status`);
-            const { totalcustomer, activestatus, inactivestatus } = response.data;
-            setCustomerCounts({ total: totalcustomer, active: activestatus, inactive: inactivestatus });
-        } catch (error) {
-            console.error('Error fetching customer counts:', error.message);
-        }
-    };
 
     return (
         <Container fluid>

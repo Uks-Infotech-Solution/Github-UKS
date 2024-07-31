@@ -371,7 +371,7 @@ function Profile_View() {
             });
 
             alert('Loan processing details saved successfully');
-            setActiveTab('loanprocessing');
+            // setActiveTab('loanprocessing');
 
         } catch (error) {
             console.error('Error updating previous loan details:', error);
@@ -717,7 +717,7 @@ function Profile_View() {
 
             if (response.status === 200) {
                 alert("Salaried Person aved successfully")
-                setActiveTab('loanprocessing')
+                // setActiveTab('loanprocessing')
             }
         } catch (error) {
             console.error('Error saving Salaried Person details:', error);
@@ -1015,7 +1015,7 @@ function Profile_View() {
                         {customerDetails.customerType === 'Salaried Person' && (
                             <Col lg={1} className={`col ${activeTab === 'salariedperson' ? 'active' : ''}`} style={{ fontWeight: "500" }} onClick={() => setActiveTab('salariedperson')}>Salaried Person</Col>
                         )}
-                        <Col lg={2} className={`col ${activeTab === 'loanprocessing' ? 'active' : ''}`} style={{ fontWeight: "500" }} onClick={() => setActiveTab('loanprocessing')}>Loan Processing</Col>
+                        {/* <Col lg={2} className={`col ${activeTab === 'loanprocessing' ? 'active' : ''}`} style={{ fontWeight: "500" }} onClick={() => setActiveTab('loanprocessing')}>Loan Processing</Col> */}
 
                         <div className={`Edit-button ${isSidebarExpanded ? 'sidebar-expanded' : ''}`}>
                             <Col lg={2}>
@@ -1592,11 +1592,11 @@ function Profile_View() {
                     {/* CUSTOMER DELETE THE ACCOUNT */}
 
                     <Row>
-                        <div style={{ textAlign: "end" }}>
+                        {/* <div style={{ textAlign: "end" }}>
                             <a href='#' style={{ textDecoration: "none" }} onClick={handleDeleteAccount}>
                                 Are you Delete Your Account ?
                             </a>
-                        </div>
+                        </div> */}
                     </Row>
                 </Col>
             </Row >

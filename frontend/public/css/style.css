@@ -85,7 +85,7 @@ ol {
   font-size: 24px;
   font-weight: 700;
   color: #333;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
 }
 #menu.navbar-default .navbar-nav > li > a {
   font-family: "Lato", sans-serif;
@@ -229,7 +229,8 @@ a:focus,
 .intro {
   display: table;
   width: 100%;
-  height: 500px !important;
+  /* color:"#145693": */
+  height: 200px !important;
   padding: 0;
   background: url(../images//Loan2.jpg) center center no-repeat;
   background-color: #e5e5e5;
@@ -247,11 +248,9 @@ a:focus,
 .intro h1 {
   font-family: "Raleway", sans-serif;
   /* color: #5ca9fb94; */
-  color: #ffffffa2;
-
-  font-size: 82px;
+  color: #145693;
+  font-size: 62px;
   font-weight: 700;
-  text-transform: uppercase;
   margin-top: 0;
   margin-bottom: 10px;
 }
@@ -260,7 +259,7 @@ a:focus,
   color: #5ca9fb41;
 }
 .intro p {
-  color: #ffffffa2;
+  color: #145693;
   font-size: 20px;
   font-weight: 300;
   line-height: 30px;

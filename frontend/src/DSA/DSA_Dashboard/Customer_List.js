@@ -13,7 +13,6 @@ import { MdKeyboardArrowRight } from "react-icons/md";
 import { Document, Page, View, Text, StyleSheet, pdf, Image } from '@react-pdf/renderer';
 import { saveAs } from 'file-saver';
 import { GrView } from "react-icons/gr";
-import Customer_Dashboard from '../../Customer_Dashboard/Customer-Dashboard';
 
 import { useSidebar } from '../../Customer/Navbar/SidebarContext';
 
@@ -101,30 +100,6 @@ function CustomerTable() {
 
     if (customers.length > 0) {
       fetchAddresses();
-    }
-  }, [customers]);
-
-  // Fetch customer statuses
-  useEffect(() => {
-    const fetchCustomerStatuses = async () => {
-      const newCustomerStatuses = {};
-      for (let customer of customers) {
-        try {
-          const response = await axios.get('https://uksinfotechsolution.in:8000/customer/status/table', {
-            params: { customerId: customer._id },
-          });
-          if (response.status === 200) {
-            newCustomerStatuses[customer._id] = response.data.status;
-          }
-        } catch (error) {
-          console.error(`Error fetching customer status for ${customer._id}:`, error);
-        }
-      }
-      setCustomerStatuses(newCustomerStatuses);
-    };
-
-    if (customers.length > 0) {
-      fetchCustomerStatuses();
     }
   }, [customers]);
 
@@ -316,7 +291,6 @@ function CustomerTable() {
   return (
     <>
       <Container fluid className={`Customer-basic-view-container ${isSidebarExpanded ? 'sidebar-expanded' : ''}`}>
-        {/* <Customer_Dashboard/> */}
         <Container className='Customer-table-container-second'>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <span className='Customer-table-container-second-head'>Customers List</span>
@@ -393,7 +367,7 @@ function CustomerTable() {
                       />
                     </td> */}
                     <td>{indexOfFirstCustomer + index + 1}</td>
-                    <td style={{ width: '100px',fontSize:'12px' }}>
+                    <td style={{ width: '100px', fontSize: '12px' }}>
                       {customer.customerNo ? `UKS-CU-${customer.customerNo.toString().padStart(3, '0')}` : 'N/A'}
                     </td>
                     <td style={{ display: 'flex', paddingTop: '0px' }}>
@@ -419,12 +393,13 @@ function CustomerTable() {
                       {loanProcessingDetails[customer._id] && loanProcessingDetails[customer._id].cibilRecord ? (
                         loanProcessingDetails[customer._id].cibilRecord
                       ) : (
-                        'Loading...'
+                        '-'
                       )}
                     </td>
-                    <td style={{ color: customerStatuses[customer._id] === 'Active' ? 'green' : 'red' }}>
-                      {customerStatuses[customer._id]}
+                    <td style={{ color: customer.isActive ? 'green' : 'red' }}>
+                      {customer.isActive ? 'Active' : 'Inactive'}
                     </td>
+
 
                     <td>
                       <GrView onClick={() => handleEditClick(customer._id)} style={{ cursor: 'pointer', color: '#2492eb' }} />

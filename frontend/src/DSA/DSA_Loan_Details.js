@@ -2,11 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Row, Col, Button } from 'react-bootstrap';
 import Select from 'react-select';
 import axios from 'axios';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { IoCloseSharp } from 'react-icons/io5';
 
 const DSA_Loan_Details = () => {
-    const navigate = useNavigate();
     const location = useLocation();
     const { dsaId } = location.state || {};
 

@@ -10,3 +10,8 @@
     height: 605px;
     align-items: center;
 }
+.error-message {
+    color: red !important;
+    font-size: 0.9em;
+    margin-top: 5px;
+}

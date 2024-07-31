@@ -43,6 +43,7 @@ function Applied_Loan() {
         const response = await axios.get(`https://uksinfotechsolution.in:8000/api/customer/${customerId}/loans`);
         if (response.status === 200) {
           setAppliedLoan(response.data.data);
+          console.log(response.data.data);
           setLoading(false);
 
           // Fetch address details for each DSA
