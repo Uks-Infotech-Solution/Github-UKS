@@ -251,7 +251,7 @@ function Dsa_Profile_View() {
                 const response = await axios.get('https://uksinfotechsolution.in:8000/salariedperson', {
                     params: { customerId: customerId }
                 });
-                console.log(response.data);
+                // console.log(response.data);
                 if (response.status === 200) {
                     const data = response.data.salariedPersons;
                     const allValuesEmpty = data.length === 0 || data.every(person =>
@@ -327,14 +327,14 @@ function Dsa_Profile_View() {
             try {
                 const response = await axios.get(`https://uksinfotechsolution.in:8000/buy_packages/dsa/${dsaId}`);
                 setPackages(response.data);
-            console.log(response.data);
+            // console.log(response.data);
 
             }
              catch (err) {
                 console.log(err);
             }
         };
-console.log(dsaId);
+// console.log(dsaId);
         fetchPackages();
     }, [dsaId]);
 
@@ -497,11 +497,13 @@ console.log(dsaId);
         },
     });
 
+
+
     const genrepdf = async () => {
         // console.log('DSA ID:', dsaId);
-        const packageData = packages.find(pkg => pkg.dsaId === dsaId);
+        const packageData = packagesArray.find(pkg => pkg.dsaId === dsaId);
         const downloadAccess = packageData?.downloadAccess || 0;
-        console.log(downloadTableCount,packageData.downloadAccess);
+        // console.log(downloadTableCount,packageData.downloadAccess);
         if (downloadTableCount > packageData.downloadAccess) { // Assuming 5 is your download limit, adjust as needed
             alert('Your Download Limit is Exceeded');
             return;
@@ -729,24 +731,24 @@ console.log(dsaId);
         saveAs(pdfBlob, 'CustomerProfile.pdf');
         try {
             // First, update the block and file status
-            console.log('Sending block status update request...');
+            // console.log('Sending block status update request...');
             const updateStatusResponse = await axios.post('https://uksinfotechsolution.in:8000/api/block_status_update', {
                 customerId: customerId,
                 blockStatus: 'Active',
                 fileStatus: 'Open'
             });
             await fetchDownloadTableCount();
-            console.log('Block status update response:', updateStatusResponse.data);
+            // console.log('Block status update response:', updateStatusResponse.data);
             if (updateStatusResponse.status === 201) {
-                console.log('Block and file status updated successfully');
+                // console.log('Block and file status updated successfully');
 
                 // Then, store the DSA and Customer IDs
-                console.log('Sending store data request...');
+                // console.log('Sending store data request...');
                 const storeDataResponse = await axios.post('https://uksinfotechsolution.in:8000/dsa-customer/downloadtable', {
                     dsaId: dsaId,
                     customerId: customerDetails._id
                 });
-                console.log('Store data response:', storeDataResponse.data);
+                // console.log('Store data response:', storeDataResponse.data);
 
                 if (storeDataResponse.status === 201) {
                     console.log(storeDataResponse.data.message); // Data stored successfully
@@ -775,6 +777,10 @@ console.log(dsaId);
         navigate('/dsa/dashboard', { state: { dsaId } });
     };
 
+    const packagesArray = Array.isArray(packages) ? packages : [packages];
+    console.log('packages:', packages);
+    console.log('Is packages an array?', Array.isArray(packages));
+    const hasActivePackage = packagesArray.some(pkg => pkg.packageStatus === 'Active');
     return (
         <>
             <Container fluid className={`Customer-basic-view-container ${isSidebarExpanded ? 'sidebar-expanded' : ''}`}>
@@ -787,7 +793,7 @@ console.log(dsaId);
                                     <span className="basic-view-head">Customer Download</span>
                                 </div>
                             </Col>
-                            {packages?.some(pkg => pkg.packageStatus === 'Active') && (
+                             {hasActivePackage && 
                                 <>
                             <Col style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
                                 <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -809,7 +815,7 @@ console.log(dsaId);
                                 </div>
                             </Col>
                             </>
-                            )}
+}
                             <hr style={{ margin: "5px" }} />
                         </Row>
                         <Row className={`Upload-profile-row ${isSidebarExpanded ? 'sidebar-expanded' : ''}`}>

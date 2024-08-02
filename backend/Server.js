@@ -76,6 +76,7 @@ const server = https.createServer({
     key: fs.readFileSync('/www/server/panel/vhost/cert/frontend/privkey.pem')
 }, app);
 
+
 const wss = new WebSocket.Server({ server });
 
 wss.on('connection', function connection(ws) {
@@ -97,6 +98,7 @@ const customerSchema = new Schema({
     customeralterno: String,
     customerwhatsapp: String,
     customermailid: String,
+    ReferedBy:String,
     typeofloan: String,
     loanRequired: Number,
     userpassword: String,
@@ -272,15 +274,21 @@ app.get('/Inactive/packagers', async (req, res) => {
 // Route to get packages by dsaId
 app.get('/buy_packages/dsa/:dsaId', async (req, res) => {
     try {
-        const packages = await BuyPackage.find({ dsaId: req.params.dsaId });
+        const packages = await BuyPackage.find({ dsaId: req.params.dsaId })
+            .sort({ purchaseDate: -1 }) // Sort by purchaseDate in descending order
+            .limit(1); // Limit to the most recent one
+
         if (!packages || packages.length === 0) {
-            // return res.status(404).json({ message: 'No packages found for this DSA ID' });
+            return res.status(404).json({ message: 'No active packages found for this DSA ID' });
         }
-        res.status(200).json(packages);
+console.log(packages);
+
+        res.status(200).json(packages[0]); // Respond with the most recent active package
     } catch (error) {
-        // res.status(500).json({ message: 'Error fetching packages', error });
+        res.status(500).json({ message: 'Error fetching packages', error });
     }
 });
+
 
 // Activation Via Employee
 
@@ -1297,6 +1305,18 @@ app.post('/api/dsa/address', async (req, res) => {
 });
 
 // Endpoint to fetch DSA address// Example backend route handler
+app.get('/check/dsa/address', async (req, res) => {
+    try {
+        const { dsaId } = req.query;
+        const address = await DSAAddress.findOne({ dsaId });
+        // console.log('Address data:', address); 
+        res.json(address);
+    } catch (error) {
+        console.error('Error fetching address:', error);
+        // res.status(500).send('Server Error');
+    }
+});
+
 app.get('/api/dsa/address', async (req, res) => {
     try {
         const { dsaId } = req.query;
@@ -1537,6 +1557,26 @@ app.post('/api/block_status_update', async (req, res) => {
 });
 
 // DSA
+app.get('/calculate/dsa/download', async (req, res) => {
+    try {
+        const { dsaId } = req.query;
+
+        // Validate the query parameter
+        if (!dsaId) {
+            return res.status(400).json({ message: 'Dsa ID is required' });
+        }
+
+        // Count the number of documents with the provided dsaId
+        const download = await DSA_Customer_downloadTable.find({ dsaId });
+        console.log(download);
+
+        res.status(200).json({ download });
+    } catch (error) {
+        console.error('Error counting documents in DSA_Customer_downloadTable:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
 app.get('/dsa/download/count', async (req, res) => {
     try {
         const { dsaId } = req.query;
@@ -1858,6 +1898,7 @@ app.get('/salariedperson', async (req, res) => {
 // CUSTOMER ADDRESS
 app.post('/add-address', async (req, res) => {
     const { customerId, address } = req.body;
+    
     try {
         const customer = await Customer.findById(customerId);
 
@@ -1886,6 +1927,30 @@ app.post('/add-address', async (req, res) => {
         res.status(500).json({ error: 'Server error' });
     }
 });
+
+app.get('/loanapply/address/check', async (req, res) => {
+    console.log("loan apply");
+    
+    const { customerId } = req.query;
+    try {
+        const customer = await Customer.findById(customerId);
+        if (!customer) {
+            // return res.status(404).json({ error: 'Customer not found' });
+        }
+
+        const address = await Address.findOne({ customerId: customer._id });
+        console.log(address);
+        
+        if (!address) {
+            // return res.status(404).json({ error: 'Address not found' });
+        }
+
+        res.json(address);
+    } catch (error) {
+        // res.status(500).json({ error: 'Server error' });
+    }
+});
+
 app.get('/view-address', async (req, res) => {
     const { customerId } = req.query;
     try {
@@ -2040,7 +2105,7 @@ app.get('/get-loan-processing', async (req, res) => {
 app.post('/customer/forgotpassword', async (req, res) => {
     const { email } = req.body;
     const customermailid = email;
-    console.log('Received email:', customermailid);
+    // console.log('Received email:', customermailid);
 
     try {
         // Case-insensitive query for email
@@ -2164,7 +2229,7 @@ app.post('/login', async (req, res) => {
 
 app.get('/customer/activate/:token', async (req, res) => {
     const { token } = req.params;
-    console.log("Customer token: " + token);
+    // console.log("Customer token: " + token);
 
     try {
         const customer = await Customer.findOne({ activationToken: token });
@@ -2184,8 +2249,8 @@ app.get('/customer/activate/:token', async (req, res) => {
 });
 
 app.post('/register', async (req, res) => {
-    const { title, customerFname, customerLname, gender, customercontact, customeralterno, customerwhatsapp, customermailid, typeofloan, userpassword, customerType, loanRequired, level } = req.body;
-    console.log(req.body);
+    const { title, customerFname, customerLname, gender, customercontact, customeralterno, customerwhatsapp, ReferedBy,customermailid, typeofloan, userpassword, customerType, loanRequired, level } = req.body;
+    // console.log(req.body);
     try {
         const token = crypto.randomBytes(32).toString('hex');
 
@@ -2207,6 +2272,7 @@ app.post('/register', async (req, res) => {
             typeofloan,
             userpassword: hashedPassword,
             customerType,
+            ReferedBy,
             loanRequired,
             level,
             activationToken: token
@@ -2293,7 +2359,7 @@ app.get('/customer-details', async (req, res) => {
             // return res.status(404).json({ error: 'Customer not found' });
         }
         res.json(customer);
-        console.log('Customer details:', customer);
+        // console.log('Customer details:', customer);
     } catch (error) {
         // res.status(500).json({ error: 'Internal server error' });
         // console.error('Error fetching customer details:', error);
@@ -2442,7 +2508,7 @@ app.post('/api/ukslogin', async (req, res) => {
 
     try {
         // Extract the number part from the email
-        const uksNumberMatch = email.match(/^UKS-EMP-(\d+)$/);
+        const uksNumberMatch = email.match(/^UKS-(\d+)$/);
         if (!uksNumberMatch) {
             return res.status(400).send({ error: 'Invalid UKS number format' });
         }
@@ -2491,7 +2557,7 @@ app.get('/api/ukslogin', async (req, res) => {
 
         // If user found, return user details
         res.status(200).send({ email: user.email, name: user.name });
-        console.log(user);
+        // console.log(user);
     } catch (error) {
         console.error('Error fetching user details:', error);
         res.status(500).send({ error: 'Internal Server Error' });
@@ -2588,7 +2654,7 @@ app.post('/uks/resetpassword/:token', async (req, res) => {
 app.post('/api/profile/upload-profile-picture', upload.single('profilePicture'), async (req, res) => {
     try {
         const { customerId } = req.body;
-        console.log(req.body);
+        // console.log(req.body);
         // Find the customer by email
         const customer = await Customer.findOne({ customerId: Customer._id });
 
@@ -2656,7 +2722,7 @@ app.get('/api/profile/view-profile-picture', async (req, res) => {
         // Send the profile picture data
         res.set('Content-Type', profilePicture.contentType);
         res.send(profilePicture.imageData);
-        console.log(profilePicture.imageData);
+        // console.log(profilePicture.imageData);
         // console.log(profilePicture.imageData);
 
     } catch (error) {

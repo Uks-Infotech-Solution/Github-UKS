@@ -172,8 +172,8 @@ function Applied_DSA_View() {
                 <Col>
                     {appliedLoan.map((loan) => (
                         <div key={loan.applicationNumber}>
-                            <h5>Customer Application No: <span style={{ paddingLeft: '10px', color: 'green' }}>UKS-00{loan.applicationNumber}</span></h5>
-                            <h5 >{loan.dsaCompanyName}</h5>
+                            <div style={{fontSize:'23px', fontWeight:'500'}}>Customer Application No: <span style={{ paddingLeft: '10px', color: 'green' }}>UKS-00{loan.applicationNumber}</span></div>
+                            <div  style={{fontSize:'15px', fontWeight:'500'}}>{loan.dsaCompanyName}</div>
                             <div className="apply-loan-name">{loan.dsaName} <span className="loan-rating">(UKS-DSA-00{loan.dsaNumber})</span></div>
                         </div>
                     ))}

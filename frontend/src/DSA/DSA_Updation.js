@@ -90,15 +90,8 @@ function DSA_Updation() {
                 website: formData.website
             });
 
-            // Update DSA address
-            await axios.put(`https://uksinfotechsolution.in:8000/api/dsa/address/${formData._id}`, {
-                state: formData.address.state,
-                district: formData.address.district,
-                city: formData.address.city
-            });
-
-            alert("DSA details updated successfully");
-
+           alert("DSA details updated successfully");
+           setEditingMode(false)
         } catch (error) {
             console.error('Error updating DSA:', error);
             alert("DSA Update Failed");

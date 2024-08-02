@@ -46,9 +46,6 @@ function Profile_View( ) {
     const [salariedPersons, setSalariedPersons] = useState([]);
     const [salaryEdit, setSalaryEdit] = useState(false);
 
-    const formatAmountWithCommas = (amount) => {
-        return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // Add commas to the amount
-    };
 
     // BASIC DETAILS UPDATE
     useEffect(() => {
@@ -247,12 +244,12 @@ function Profile_View( ) {
                             </View>
                             <View style={styles.row}>
                                 <Text style={styles.label}>Loan Required</Text>
-                                <Text style={styles.value}>:    {formatAmountWithCommas(customerDetails.loanRequired)}</Text>
+                                <Text style={styles.value}>:    {customerDetails.loanRequired}</Text>
                             </View>
-                            <View style={styles.row}>
+                            {/* <View style={styles.row}>
                                 <Text style={styles.label}>Loan Level</Text>
-                                <Text style={styles.value}>:    {formatAmountWithCommas(customerDetails.level)}</Text>
-                            </View>
+                                <Text style={styles.value}>:  (customerDetails.level)</Text>
+                            </View> */}
                         </View>
                         <View style={styles.addressContainer}>
                             <View style={styles.addressSection}>

@@ -36,28 +36,29 @@ function Applied_Customer_List() {
   const { isSidebarExpanded } = useSidebar();
 
 
-// console.log(dsaId);
+  // console.log(dsaId);
   const fetchDSADetails = async (dsaId) => {
     try {
       const response = await axios.get(`https://uksinfotechsolution.in:8000/api/dsa?dsaId=${dsaId}`);
       setDsaData(response.data);
+
     } catch (error) {
       console.error('Error fetching DSA details:', error);
     }
   };
   useEffect(() => {
     const fetchPackages = async () => {
-        try {
-            const response = await axios.get(`https://uksinfotechsolution.in:8000/buy_packages/dsa/${dsaId}`);
-            setPackages(response.data);
-            console.log(response.data);
-        } catch (err) {
-            console.log(err);
-        }
+      try {
+        const response = await axios.get(`https://uksinfotechsolution.in:8000/buy_packages/dsa/${dsaId}`);
+        setPackages(response.data);
+        // console.log(response.data);
+      } catch (err) {
+        console.log(err);
+      }
     };
 
     fetchPackages();
-}, [dsaId]);
+  }, [dsaId]);
 
   useEffect(() => {
     const fetchCustomers = async () => {
@@ -65,29 +66,33 @@ function Applied_Customer_List() {
         const response = await axios.get(`https://uksinfotechsolution.in:8000/dsa/customer/applied/loan/${dsaId}`);
         const customersData = response.data;
         setCustomers(customersData);
-  
+        console.log(response.data);
+
         const initialCheckedItems = {};
         const addresses = {};
         const profilePictures = {};
-  
-        for (let customer of customersData) {
+        
+
+        for (let customer of customers) {
           initialCheckedItems[customer._id] = false;
-  
+
           try {
             const addressResponse = await axios.get('https://uksinfotechsolution.in:8000/view-address', {
               params: { customerId: customer.customerId },
             });
             addresses[customer._id] = addressResponse.data;
+
           } catch (error) {
-            console.error(`Error fetching address for customer ${customer._id}:`, error);
+            // console.error(`Error fetching address for customer ${customer._id}:`, error);
           }
-  
+          setAddresses(addresses);
+          // console.log( addresses);
           try {
             const response = await axios.get(`https://uksinfotechsolution.in:8000/api/profile/view-profile-picture?customerId=${customer.customerId}`, {
               responseType: 'arraybuffer',
             });
             const contentType = response.headers['content-type'];
-  
+
             if (contentType && contentType.startsWith('image')) {
               const base64Image = `data:${contentType};base64,${btoa(
                 String.fromCharCode(...new Uint8Array(response.data))
@@ -100,9 +105,10 @@ function Applied_Customer_List() {
             // console.error('Error retrieving profile picture:', err);
           }
         }
-  
+
         setCheckedItems(initialCheckedItems);
-        setAddresses(addresses);
+        console.log(addresses);
+        
         setProfilePictures(profilePictures); // Update profilePictures state
         setLoading(false);
       } catch (err) {
@@ -111,7 +117,7 @@ function Applied_Customer_List() {
         setLoading(false);
       }
     };
-  
+
     if (dsaId) {
       fetchCustomers();
     }
@@ -139,11 +145,15 @@ function Applied_Customer_List() {
       return 0;
     }));
   };
-  
+
+  console.log(customers);
+  console.log(addresses);
 
   const filteredCustomers = customers.filter((customer) => {
     if (filterOption === 'District') {
+
       const customerAddress = addresses[customer._id];
+
       return customerAddress && customerAddress.aadharDistrict.toLowerCase().includes(filterValue.toLowerCase());
     }
     if (filterOption === 'Area') {
@@ -152,23 +162,15 @@ function Applied_Customer_List() {
     }
     return true;
   })
-  // .filter((customer) => {
-  // console.log(customer.loanType);
+  console.log(filteredCustomers);
 
-  //   return Array.isArray(packages.loanTypes) && packages.loanTypes.includes(customer.loanType);
-  // });
 
   const indexOfLastCustomer = currentPage * rowsPerPage;
   const indexOfFirstCustomer = indexOfLastCustomer - rowsPerPage;
   const currentCustomers = filteredCustomers.slice(indexOfFirstCustomer, indexOfLastCustomer);
+  console.log(currentCustomers);
 
-  const handleCheckboxChange = (event, id) => {
-    const isChecked = event.target.checked;
-    setCheckedItems((prevState) => ({
-      ...prevState,
-      [id]: isChecked,
-    }));
-  };
+
 
   const handleEditClick = async (id) => {
     const selectedCustomer = customers.find((customer) => customer._id === id);
@@ -176,7 +178,7 @@ function Applied_Customer_List() {
       console.error('Selected customer not found');
       return;
     }
-  
+
     try {
       const currentDate = new Date().toISOString();
       const payload = {
@@ -186,15 +188,15 @@ function Applied_Customer_List() {
         applicationNumber: selectedCustomer.applicationNumber,
         date: currentDate,
       };
-  
+
       await axios.post('https://uksinfotechsolution.in:8000/dsa/customer/apply/view/count', payload);
-       navigate('/applied/customer/view', { state: { loanId: selectedCustomer._id, applicationNumber: selectedCustomer.applicationNumber ,dsaId} });
-      
+      navigate('/applied/customer/view', { state: { loanId: selectedCustomer._id, applicationNumber: selectedCustomer.applicationNumber, dsaId } });
+
     } catch (error) {
       console.error('Error storing data:', error.response ? error.response.data : error.message);
     }
   };
-  
+
   const handleRowsPerPageChange = (selectedRowsPerPage) => {
     setRowsPerPage(selectedRowsPerPage);
     setCurrentPage(1);
@@ -224,7 +226,7 @@ function Applied_Customer_List() {
 
   return (
     <>
-                   <Container fluid className={`Customer-basic-view-container ${isSidebarExpanded ? 'sidebar-expanded' : ''}`}>
+      <Container fluid className={`Customer-basic-view-container ${isSidebarExpanded ? 'sidebar-expanded' : ''}`}>
         <Container className='Customer-table-container-second'>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <span className='Customer-table-container-second-head'>Applied Customers List</span>
@@ -266,22 +268,13 @@ function Applied_Customer_List() {
             <Table striped bordered hover className='dsa-table-line'>
               <thead>
                 <tr>
-                  {/* <th>
-                    <input
-                      type="checkbox"
-                      checked={allChecked}
-                      onChange={(e) => {
-                        setAllChecked(e.target.checked);
-                        handleAllChecked(e);
-                      }}
-                    />
-                  </th> */}
+                 
                   <th className='Customer-Table-head'>SI.No</th>
                   <th className='Customer-Table-head'>Application No</th>
                   <th className='Customer-Table-head'>Customer No</th>
                   <th className='Customer-Table-head'>Name</th>
-                  <th className='Customer-Table-head'>District</th>
-                  <th className='Customer-Table-head'>Area</th>
+                   <th className='Customer-Table-head'>District</th>
+                  <th className='Customer-Table-head'>Area</th> 
                   <th className='Customer-Table-head'>Type of Loan</th>
                   <th className='Customer-Table-head'>Amount</th>
                   <th className='Customer-Table-head'>Required Days</th>
@@ -289,60 +282,50 @@ function Applied_Customer_List() {
                   <th className='Customer-Table-head'>Status</th>
 
                   <th className='Customer-Table-head'>View</th>
-                  {/* <th className='Customer-Table-head'>Pdf</th> */}
+                 {/*<th className='Customer-Table-head'>Pdf</th> */}
                 </tr>
               </thead>
               <tbody>
-  {/* Render only the customers for the current page */}
-  {filteredCustomers.slice(indexOfFirstCustomer, indexOfLastCustomer).map((customer, index) => (
-    packages.some(pkg => Array.isArray(pkg.loanTypes) && pkg.loanTypes.includes(customer.loanType)) && (
-      <tr key={customer._id}>
-        {/* <td >
-          <input
-            type='checkbox'
-            className='customer-list-checkbox'
-            checked={checkedItems[customer._id]}
-            onChange={(e) => handleCheckboxChange(e, customer._id)}
-          />
-        </td> */}
-        <td>{indexOfFirstCustomer + index + 1}</td>
-        <td>UKS-Application-00{customer.applicationNumber}</td>
-        <td style={{ width: '100px' }}>
-          {customer.customerNo ? `UKS-CU-${customer.customerNo.toString().padStart(3, '0')}` : 'N/A'}
-        </td>
-        <td style={{ display: 'flex', paddingTop: '0px' }}>
-          {profilePictures[customer._id] ? (
-            <div style={{
-              backgroundImage: `url(${profilePictures[customer._id]})`,
-              backgroundSize: 'cover',
-              borderRadius: '50%',
-              height: '30px',
-              width: '30px',
-              marginRight: '10px',
-              marginLeft: '3px'
-            }}></div>
-          ) : (
-            <FaUserCircle size={32} className='navbar-profile-icon' style={{ marginRight: '10px' }} />
-          )}
-          <span style={{ textAlign: 'center' }}>{customer.customerName}</span>
-        </td>
-        {addresses[customer._id] && (
-          <>
-            <td>{addresses[customer._id].aadharDistrict || 'No District'}</td>
-            <td>{addresses[customer._id].aadharCity || 'No City'}</td>
-          </>
-        )}
-        <td>{customer.loanType}</td>
-        <td>{customer.loanAmount}</td>
-        <td>{customer.loanRequiredDays}</td>
-        <td>{customer.applyLoanStatus}</td>
-        <td>
-          <GrView onClick={() => handleEditClick(customer._id)} style={{ cursor: 'pointer', color: '#2492eb' }} />
-        </td>
-      </tr>
-    )
-  ))}
-</tbody>
+                {/* Render only the customers for the current page */}
+                {customers.map((customer,index) => ( 
+                  <tr key={customer._id}>
+                    <td>{indexOfFirstCustomer + index + 1}</td>
+                    <td>UKS-Application-00{customer.applicationNumber}</td>
+                    <td style={{ width: '100px' }}>
+                      {customer.customerNo ? `UKS-CU-${customer.customerNo.toString().padStart(3, '0')}` : 'N/A'}
+                    </td>
+                    <td style={{ display: 'flex', paddingTop: '0px' }}>
+                      {profilePictures[customer._id] ? (
+                        <div style={{
+                          backgroundImage: `url(${profilePictures[customer._id]})`,
+                          backgroundSize: 'cover',
+                          borderRadius: '50%',
+                          height: '30px',
+                          width: '30px',
+                          marginRight: '10px',
+                          marginLeft: '3px'
+                        }}></div>
+                      ) : (
+                        <FaUserCircle size={32} className='navbar-profile-icon' style={{ marginRight: '10px' }} />
+                      )}
+                      <span style={{ textAlign: 'center' }}>{customer.customerName}</span>
+                    </td>
+                     {addresses[customer._id] && (
+                      <>
+                        <td>{addresses[customer._id].aadharDistrict || 'No District'}</td>
+                        <td>{addresses[customer._id].aadharCity || 'No City'}</td>
+                      </>
+                    )} 
+                    <td>{customer.loanType}</td>
+                    <td>{customer.loanAmount}</td>
+                    <td>{customer.loanRequiredDays}</td>
+                    <td>{customer.applyLoanStatus}</td>
+                    <td>
+                      <GrView onClick={() => handleEditClick(customer._id)} style={{ cursor: 'pointer', color: '#2492eb' }} />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
 
             </Table>
           </div>

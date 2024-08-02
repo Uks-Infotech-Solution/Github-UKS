@@ -7,8 +7,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { GrCheckboxSelected } from "react-icons/gr";
 import { TiInputChecked } from "react-icons/ti";
 
-
-
 const PricingBox = () => {
   const [packageDetails, setPackageDetails] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -48,10 +46,21 @@ const PricingBox = () => {
     }
   }, [dsaId]);
 
-  const handlePurchaseClick = (pkg) => {
-    setSelectedPackage(pkg);
-    setShowModal(true);
+  const handlePurchaseClick = async (pkg) => {
+    try {
+      const response = await axios.get(`https://uksinfotechsolution.in:8000/check/dsa/address?dsaId=${dsaId}`);
+      if (response.data) {
+        setSelectedPackage(pkg);
+        setShowModal(true);
+      } else {
+        alert("Please update the address to purchase the package");
+        navigate('/dsa/updation', { state: { dsaId } });
+      }
+    } catch (error) {
+      console.error('Error checking address:', error);
+    }
   };
+
   const handleConfirmPurchase = async () => {
     if (!dsaData || !selectedPackage) return;
 
@@ -122,9 +131,6 @@ const PricingBox = () => {
                     ))}
                   </div>
 
-
-
-
                   <Button className="btn btn-primary mt-2" onClick={() => handlePurchaseClick(pkg)}>Purchase</Button>
                 </div>
               </div>
@@ -140,37 +146,21 @@ const PricingBox = () => {
           <Modal.Title>Confirm Purchase</Modal.Title>
         </Modal.Header>
         <Modal.Body style={{ textAlign: 'center' }}>
-          You Have Selected {selectedPackage?.packageName} ( Rs.{selectedPackage?.packageAmount}/-) Package.
-          <Row>
-            <h5>Are You Sure to Purchase ?</h5>
-          </Row>
+          You Have Selected {selectedPackage && selectedPackage.packageName}. Are You Sure You Want to Purchase This Package?
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>
-            Cancel
-          </Button>
-          <Button variant="primary" onClick={handleConfirmPurchase}>
-            Yes, Purchase
-          </Button>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>Cancel</Button>
+          <Button variant="primary" onClick={handleConfirmPurchase}>Confirm</Button>
         </Modal.Footer>
       </Modal>
 
       <Modal show={showSuccessModal} onHide={() => setShowSuccessModal(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Your Package Activation Send Successfully.</Modal.Title>
+          <Modal.Title style={{ color: 'green' }}>Success</Modal.Title>
         </Modal.Header>
-        <Modal.Body style={{ textAlign: 'center' }}>
-          Your Purchase Package Details have been Sent to our Employee.
-          <h6>Your Package Activation is processing.</h6>
+        <Modal.Body style={{ textAlign: 'center', color: 'green' }}>
+          Your Package Has Been Successfully Purchased!
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="primary" onClick={() => {
-            setShowSuccessModal(false);
-            navigate('/dsa/dashboard', { state: { dsaId } });
-          }}>
-            Ok
-          </Button>
-        </Modal.Footer>
       </Modal>
     </Container>
   );

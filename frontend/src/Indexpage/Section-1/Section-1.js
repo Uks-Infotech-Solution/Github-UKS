@@ -22,6 +22,8 @@ function Section_1() {
     const [customermailid, setCustomerMailId] = useState('');
     const [typeofloan, setTypeOfLoan] = useState('');
     const [loanRequired, setLoanRequired] = useState('');
+    const [ReferedBy, setReferedby] = useState('');
+
     const [userpassword, setUserPassword] = useState('');
     const [errors, setErrors] = useState({});
     const [customerType, setCustomerType] = useState('');
@@ -126,6 +128,7 @@ function Section_1() {
                     typeofloan,
                     userpassword,
                     loanRequired,
+                    ReferedBy,
                     customerType,
                     title,
                 };
@@ -377,6 +380,20 @@ function Section_1() {
                                         placeholder="Loan Required"
                                         value={loanRequired}
                                         onChange={handleChange(setLoanRequired)}
+                                    />
+                                    <Row>
+                                        {errors.loanRequired && <span className="error">{errors.loanRequired}</span>}
+                                    </Row>
+                                </Col>
+                            </Row>
+                            <Row className="Row1">
+                                <Col lg={4}><span className="customer-sentence">Refered By</span></Col>
+                                <Col lg={5}>
+                                    <input
+                                        type="text"
+                                        placeholder="Refered By"
+                                        value={ReferedBy}
+                                        onChange={handleChange(setReferedby)}
                                     />
                                     <Row>
                                         {errors.loanRequired && <span className="error">{errors.loanRequired}</span>}

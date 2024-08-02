@@ -104,7 +104,7 @@ const DashbordUserLogin = () => {
                   <Form.Label>Employee Number</Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder="UKS-EMP"
+                    placeholder="UKS-"
                     value={uksNumber}
                     onChange={(e) => setUksNumber(e.target.value)}
                     required

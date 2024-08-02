@@ -167,7 +167,7 @@ const StickyNavbar = () => {
       setImageSrc(null);
       setLogin(false);
       localStorage.setItem('login', false);
-      localStorage.removeItem('customId');
+      localStorage.removeItem('customerId');
       localStorage.removeItem('dsaId');
       localStorage.removeItem('uksId');
       localStorage.removeItem('profileImage');

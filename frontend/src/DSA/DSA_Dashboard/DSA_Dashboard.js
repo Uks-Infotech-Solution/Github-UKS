@@ -22,7 +22,10 @@ function DSA_Login_Dashboard() {
     const [DSADetails, setDSADetails] = useState(null);
     const [approvedCount, setApprovedCount] = useState(0);
     const [rejectedCount, setRejectedCount] = useState(0);
-    const [packages, setPackages] = useState([]);
+    const [latestPackage, setLatestPackage] = useState(null);
+    const [downloads, setDownloads] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         if (dsaId) {
@@ -96,7 +99,7 @@ function DSA_Login_Dashboard() {
         const fetchPackages = async () => {
             try {
                 const response = await axios.get(`https://uksinfotechsolution.in:8000/buy_packages/dsa/${dsaId}`);
-                setPackages(response.data);
+                setLatestPackage(response.data); // Assuming the backend returns the latest active package
                 // console.log(response.data);
             } catch (err) {
                 console.log(err);
@@ -104,6 +107,25 @@ function DSA_Login_Dashboard() {
         };
 
         fetchPackages();
+    }, [dsaId]);
+
+   
+    useEffect(() => {
+        const fetchDownloads = async () => {
+            try {
+                const response = await axios.get('https://uksinfotechsolution.in:8000/calculate/dsa/download', {
+                    params: { dsaId }
+                });
+                setDownloads(response.data.download);
+                setLoading(false);
+                // console.log(response.data.download);
+            } catch (err) {
+                setError(err.message);
+                setLoading(false);
+            }
+        };
+
+        fetchDownloads();
     }, [dsaId]);
 
     const homepage = () => {
@@ -121,6 +143,12 @@ function DSA_Login_Dashboard() {
         const daysLeft = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
         return daysLeft >= 0 ? daysLeft : 0; // Ensure it doesn't return negative days
     };
+
+    const calculateTotalDownloads = () => {
+        if (!latestPackage) return 0;
+        const purchaseDate = new Date(latestPackage.purchaseDate);
+        return downloads.filter(download => new Date(download.createdAt) >= purchaseDate).length;
+    };
     return (
         <>
             <div className={`dash-url-expand ${isSidebarExpanded ? 'sidebar-expanded' : ''}`}>
@@ -136,63 +164,60 @@ function DSA_Login_Dashboard() {
                         </div>
                         <hr />
 
-                        <div style={{ padding: '20px' }}>
-                            {packages.length > 0 ? (
-                                packages.map((pkg) => (
-                                    <div key={pkg._id} className="package-card" style={{ marginBottom: '20px' }}>
+                        <div style={{ padding: '20px', width: '100%' }}>
+                            {latestPackage ? (
+                                <div key={latestPackage._id} className="" style={{ marginBottom: '20px', width: '100%' }}>
+                                    <Card style={{
+                                        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                                        borderRadius: '10px',
+                                        border: 'none',
+                                        width: '100%',
+                                        overflow: 'hidden',
+                                    }}>
+                                        <Card.Body style={{ padding: '20px', width: '100%', backgroundColor: '#f9f9f9', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }}>
+                                            <Row>
+                                                <Col style={{ marginBottom: '20px' }}>
+                                                    <h5 style={{ color: '#333', fontSize: '13px', fontWeight: '600' }}>Package Name</h5>
+                                                    <p style={{ color: '#666', fontWeight: '600', fontSize: '15px', margin: '0' }}>{latestPackage.packageName}</p>
+                                                </Col>
+                                                <Col style={{ marginBottom: '20px' }}>
+                                                    <h5 style={{ color: '#333', fontSize: '13px', fontWeight: '600' }}>Amount</h5>
+                                                    <p style={{ color: '#666', fontSize: '12px', margin: '0' }}>Rs. {latestPackage.packageAmount}/-</p>
+                                                </Col>
+                                                <Col style={{ marginBottom: '20px' }}>
+                                                    <h5 style={{ color: '#333', fontSize: '13px', fontWeight: '600' }}>Download Access</h5>
+                                                    <p style={{ color: '#666', fontSize: '12px', margin: '0' }}>{latestPackage.downloadAccess}</p>
+                                                </Col>
+                                                <Col style={{ marginBottom: '20px' }}>
+                                                    <h5 style={{ color: '#333', fontSize: '13px', fontWeight: '600' }}>Status</h5>
+                                                    <p style={{ color: latestPackage.packageStatus === 'Active' ? 'green' : 'red', fontSize: '14px', margin: '0', fontWeight: '600' }}>{latestPackage.packageStatus}</p>
+                                                </Col>
+                                            </Row>
 
-                                        <Card style={{
-                                            height: '',
-                                            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-                                            borderRadius: '10px',
-                                            border: 'none',
-                                            overflow: 'hidden',
-                                        }}>
-                                            <Card.Body style={{ padding: '20px', backgroundColor: '#f9f9f9', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }}>
-                                                <h6 style={{ textAlign: 'left', marginBottom: '20px', color: '#4A90E2', fontSize: '15px', fontWeight: '600' }}>Purchased Package Details</h6>
+                                            <Row>
+                                            <Col style={{ marginBottom: '20px' }}>
+                                                    <h5 style={{ color: '#333', fontSize: '13px', fontWeight: '600' }}>Total Downloads</h5>
+                                                    <p style={{ color: '#666', fontSize: '12px', margin: '0' }}>{calculateTotalDownloads()}</p>
+                                                </Col>
+                                                <Col style={{ marginBottom: '20px' }}>
+                                                    <h5 style={{ color: '#333', fontSize: '13px', fontWeight: '600' }}>Purchase Date</h5>
+                                                    <p style={{ color: '#666', fontSize: '12px', margin: '0' }}>{new Date(latestPackage.purchaseDate).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })}</p>
+                                                </Col>
+                                                <Col style={{ marginBottom: '20px' }}>
+                                                    <h5 style={{ color: '#333', fontSize: '13px', fontWeight: '600' }}>Expiry Date</h5>
+                                                    <p style={{ color: '#666', fontSize: '12px', margin: '0' }}>{new Date(calculateExpiryDate(latestPackage.purchaseDate)).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })}</p>
+                                                </Col>
+                                                <Col style={{ marginBottom: '20px' }}>
+                                                    <h5 style={{ color: '#333', fontSize: '13px', fontWeight: '600' }}>Days Left</h5>
+                                                    <p style={{ color: calculateDaysLeft(latestPackage.purchaseDate) < 5 ? 'red' : '#666', fontSize: '12px', margin: '0' }}>
+                                                        {calculateDaysLeft(latestPackage.purchaseDate)}
+                                                    </p>
+                                                </Col>
+                                            </Row>
+                                        </Card.Body>
+                                    </Card>
+                                </div>
 
-                                                <Row>
-                                                    <Col xs={6} md={3} style={{ marginBottom: '20px' }}>
-                                                        <h5 style={{ color: '#333', fontSize: '13px', fontWeight: '600' }}>Package Name</h5>
-                                                        <p style={{ color: '#666',fontWeight:'600', fontSize: '15px', margin: '0' }}>{pkg.packageName}</p>
-                                                    </Col>
-                                                    <Col xs={6} md={3} style={{ marginBottom: '20px' }}>
-                                                        <h5 style={{ color: '#333', fontSize: '13px', fontWeight: '600' }}>Amount</h5>
-                                                        <p style={{ color: '#666', fontSize: '12px', margin: '0' }}>Rs. {pkg.packageAmount}/-</p>
-                                                    </Col>
-                                                    <Col xs={6} md={3} style={{ marginBottom: '20px' }}>
-                                                        <h5 style={{ color: '#333', fontSize: '13px', fontWeight: '600' }}>Download Access</h5>
-                                                        <p style={{ color: '#666', fontSize: '12px', margin: '0' }}>{pkg.downloadAccess}</p>
-                                                    </Col>
-                                                    <Col xs={6} md={3} style={{ marginBottom: '20px' }}>
-                                                        <h5 style={{ color: '#333', fontSize: '13px', fontWeight: '600' }}>Status</h5>
-                                                        <p style={{ color: pkg.packageStatus === 'Active' ? 'green' : 'red', fontSize: '14px', margin: '0',fontWeight:'600' }}>{pkg.packageStatus}</p>
-                                                    </Col>
-                                                </Row>
-
-                                                <Row>
-                                                    <Col>
-                                                    </Col>
-                                                   
-                                                    <Col xs={6} md={3} style={{ marginBottom: '20px' }}>
-                                                        <h5 style={{ color: '#333', fontSize: '13px', fontWeight: '600' }}>Purchase Date</h5>
-                                                        <p style={{ color: '#666', fontSize: '12px', margin: '0' }}>{new Date(pkg.purchaseDate).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })}</p>
-                                                    </Col>
-                                                    <Col xs={6} md={3} style={{ marginBottom: '20px' }}>
-                                                        <h5 style={{ color: '#333', fontSize: '13px', fontWeight: '600' }}>Expiry Date</h5>
-                                                        <p style={{ color: '#666', fontSize: '12px', margin: '0' }}>{new Date(calculateExpiryDate(pkg.purchaseDate)).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })}</p>
-                                                    </Col>
-                                                    <Col xs={6} md={3} style={{ marginBottom: '20px' }}>
-                                                        <h5 style={{ color: '#333', fontSize: '13px', fontWeight: '600' }}>Days Left</h5>
-                                                        <p style={{ color: calculateDaysLeft(pkg.purchaseDate) < 5 ? 'red' : '#666', fontSize: '12px', margin: '0' }}>
-                                                            {calculateDaysLeft(pkg.purchaseDate)}
-                                                        </p>
-                                                    </Col>
-                                                </Row>
-                                            </Card.Body>
-                                        </Card>
-                                    </div>
-                                ))
                             ) : (
                                 <p style={{ textAlign: 'center', color: '#999' }}>Click Pricing Menu to Purchase Package</p>
                             )}

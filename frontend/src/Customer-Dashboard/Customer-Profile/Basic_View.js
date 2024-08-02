@@ -95,7 +95,7 @@ function Profile_View() {
     const [gstNo, setGstNo] = useState('');
     const [cibilRecord, setCibilRecord] = useState('');
     const [successMessage, setSuccessMessage] = useState(null);
-    const [activeTab, setActiveTab] = useState('details'); // Define the activeTab state
+    const [activeTab, setActiveTab] = useState('address'); // Define the activeTab state
     const [showModal, setShowModal] = useState(false);
     const [editingMode, setEditingMode] = useState(false);
     const [editiloanprocess, seteditiloanprocess] = useState(false);
@@ -166,6 +166,7 @@ function Profile_View() {
             customerwhatsapp: customerDetails.customerwhatsapp,
             customermailid: customerDetails.customermailid,
             typeofloan: customerDetails.typeofloan,
+            ReferedBy:customerDetails.ReferedBy,
             loanRequired: customerDetails.loanRequired,
         };
         // console.log(updatedDetails);
@@ -958,6 +959,10 @@ function Profile_View() {
                                     </select>
                                 </Col>
                             </Row>
+                            <Row className="Row1 view-row-size">
+                                <Col className='basic-col-width' lg={2}><span className="customer-sentence">Refered By</span></Col>
+                                <Col  ><input type="text" className="box" value={customerDetails.ReferedBy} onChange={(e) => handleInputChange('ReferedBy', e.target.value)} /></Col>
+                            </Row>
                             {/* Add input fields for other customer details similarly */}
                         </>
                     ) : (
@@ -1001,6 +1006,14 @@ function Profile_View() {
                                 <Col className='basic-col-width' lg={2}><span className="customer-sentence">Loan type</span></Col>
                                 <Col><div className=" box customer-data-font">{customerDetails.typeofloan}</div></Col>
                             </Row>
+                            <Row className="Row1 view-row-size">
+                                <Col className='basic-col-width' lg={2}><span className="customer-sentence">E-Mail</span></Col>
+                                <Col><div className=" box customer-data-font">{customerDetails.customermailid}</div></Col>
+                            </Row>
+                            <Row className="Row1 view-row-size">
+                                <Col className='basic-col-width' lg={2}><span className="customer-sentence">Refered By</span></Col>
+                                <Col><div className=" box customer-data-font">{customerDetails.ReferedBy}</div></Col>
+                            </Row>
 
                         </>
                     )}
@@ -1015,7 +1028,7 @@ function Profile_View() {
                         {customerDetails.customerType === 'Salaried Person' && (
                             <Col lg={1} className={`col ${activeTab === 'salariedperson' ? 'active' : ''}`} style={{ fontWeight: "500" }} onClick={() => setActiveTab('salariedperson')}>Salaried Person</Col>
                         )}
-                        {/* <Col lg={2} className={`col ${activeTab === 'loanprocessing' ? 'active' : ''}`} style={{ fontWeight: "500" }} onClick={() => setActiveTab('loanprocessing')}>Loan Processing</Col> */}
+                        <Col lg={2} className={`col ${activeTab === 'loanprocessing' ? 'active' : ''}`} style={{ fontWeight: "500" }} onClick={() => setActiveTab('loanprocessing')}>Loan Processing</Col>
 
                         <div className={`Edit-button ${isSidebarExpanded ? 'sidebar-expanded' : ''}`}>
                             <Col lg={2}>
@@ -1382,7 +1395,7 @@ function Profile_View() {
                                     <div>Loading...</div>
                                 ) : editiloanprocess ? (
                                     <>
-                                        <Row >
+                                        {/* <Row >
                                             <Col>
                                                 <Row className="Row1 view-row-size">
                                                     <Col lg={3}><span className="customer-sentence">IT Returns</span></Col>
@@ -1496,7 +1509,7 @@ function Profile_View() {
                                                     </Col>
                                                 </Row>
                                             </Col>
-                                        </Row>
+                                        </Row> */}
                                     </>
                                 ) : (
                                     <>
