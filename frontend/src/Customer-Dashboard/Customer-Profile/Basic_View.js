@@ -356,7 +356,7 @@ function Profile_View() {
 
     //SAVE PREVIOUS LOAN DETAILS
 
-    const [hasPreviousLoan, setHasPreviousLoan] = useState(null);
+    const [hasPreviousLoan, setHasPreviousLoan] = useState(true);
     const [previousLoanDetails, setPreviousLoanDetails] = useState([{
         financeName: '',
         yearOfLoan: '',
