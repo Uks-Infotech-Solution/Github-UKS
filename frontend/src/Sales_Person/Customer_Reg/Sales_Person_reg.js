@@ -1,33 +1,32 @@
 import { Button, Col, Container, Row, Modal } from "react-bootstrap";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useSidebar } from '../../Customer/Navbar/SidebarContext';
 import './Customer_reg.css';
 import { useLocation } from 'react-router-dom';
 
-function Location({ onSuccess,customerId, customerNo }) {
+function Location({ onSuccess, customerId, customerNo }) {
     const navigate = useNavigate();
     const homepage = () => {
         navigate('/customer');
     };
-    console.log(customerNo);
+
     const { isSidebarExpanded } = useSidebar();
     const [salesPersonName, setSalesPersonName] = useState("");
     const [customerDetails, setCustomerDetails] = useState(null);
 
-    const [customerName, setcustomerName] = useState("");
+    const [customerName, setCustomerName] = useState("");
     const location = useLocation();
     const { uksId } = location.state || {};
-    console.log(uksId);
+    
     useEffect(() => {
         const fetchCustomerDetails = async () => {
             try {
-                const response = await axios.get('https://uksinfotechsolution.in:8000/customer-details',{
+                const response = await axios.get('https://uksinfotechsolution.in:8000/customer-details', {
                     params: { customerId: customerId }
                 });
-                setCustomerDetails(response.data)
-                console.log(customerDetails);
+                setCustomerDetails(response.data);
             } catch (err) {
                 console.log(err);
             }
@@ -35,6 +34,7 @@ function Location({ onSuccess,customerId, customerNo }) {
 
         fetchCustomerDetails();
     }, [customerId]);
+
     const [showSuccessModal, setShowSuccessModal] = useState(false);
 
     const saveData = async () => {
@@ -46,7 +46,6 @@ function Location({ onSuccess,customerId, customerNo }) {
                 customerId,
             });
             if (response.status === 200) {
-                console.log("Data saved successfully");
                 setShowSuccessModal(true);
             } else {
                 console.error("Error saving data: ", response.status);
@@ -56,7 +55,6 @@ function Location({ onSuccess,customerId, customerNo }) {
         }
     };
 
-    // Modal function to render success modal
     const renderSuccessModal = () => {
         return (
             <Modal show={showSuccessModal} onHide={() => setShowSuccessModal(false)} centered>
@@ -64,8 +62,9 @@ function Location({ onSuccess,customerId, customerNo }) {
                     <Modal.Title>Success</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <p className="modal-message">Customer Registration Completed.
-                    <p>Customer Code {customerDetails.customerNo}</p>
+                    <p className="modal-message">
+                        Customer Registration Completed.
+                        {customerDetails && <p>Customer Code {customerDetails.customerNo}</p>}
                     </p>
                 </Modal.Body>
                 <Modal.Footer>
@@ -82,14 +81,14 @@ function Location({ onSuccess,customerId, customerNo }) {
 
     return (
         <>
-            <Container fluid >
+            <Container fluid>
                 <Row className="mt-3">
                     <Col>
                         <input 
                             type="text" 
                             placeholder="Customer Name" 
                             value={customerName}
-                            onChange={(e) => setcustomerName(e.target.value)}
+                            onChange={(e) => setCustomerName(e.target.value)}
                         />
                     </Col>
                 </Row>
@@ -110,7 +109,6 @@ function Location({ onSuccess,customerId, customerNo }) {
                 </Row>
             </Container>
 
-            {/* Render the success modal */}
             {renderSuccessModal()}
         </>
     );

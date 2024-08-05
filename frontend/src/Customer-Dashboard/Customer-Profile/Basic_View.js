@@ -117,7 +117,6 @@ function Profile_View() {
                 });
                 setCustomerDetails(response.data);
                 handleActivateAccount();
-                setAddressDetails(response.data.address || {});
                 setLoading(false);
             } catch (error) {
                 // console.error('Error fetching customer details:', error);
@@ -136,6 +135,7 @@ function Profile_View() {
 
     // FETCH LOAN TYPES IN MASTER  
     const [loanTypes, setLoanTypes] = useState([]);
+    var customerupdate = null;
 
     useEffect(() => {
         axios.get('https://uksinfotechsolution.in:8000/api/loan-types')
@@ -153,27 +153,31 @@ function Profile_View() {
     const handleSaveClick = async () => {
         if (!customerDetails || !customerId) {
             alert("Customer details are not properly loaded.");
-            return;
+            // return;
         }
-        const updatedDetails = {
-            customerType: customerDetails.customerType,
-            title: customerDetails.title,
-            customerFname: customerDetails.customerFname,
-            customerLname: customerDetails.customerLname,
-            gender: customerDetails.gender,
-            customercontact: customerDetails.customercontact,
-            customeralterno: customerDetails.customeralterno,
-            customerwhatsapp: customerDetails.customerwhatsapp,
-            customermailid: customerDetails.customermailid,
-            typeofloan: customerDetails.typeofloan,
-            ReferedBy:customerDetails.ReferedBy,
-            loanRequired: customerDetails.loanRequired,
-        };
+        else{
+            customerupdate = {
+                customerType: customerDetails.customerType,
+                title: customerDetails.title,
+                customerFname: customerDetails.customerFname,
+                customerLname: customerDetails.customerLname,
+                gender: customerDetails.gender,
+                customercontact: customerDetails.customercontact,
+                customeralterno: customerDetails.customeralterno,
+                customerwhatsapp: customerDetails.customerwhatsapp,
+                customermailid: customerDetails.customermailid,
+                typeofloan: customerDetails.typeofloan,
+                ReferedBy:customerDetails.ReferedBy,
+                loanRequired: customerDetails.loanRequired,
+            }
+            
+        }
+        
         // console.log(updatedDetails);
         try {
             const response = await axios.put('https://uksinfotechsolution.in:8000/update-customer-details', {
                 customerId: customerId, // Use the _id from customerDetails
-                updatedDetails: updatedDetails
+                updatedDetails: customerupdate
             });
 
             console.log("Response from server:", response.data);
@@ -527,7 +531,7 @@ function Profile_View() {
             return;
         }
         try {
-            await axios.post(`https://uksinfotechsolution.in:8000/add-address`, {
+            await axios.post('https://uksinfotechsolution.in:8000/add-address', {
                 customerId: customerId,
                 address: addressDetails,
             });
@@ -545,7 +549,7 @@ function Profile_View() {
     useEffect(() => {
         const fetchAddressDetails = async () => {
             try {
-                const response = await axios.get(`https://uksinfotechsolution.in:8000/view-address`, {
+                const response = await axios.get('https://uksinfotechsolution.in:8000/view-address', {
                     params: { customerId: customerId }
                 });
                 if (response.data) {

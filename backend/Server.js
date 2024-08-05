@@ -70,7 +70,6 @@ const transporter = nodemailer.createTransport({
         pass: process.env.EMAIL_PASS,
     },
 });
-
 const server = https.createServer({
     cert: fs.readFileSync('/www/server/panel/vhost/cert/frontend/fullchain.pem'),
     key: fs.readFileSync('/www/server/panel/vhost/cert/frontend/privkey.pem')

@@ -5,7 +5,7 @@ import axios from "axios";
 import './Customer_reg.css';
 import { useSidebar } from '../../Customer/Navbar/SidebarContext';
 
-function Loan_process({ onSuccess,customerId,customerNo }) {
+function Loan_process({ onSuccess, customerId, customerNo }) {
     const navigate = useNavigate();
     const [hasPreviousLoan, setHasPreviousLoan] = useState(null);
     const [previousLoanDetails, setPreviousLoanDetails] = useState([{ financeName: '', yearOfLoan: '', loanAmount: '', outstandingAmount: '' }]);
@@ -22,8 +22,8 @@ function Loan_process({ onSuccess,customerId,customerNo }) {
                 previousLoans: loansToSave,
                 customerId: customerId,
             });
-alert('Previous Loan Details Saved Successfully');
-onSuccess();
+            alert('Previous Loan Details Saved Successfully');
+            onSuccess();
             // Show success modal upon successful save
         } catch (error) {
             console.error('Error updating previous loan details:', error);
@@ -101,7 +101,7 @@ onSuccess();
                         </Col>
                     </Row>
                 </Row>
-                
+
             </Container>
 
         </>
