@@ -23,7 +23,11 @@ function UKS_DSA_List() {
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const filterDropdownRef = useRef(null);
+  const { isSidebarExpanded } = useSidebar();
 
+  const fetchedIdsRef = useRef(new Set());
+  const fetchedAddressIdsRef = useRef(new Set());
+  
   const [checkedItems, setCheckedItems] = useState({});
   const [allChecked, setAllChecked] = useState(false);
   const [dsaLoanDetails, setDsaLoanDetails] = useState({});
@@ -33,7 +37,6 @@ function UKS_DSA_List() {
   const indexOfLastDsa = currentPage * rowsPerPage;
   const indexOfFirstDsa = indexOfLastDsa - rowsPerPage;
   const currentDsas = dsaData.slice(indexOfFirstDsa, indexOfLastDsa);
-  const { isSidebarExpanded } = useSidebar();
 
   const paginate = pageNumber => setCurrentPage(pageNumber);
 
@@ -41,45 +44,59 @@ function UKS_DSA_List() {
     setRowsPerPage(parseInt(selectedRowsPerPage));
     setCurrentPage(1);
   };
-
   const fetchDSADetails = async () => {
     try {
       const response = await axios.get(`https://uksinfotechsolution.in:8000/api/dsa/list`);
       setDsaData(response.data.dsa);
       setLoading(false);
-
+  
       // Fetch address details for each DSA
-      const addressPromises = response.data.dsa.map(dsa => (
-        axios.get(`https://uksinfotechsolution.in:8000/api/dsa/address?dsaId=${dsa._id}`)
-      ));
+      const addressPromises = response.data.dsa.map(dsa => {
+        if (!fetchedAddressIdsRef.current.has(dsa._id)) {
+          fetchedAddressIdsRef.current.add(dsa._id);
+          return axios.get(`https://uksinfotechsolution.in:8000/api/dsa/address?dsaId=${dsa._id}`);
+        }
+        return Promise.resolve(null); // Skip if already fetched
+      });
+  
       const addressResponses = await Promise.all(addressPromises);
       const addresses = {};
       addressResponses.forEach((addressResponse, index) => {
-        const dsaId = response.data.dsa[index]._id;
-        addresses[dsaId] = addressResponse.data.permanentAddress;
+        if (addressResponse) {
+          const dsaId = response.data.dsa[index]._id;
+          const permanentAddress = addressResponse?.data?.permanentAddress || '-';
+          addresses[dsaId] = permanentAddress;
+        }
       });
-      setDsaAddress(addresses);
+      setDsaAddress(prevAddresses => ({ ...prevAddresses, ...addresses }));
     } catch (error) {
       console.error('Error fetching DSA details:', error);
       setLoading(false);
     }
   };
-
+  
   const fetchLoanDetails = async (dsaId) => {
     setLoadingLoanDetails((prevLoadingLoanDetails) => ({
       ...prevLoadingLoanDetails,
       [dsaId]: true,
     }));
-
+  
     try {
       const response = await axios.get(`https://uksinfotechsolution.in:8000/api/dsa/getLoanDetails/${dsaId}`);
-
-      setDsaLoanDetails((prevDetails) => ({
-        ...prevDetails,
-        [dsaId]: response.data.loanDetails,
-      }));
+      const loanDetails = response.data.loanDetails;
+  
+      if (loanDetails && Object.keys(loanDetails).length > 0) {
+        setDsaLoanDetails((prevDetails) => ({
+          ...prevDetails,
+          [dsaId]: loanDetails,
+        }));
+      }
     } catch (error) {
-      console.error('Error fetching loan details:', error);
+      // Optional: Handle specific status code for 404
+      if (error.response && error.response.status === 404) {
+        // Resource not found - do nothing or handle specifically
+      }
+      // Other errors can be handled here if needed
     } finally {
       setLoadingLoanDetails((prevLoadingLoanDetails) => ({
         ...prevLoadingLoanDetails,
@@ -87,7 +104,7 @@ function UKS_DSA_List() {
       }));
     }
   };
-
+  
   const handleFilterOptionChange = (option) => {
     setFilterOption(option);
     setShowFilterDropdown(true);
@@ -110,7 +127,8 @@ function UKS_DSA_List() {
 
   useEffect(() => {
     currentDsas.forEach(dsa => {
-      if (!dsaLoanDetails[dsa._id] && !loadingLoanDetails[dsa._id]) {
+      if (!dsaLoanDetails[dsa._id] && !loadingLoanDetails[dsa._id] && !fetchedIdsRef.current.has(dsa._id)) {
+        fetchedIdsRef.current.add(dsa._id);
         fetchLoanDetails(dsa._id);
       }
     });
@@ -131,38 +149,22 @@ function UKS_DSA_List() {
   };
 
 
-  const handleCheckboxChange = (event, id) => {
-    const isChecked = event.target.checked;
-    setCheckedItems((prevState) => ({
-      ...prevState,
-      [id]: isChecked,
-    }));
-  };
-
-  const handleAllChecked = (event) => {
-    const isChecked = event.target.checked;
-    const newCheckedItems = {};
-    currentDsas.forEach(dsa => {
-      newCheckedItems[dsa._id] = isChecked;
-    });
-    setCheckedItems(newCheckedItems);
-    setAllChecked(isChecked);
-  };
   // Filter appliedLoan based on filterOption and filterValue
   // Filter appliedLoan based on filterOption and filterValue
   const filteredDsas = dsaData.filter((dsa) => {
     if (filterOption === 'District') {
-      return dsaAddress[dsa._id]?.district.toLowerCase().includes(filterValue.toLowerCase());
+      return dsaAddress[dsa._id]?.district;
     }
     if (filterOption === 'Area') {
-      return dsaAddress[dsa._id]?.area.toLowerCase().includes(filterValue.toLowerCase());
+      return dsaAddress[dsa._id]?.area;
     }
     return true;
   });
 
   return (
     <>
-                   <Container fluid className={`Customer-basic-view-container ${isSidebarExpanded ? 'sidebar-expanded' : ''}`}>
+      <Container fluid className={`apply-loan-view-container ${isSidebarExpanded ? 'sidebar-expanded' : ''}`}>
+
         <div className='dsa-table-container-second'>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '10px' }}>
             <span className='dsa-table-container-second-head'>DSA's List</span>
@@ -228,61 +230,64 @@ function UKS_DSA_List() {
                 </tr>
               </thead>
               <tbody>
-                {filteredDsas.length === 0 ? (
-                  <tr>
-                    <td colSpan="9" className="text-center">No Record Found</td>
-                  </tr>
-                ) : (
-                  filteredDsas.map((dsa, index) => (
-                    <tr key={dsa._id}>
-                      {/* <td>
-                      <input
-                        type='checkbox'
-                        className='dsa-checkbox'
-                        checked={checkedItems[dsa._id] || false}
-                        onChange={(e) => handleCheckboxChange(e, dsa._id)}
-                      />
-                    </td> */}
-                      <td>{indexOfFirstDsa + index + 1}</td>
-                      <td>UKS-DSA-0{dsa.dsaNumber}</td>
-                      <td>{dsa.dsaName}</td>
-                      <td>{dsa.dsaCompanyName}</td>
-                      <td>{dsaAddress[dsa._id] ? dsaAddress[dsa._id].district : '-'}</td>
-                      <td>{dsaAddress[dsa._id] ? dsaAddress[dsa._id].area : '-'}</td>
-                      <td>{dsa.primaryNumber}</td>
-                      <td>
-                        {loadingLoanDetails[dsa._id] ? (
-                          'Loading...'
-                        ) : (
-                          dsaLoanDetails[dsa._id] && dsaLoanDetails[dsa._id].map((loan, index) => (
-                            <div key={index}>{loan.typeOfLoan}</div>
-                          ))
-                        )}
-                      </td>
-                      <td>
-                        {loadingLoanDetails[dsa._id] ? (
-                          'Loading...'
-                        ) : (
-                          dsaLoanDetails[dsa._id] && dsaLoanDetails[dsa._id][0]?.requiredCibilScore
-                        )}
-                      </td>
-                      <td>
-                        <span style={{ color: dsa.isActive ? 'green' : 'red', fontWeight: '600', backgroundColor: '' }}>
-                          <PiCircleFill size={10} style={{ marginRight: '1px' }} />
-                          {dsa.isActive ? 'Active' : 'Inactive'}
-                        </span>
-                      </td>
-                      <td>
-                        <GrView
-                          size={15}
-                          onClick={() => handleViewClick(dsa._id)}
-                          style={{ cursor: 'pointer', color: '#2492eb' }}
-                        />
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
+  {filteredDsas.length === 0 ? (
+    <tr>
+      <td colSpan="11" className="text-center">No Record Found</td>
+    </tr>
+  ) : (
+    filteredDsas.map((dsa, index) => (
+      <tr key={dsa._id}>
+        {/* Add your checkbox logic here if needed */}
+        <td>{indexOfFirstDsa + index + 1}</td>
+        <td>UKS-DSA-0{dsa.dsaNumber}</td>
+        <td>{dsa.dsaName}</td>
+        <td>{dsa.dsaCompanyName}</td>
+
+        <td>{dsaAddress[dsa._id] ? dsaAddress[dsa._id].district || '-' : '-'}</td>
+        <td>{dsaAddress[dsa._id] ? dsaAddress[dsa._id].area || '-' : '-'}</td>
+        <td>{dsa.primaryNumber || '-'}</td>
+        <td>
+          {loadingLoanDetails[dsa._id] ? (
+            'Loading...'
+          ) : (
+            dsaLoanDetails[dsa._id] && dsaLoanDetails[dsa._id].length > 0 ? (
+              dsaLoanDetails[dsa._id].map((loan, index) => (
+                <div key={index}>{loan.typeOfLoan || '-'}</div>
+              ))
+            ) : (
+              '-'
+            )
+          )}
+        </td>
+        <td>
+          {loadingLoanDetails[dsa._id] ? (
+            'Loading...'
+          ) : (
+            dsaLoanDetails[dsa._id] && dsaLoanDetails[dsa._id].length > 0 ? (
+              dsaLoanDetails[dsa._id][0]?.requiredCibilScore || '-'
+            ) : (
+              '-'
+            )
+          )}
+        </td>
+        <td>
+          <span style={{ color: dsa.isActive ? 'green' : 'red', fontWeight: '600' }}>
+            <PiCircleFill size={10} style={{ marginRight: '1px' }} />
+            {dsa.isActive ? 'Active' : 'Inactive'}
+          </span>
+        </td>
+        <td>
+          <GrView
+            size={15}
+            onClick={() => handleViewClick(dsa._id)}
+            style={{ cursor: 'pointer', color: '#2492eb' }}
+          />
+        </td>
+      </tr>
+    ))
+  )}
+</tbody>
+
             </Table>
           </div>
           <div className="pagination-container">

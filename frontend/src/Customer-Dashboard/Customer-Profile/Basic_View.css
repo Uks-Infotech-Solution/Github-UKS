@@ -207,7 +207,7 @@ div[style*="top: 100px"] {
     width: 16%;
     /* border-style: solid !important; */
     align-items: end !important;
-    margin-left: 1150px !important;
+    /* margin-left: 1150px !important; */
     /* text-align: end; */
     margin: 0, auto;
 
@@ -215,11 +215,11 @@ div[style*="top: 100px"] {
 
 .Upload-pdf-row {
     position: absolute;
-    justify-content: end !important;
+    justify-content: end ;
     width: 20%;
     /* border-style: solid !important; */
     align-items: end !important;
-    margin-left: 1100px !important;
+    /* margin-left: 1100px !important; */
     /* text-align: end; */
     margin-top: 0px !important;
 
@@ -284,7 +284,7 @@ div[style*="top: 100px"] {
     /* border-style: solid !important; */
 }
 .Edit-button{
-margin-left: 1300px;
+/* margin-left: 1300px; */
 position: absolute;
 width: 100px;
 /* border-style: solid; */
@@ -356,4 +356,34 @@ width: 100px;
         word-wrap: break-word !important;
     }
 
+}
+@media(max-width:500px){
+    .Upload-profile-div{
+        margin-left: '0px' !important;
+    }
+    .Upload-profile-row{
+        margin-left: '0px' !important;
+        position: relative;
+        width: auto ;
+    }
+    .Edit-button{
+        margin-top: 20px;
+        position: relative;
+    }
+    .Upload-pdf-row{
+        position: relative;
+        justify-content: left;
+        text-align: left;
+        margin-left: 0px;
+        width: 100%;
+    }
+    .customer-prf-download{
+        justify-content: start !important;
+        text-align: 'left' !important;
+        margin-top: 10px;
+    }
+}
+.customer-prf-download{
+    justify-content: end ;
+    text-align: 'end' ;
 }

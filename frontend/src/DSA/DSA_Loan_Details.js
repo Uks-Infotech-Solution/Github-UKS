@@ -118,13 +118,12 @@ const DSA_Loan_Details = () => {
                         <Col><input disabled={!editingMode} className="input-box-address" name="requiredDays" placeholder='Required Days' type="number" value={loan.requiredDays || ''} onChange={(e) => handleLoanChange(index, e)} /></Col>
                         <Col><input disabled={!editingMode} className="input-box-address" name="requiredDocument" placeholder='Required Document' type="text" value={loan.requiredDocument || ''} onChange={(e) => handleLoanChange(index, e)} /></Col>
                         <Col>
-                            <Select
+                        <Select
                                 isMulti
                                 options={requiredTypes}
-                                value={loan.requiredType.split(', ').map(type => ({ value: type, label: type }))}
+                                value={loan.requiredType ? loan.requiredType.split(', ').map(type => ({ value: type, label: type })) : []}
                                 onChange={(selectedOptions) => handleSelectChange(index, selectedOptions)}
                                 isDisabled={!editingMode}
-                                // className='input-box-address'
                             />
                         </Col>
                         <Col><input disabled={!editingMode} className="input-box-address" name="requiredCibilScore" placeholder='Required Cibil Score' type="text" value={loan.requiredCibilScore || ''} onChange={(e) => handleLoanChange(index, e)} /></Col>

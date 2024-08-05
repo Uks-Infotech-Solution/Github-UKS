@@ -75,6 +75,7 @@ function DsaTable() {
       setLoading(false);
     }
   };
+  
   const fetchLoanDetails = async (dsaId) => {
     setLoadingLoanDetails((prevLoadingLoanDetails) => ({
       ...prevLoadingLoanDetails,

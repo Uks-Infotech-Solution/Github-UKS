@@ -5,18 +5,16 @@ import axios from 'axios';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { IoCloseSharp } from 'react-icons/io5';
 
-function DSA_Loan ({onSuccess,dsaId }) {
+function DSA_Loan ({ onSuccess, dsaId }) {
     const navigate = useNavigate();
     const location = useLocation();
 
     const [LoanDetails, setLoanDetails] = useState([]);
-    const [requiredTypes, setRequiredTypes] = useState([]); // State to store required types
+    const [requiredTypes, setRequiredTypes] = useState([]);
     const [successMessage, setSuccessMessage] = useState('');
     const [editingMode, setEditingMode] = useState(false);
 
     useEffect(() => {
-        
-
         const fetchRequiredTypes = async () => {
             try {
                 const response = await axios.get('https://uksinfotechsolution.in:8000/api/dsa/required/type');
@@ -74,7 +72,7 @@ function DSA_Loan ({onSuccess,dsaId }) {
                 setSuccessMessage('Loan details saved successfully.');
                 alert('Loan details saved successfully.');
                 onSuccess();
-                setEditingMode(false); // Exit edit mode after saving
+                setEditingMode(false);
             }
         } catch (error) {
             console.error('Error saving loan details:', error);
@@ -90,7 +88,7 @@ function DSA_Loan ({onSuccess,dsaId }) {
                 </Col>
             </Row>
             <>
-                <Row className='profile-address-single-row' >
+                <Row className='profile-address-single-row'>
                     <Col><span className="profile-finance">Type of Loan</span></Col>
                     <Col><span className="profile-finance">Required Days</span></Col>
                     <Col><span className="profile-finance">Required Document</span></Col>
@@ -99,34 +97,30 @@ function DSA_Loan ({onSuccess,dsaId }) {
                 </Row>
                 {LoanDetails.map((loan, index) => (
                     <Row key={loan._id || index} className='profile-address-single-row previous-loan-delete'>
-                        <Col><input  className="input-box-address" placeholder='Type of Loan' name="typeOfLoan" type="text" value={loan.typeOfLoan || ''} onChange={(e) => handleLoanChange(index, e)} /></Col>
-                        <Col><input  className="input-box-address" name="requiredDays" placeholder='Required Days' type="number" value={loan.requiredDays || ''} onChange={(e) => handleLoanChange(index, e)} /></Col>
+                        <Col><input className="input-box-address" placeholder='Type of Loan' name="typeOfLoan" type="text" value={loan.typeOfLoan || ''} onChange={(e) => handleLoanChange(index, e)} /></Col>
+                        <Col><input className="input-box-address" name="requiredDays" placeholder='Required Days' type="number" value={loan.requiredDays || ''} onChange={(e) => handleLoanChange(index, e)} /></Col>
                         <Col><input className="input-box-address" name="requiredDocument" placeholder='Required Document' type="text" value={loan.requiredDocument || ''} onChange={(e) => handleLoanChange(index, e)} /></Col>
                         <Col>
                             <Select
                                 isMulti
                                 options={requiredTypes}
-                                value={loan.requiredType.split(', ').map(type => ({ value: type, label: type }))}
+                                value={loan.requiredType ? loan.requiredType.split(', ').map(type => ({ value: type, label: type })) : []}
                                 onChange={(selectedOptions) => handleSelectChange(index, selectedOptions)}
-                                
-                                // className='input-box-address'
                             />
                         </Col>
-                        <Col><input  className="input-box-address" name="requiredCibilScore" placeholder='Required Cibil Score' type="text" value={loan.requiredCibilScore || ''} onChange={(e) => handleLoanChange(index, e)} /></Col>
-                        
+                        <Col><input className="input-box-address" name="requiredCibilScore" placeholder='Required Cibil Score' type="text" value={loan.requiredCibilScore || ''} onChange={(e) => handleLoanChange(index, e)} /></Col>
                     </Row>
                 ))}
                 <div>
-                <Button  onClick={addLoanRow} style={{ marginBottom: '10px' }}>Add Loan Details</Button>
+                    <Button onClick={addLoanRow} style={{ marginBottom: '10px' }}>Add Loan Details</Button>
                 </div>
             </>
             <Row>
                 <Col>
-                            <Button onClick={handlePreviousLoanSave}>Save Loan Details</Button>
-                  
+                    <Button onClick={handlePreviousLoanSave}>Save Loan Details</Button>
                 </Col>
             </Row>
-            </Row>
+        </Row>
         </>
     );
 };

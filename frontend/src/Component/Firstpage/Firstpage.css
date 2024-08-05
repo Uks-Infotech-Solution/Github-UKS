@@ -52,6 +52,9 @@
       /* height: 500px;   */
       width: 90%;
 }
+.getbutton{
+    margin: 20px;
+}
 
 @media(min-width:1024px){
     .firstpage{

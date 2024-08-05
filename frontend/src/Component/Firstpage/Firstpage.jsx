@@ -23,7 +23,7 @@ function Firstpage() {
                 Revolving loans or lines can be spent, repaid, and spent again, while term loans are fixed-rate, fixed-payment loans.
                 Lenders may charge higher interest rates to risky borrowers.</p>
 
-              <Button className=''>Get Started</Button>
+              <Button className=' getbutton'>Get Started</Button>
 
             </div>
           </Col>

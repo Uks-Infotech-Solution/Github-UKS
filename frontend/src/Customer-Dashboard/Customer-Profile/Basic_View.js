@@ -779,7 +779,7 @@ function Profile_View() {
                                 )}
                             </div>
                         </Col>
-                        <Col lg={3} style={{ justifyContent: "end", textAlign: "end" }}>
+                        <Col lg={3} className='customer-prf-download' >
                             <span>
                                 <a href="" onClick={handleProfileDownload} style={{ marginRight: "15px", textDecoration: 'none' }}>
                                     Profile Download
@@ -794,16 +794,16 @@ function Profile_View() {
                             )}
 
                         </Col>
-                        <Col style={{ justifyContent: "end", textAlign: "end" }} lg={1}>
+                        <Col className='customer-prf-download' lg={1}>
 
                             {!editingMode && (
 
-                                <Col lg={2}><Button style={{ width: "80px", marginTop: "-5px" }} onClick={handleEditClick}>Edit</Button></Col>
+                                <Col lg={2}><Button style={{  marginTop: "-5px" }} onClick={handleEditClick}>Edit</Button></Col>
 
                             )}
                             {editingMode && (
                                 <Row>
-                                    <Col lg={2}><Button style={{ width: "80px", marginTop: "-5px" }} onClick={handleSaveClick}>Submit</Button></Col>
+                                    <Col lg={2}><Button style={{  marginTop: "-5px" }} onClick={handleSaveClick}>Submit</Button></Col>
                                 </Row>
                             )}
                         </Col>
@@ -1033,7 +1033,7 @@ function Profile_View() {
                         <div className={`Edit-button ${isSidebarExpanded ? 'sidebar-expanded' : ''}`}>
                             <Col lg={2}>
                                 {(!editingModeAddress || !editiloanprocess) && (
-                                    <Button style={{ width: "80px" }} onClick={() => {
+                                    <Button  onClick={() => {
                                         if (!editingModeAddress) handleEditAddress();
                                         if (!editiloanprocess) handleEditLoanProcess();
                                     }}>
@@ -1052,7 +1052,7 @@ function Profile_View() {
                     <Row className="Section-1-Row three-tab-margin">
                         {activeTab === 'address' && (
                             <Row style={{ paddingLeft: '0px' }}>
-                                <Col className="profile-address-col">
+                                <Col className="profile-address-col" md={10} sm={10}>
                                     <Row><div className="profile-aadhar-per-head">Aadhar Address</div></Row>
                                     <Row className="profile-address-single-row">
                                         <Col lg={3}><span className="customer-sentence">State</span></Col>
@@ -1237,7 +1237,7 @@ function Profile_View() {
                                     {hasPreviousLoan && (
                                         <>
                                             <Row className='profile-address-single-row'>
-                                                <Col><span className="profile-finance">Finance Name</span></Col>
+                                                <Col ><span className="profile-finance">Finance Name</span></Col>
                                                 <Col><span className="profile-finance">Year of Loan</span></Col>
                                                 <Col><span className="profile-finance">Loan Amount</span></Col>
                                                 <Col><span className="profile-finance">Outstanding Amount</span></Col>

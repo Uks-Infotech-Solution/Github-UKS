@@ -1,7 +1,7 @@
 import React from "react";
 export const Ourteam = (props) => {
     return (
-        <header id="ourteam" style={{height:"500px" ,paddingBottom: '15px', backgroundImage: `url('path_to_your_background_image.jpg')`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+        <header id="ourteam" style={{paddingBottom: '15px', backgroundImage: `url('path_to_your_background_image.jpg')`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
             <div className="">
                 <div className="container">
                     <div className="row">

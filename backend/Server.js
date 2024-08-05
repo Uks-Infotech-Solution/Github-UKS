@@ -76,7 +76,6 @@ const server = https.createServer({
     key: fs.readFileSync('/www/server/panel/vhost/cert/frontend/privkey.pem')
 }, app);
 
-
 const wss = new WebSocket.Server({ server });
 
 wss.on('connection', function connection(ws) {
@@ -2316,6 +2315,7 @@ app.post('/register', async (req, res) => {
 app.put('/update-customer-details', async (req, res) => {
     try {
         const { customerId, updatedDetails } = req.body;
+// console.log(customerId,updatedDetails);
 
         if (!customerId || !updatedDetails) {
             console.error('Received incomplete data:', req.body);

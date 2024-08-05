@@ -14,11 +14,6 @@
   width: auto;
 }
 
-.Navi-First,
-.Navi-Second {
-  display: flex;
-  align-items: center;
-}
 
 .profile-container {
   display: flex;
@@ -271,7 +266,7 @@
     display: none !important;
   }
 
-  .navbar-profile-hide {
-    display: none;
+  .navbar-profile-image .navbar-profile-icon{
+    display: none !important;
   }
 }

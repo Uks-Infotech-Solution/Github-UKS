@@ -248,52 +248,39 @@ const StickyNavbar = () => {
     <>
       {/* <CustomerTable DsaData={dsaData}/> */}
       <Navbar expand="lg" fixed="top" className={`custom-navbar ${isSidebarExpanded ? 'sidebar-expanded navbar-expanded' : ''}`}>
-        <Container fluid>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" className='toggie' onClick={toggleSidebar} />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="me-auto Navi-First">
-              <Nav.Link as={Link} to="/"><MdMailOutline size={23} /></Nav.Link>
-              <Nav.Link as={Link} to="/link"><MdOutlineCheckBoxOutlineBlank size={23} /></Nav.Link>
-              <Nav.Link as={Link} to="/about"><FaRegStar size={23} /></Nav.Link>
-            </Nav><span>
-              {/* {dsaData && dsaData.dsaNumber
-                ? `DSA No: ${dsaData.dsaNumber}`
-                : uksData && uksData.name
-                  ? `Employee Name: ${uksData.name}`
-                  : null
-                  } */}
-            </span>
-
-            <Nav className="ms-auto Navi-Second">
-              <Nav.Link as={Link} to="/contact"><IoMdSearch size={23} /></Nav.Link>
-              <Nav.Link as={Link} to="/contact"><IoIosNotifications size={23} /></Nav.Link>
-              <Nav.Link as={Link} to="/contact"><FaShoppingCart size={23} /></Nav.Link>
-              <div ref={profileContainerRef} className='profile-container' onClick={toggleProfileDropdown}>
-                <span className='navbar-profile-hide'>Hi <span className='customer-name-right'>{(customerDetails && customerDetails.customerFname) || (dsaData && dsaData.dsaName) || (uksData && uksData.name)}</span></span>
-                {(imageSrc) ? (
-                  <img className='navbar-profile-image' src={imageSrc} alt="Profile" />
-                ) : (
-                  <FaUserCircle size={45} className='navbar-profile-icon' />
-                )}
-                <NavDropdown show={showDropdown} title="" id="basic-nav-dropdown" align="end">
-                  <NavDropdown.Item onClick={handleHomeChange} className='d-flex align-items-center '>
-                    <MdHome size={25} />
-                    <span className='ms-2 '>Home</span>
-                  </NavDropdown.Item>
-                  <NavDropdown.Item onClick={handleProfileChange} className='d-flex align-items-center '>
-                    <IoPerson size={20} />
-                    <span className='ms-2'>Profile</span>
-                  </NavDropdown.Item>
-                  <NavDropdown.Item onClick={handleLogout} className='d-flex align-items-center'>
-                    <IoPower size={20} />
-                    <span className='ms-2'>Logout</span>
-                  </NavDropdown.Item>
-                </NavDropdown>
-              </div>
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
+      <Container fluid>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" className='toggie' onClick={toggleSidebar} />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="ms-auto Navi-Second">
+            <Nav.Link as={Link} to="/contact"><IoMdSearch size={23} /></Nav.Link>
+            <Nav.Link as={Link} to="/contact"><IoIosNotifications size={23} /></Nav.Link>
+            <Nav.Link as={Link} to="/contact"><FaShoppingCart size={23} /></Nav.Link>
+            <div ref={profileContainerRef} className='profile-container' onClick={toggleProfileDropdown}>
+              <span className='navbar-profile-hide'>Hi <span className='customer-name-right'>{(customerDetails && customerDetails.customerFname) || (dsaData && dsaData.dsaName) || (uksData && uksData.name)}</span></span>
+              {imageSrc ? (
+                <img className='navbar-profile-image' src={imageSrc} alt="Profile" />
+              ) : (
+                <FaUserCircle size={45} className='navbar-profile-icon' />
+              )}
+              <NavDropdown show={showDropdown} title="" id="basic-nav-dropdown" align="end">
+                <NavDropdown.Item onClick={handleHomeChange} className='d-flex align-items-center'>
+                  <MdHome size={25} />
+                  <span className='ms-2'>Home</span>
+                </NavDropdown.Item>
+                <NavDropdown.Item onClick={handleProfileChange} className='d-flex align-items-center'>
+                  <IoPerson size={20} />
+                  <span className='ms-2'>Profile</span>
+                </NavDropdown.Item>
+                <NavDropdown.Item onClick={handleLogout} className='d-flex align-items-center'>
+                  <IoPower size={20} />
+                  <span className='ms-2'>Logout</span>
+                </NavDropdown.Item>
+              </NavDropdown>
+            </div>
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
       <div className={`side-menu ${isSidebarExpanded ? 'show' : ''}`}>
         <Nav className="flex-column">
           <Navbar.Brand href="" className="d-flex align-items-center">
@@ -437,7 +424,7 @@ const StickyNavbar = () => {
                   </ul>
                   <ul className='side-menu-customer-link'>
                     <li>
-                      <Nav.Link onClick={Loan_Level} className='font-size-dropdown'>Register Form</Nav.Link>
+                      <Nav.Link onClick={Dsa_reg} className='font-size-dropdown'>Register Form</Nav.Link>
                     </li>
                   </ul>
                   <ul className='side-menu-customer-link'>

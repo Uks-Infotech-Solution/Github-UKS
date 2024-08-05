@@ -36,9 +36,12 @@
     .pathname-url-path {
         padding: 8px 16px; /* Adjust padding for smaller screens */
         font-size: 14px; /* Smaller font size for better readability */
+        
     }
 
     .pathname-url-part, .pathname-url-separator {
         padding: 0 2px; /* Adjust padding for smaller screens */
+        font-size: 13px; /* Smaller font size for better readability */
+
     }
 }

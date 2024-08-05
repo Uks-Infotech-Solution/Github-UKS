@@ -48,7 +48,8 @@ function DSA_reg({ onSuccess }) {
             const response = await axios.post('https://uksinfotechsolution.in:8000/api/dsa/register', formData);
             const dsaDetails = response.data.dsa;    
             setShowPopup(true);
-            alert("DSA Registered Successfully")
+           alert(`DSA Registeration Successfully.\nDSA No: UKS-DSA-0${dsaDetails.dsaNumber}`);
+
             onSuccess(dsaDetails.id, dsaDetails.dsaNumber); // Pass the correct values to onSuccess
         } catch (error) {
             console.error('Error registering DSA:', error);

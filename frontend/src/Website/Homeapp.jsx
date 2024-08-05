@@ -7,7 +7,7 @@ import { Contact } from "./components/contact";
 import JsonData from "./data/data.json";
 import SmoothScroll from "smooth-scroll";
 import { Ourteam } from "./components/ourteam";
-import  {Navigation}  from "./components/navigation";
+import Navigation from "./components/navigation";
 
 export const scroll = new SmoothScroll('a[href*="#"]', {
   speed: 1000,
@@ -22,7 +22,7 @@ const Homeapp = () => {
 
   return (     
     <div>
-      <Navigation />
+      <Navigation/>
       <Header data={landingPageData.Header} />
       <div style={{borderBottom:'0.5px solid', borderColor:'#2492eb', margin:'15px'}}></div>
       

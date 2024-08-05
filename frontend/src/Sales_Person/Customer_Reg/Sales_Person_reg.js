@@ -65,13 +65,13 @@ function Location({ onSuccess,customerId, customerNo }) {
                 </Modal.Header>
                 <Modal.Body>
                     <p className="modal-message">Customer Registration Completed.
-                    {/* <p>Customer Code {customerDetails.customerNo}</p> */}
+                    <p>Customer Code {customerDetails.customerNo}</p>
                     </p>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={() => {
                         setShowSuccessModal(false);
-                        navigate('/uks/dashboard');
+                        navigate('/uks/dashboard', { state: { uksId } });
                     }}>
                         Close
                     </Button>

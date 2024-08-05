@@ -22,6 +22,7 @@ function Customer_reg({ onSuccess }) {
     const [customermailid, setCustomerMailId] = useState('');
     const [typeofloan, setTypeOfLoan] = useState('');
     const [loanRequired, setLoanRequired] = useState('');
+    const [ReferedBy, setReferedby] = useState('');
     const [userpassword, setUserPassword] = useState('');
     const [errors, setErrors] = useState({});
     const [customerType, setCustomerType] = useState('');
@@ -115,56 +116,58 @@ function Customer_reg({ onSuccess }) {
         e.preventDefault();
         const newErrors = validate();
         if (Object.keys(newErrors).length > 0) {
-          setErrors(newErrors);
+            setErrors(newErrors);
         } else {
-          
-      
-        try {
-            const customerData = {
-                customerFname,
-                customerLname,
-                gender,
-                customercontact,
-                customerwhatsapp,
-                customeralterno,
-                customermailid,
-                typeofloan,
-                userpassword,
-                loanRequired,
-                customerType,
-                title,
-            };
-            const response = await axios.post('https://uksinfotechsolution.in:8000/register', customerData);
-            const customerId = response.data.customerId; // Assume the response contains the new customer ID
-            setCustomerId(customerId); // Set the customer ID
-            console.log(customerId);
-            console.log(customerNo);
-            setErrors({});
-            setCustomerFname('');
-            setCustomerLname('');
-            setGender('');
-            setCustomerContact('');
-            setCustomerAlterNo('');
-            setCustomerWhatsapp('');
-            setCustomerMailId('');
-            setTypeOfLoan('');
-            setLoanRequired('');
-            setUserPassword('');
-            setCustomerType('');
-            setCustomerNo(''); // Set the customer number if needed
-            setShowPopup(false);
-            
-            // Close modal after successful submission
-            onSuccess(customerId, customerType, customerNo); // Call onSuccess to switch to the next tab
-            alert('Basic details Registered');
-        } catch (error) {
-            if (error.response && error.response.status === 400) {
-                alert('Email already exists');
-            } else {
-                setError('An error occurred. Please try again.');
+
+
+            try {
+                const customerData = {
+                    customerFname,
+                    customerLname,
+                    gender,
+                    customercontact,
+                    customerwhatsapp,
+                    customeralterno,
+                    customermailid,
+                    typeofloan,
+                    ReferedBy,
+                    userpassword,
+                    loanRequired,
+                    customerType,
+                    title,
+                };
+                const response = await axios.post('https://uksinfotechsolution.in:8000/register', customerData);
+                const customerId = response.data.customerId; // Assume the response contains the new customer ID
+                const customerNo = response.data.customerNo
+                setCustomerId(customerId); // Set the customer ID
+                console.log(customerId);
+                console.log(customerNo);
+                setErrors({});
+                setCustomerFname('');
+                setCustomerLname('');
+                setGender('');
+                setCustomerContact('');
+                setCustomerAlterNo('');
+                setCustomerWhatsapp('');
+                setCustomerMailId('');
+                setTypeOfLoan('');
+                setLoanRequired('');
+                setUserPassword('');
+                setCustomerType('');
+                setCustomerNo(customerNo); // Set the customer number if needed
+                setShowPopup(false);
+
+                // Close modal after successful submission
+                onSuccess(customerId, customerType, customerNo); // Call onSuccess to switch to the next tab
+                alert(`Customer Basic Details Registered. \n Customer No: UKS-CUS-${customerNo}`);
+            } catch (error) {
+                if (error.response && error.response.status === 400) {
+                    alert('Email already exists');
+                } else {
+                    setError('An error occurred. Please try again.');
+                }
             }
         }
-    }
     };
 
     const handleClosePopup = () => {
@@ -177,7 +180,7 @@ function Customer_reg({ onSuccess }) {
                 <Row className="">
                     <Col xl={10} lg={6} md={5} xs={10} className={`New-Customer-container-second ${isNavbarExpanded ? 'content-expanded' : ''}`}>
                         <form onSubmit={handleSubmit}>
-                            
+
                             {message && <p className="message">{message}</p>}
                             <Row>
                                 <Col lg={3}><span className="customer-sentence">Customer Type</span></Col>
@@ -330,7 +333,7 @@ function Customer_reg({ onSuccess }) {
                                     {errors.customermailid && <span className="error">{errors.customermailid}</span>}
                                 </Col>
                             </Row>
-                            
+
                             <Row className="Row1">
                                 <Col lg={3}><span className="customer-sentence">Type Of Loan</span></Col>
                                 <Col lg={5}>
@@ -364,6 +367,18 @@ function Customer_reg({ onSuccess }) {
                                     <Row>
                                         {errors.loanRequired && <span className="error">{errors.loanRequired}</span>}
                                     </Row>
+                                </Col>
+                            </Row>
+                            <Row className="Row1">
+                                <Col lg={3}><span className="customer-sentence">Refered By</span></Col>
+                                <Col lg={5}>
+                                    <input
+                                        type="text"
+                                        placeholder="Refered By"
+                                        value={ReferedBy}
+                                        onChange={handleChange(setReferedby)}
+                                    />
+                                    
                                 </Col>
                             </Row>
                             <Row className="Row1">
