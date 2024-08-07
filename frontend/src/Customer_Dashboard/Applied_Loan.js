@@ -186,8 +186,8 @@ function Applied_Loan() {
                   <th className='dsa-table-head'>DSA No</th>
                   <th className='dsa-table-head'>DSA Name</th>
                   <th className='dsa-table-head'>Company Name</th>
-                  <th className='dsa-table-head'>District</th>
-                  <th className='dsa-table-head'>Area</th>
+                  {/* <th className='dsa-table-head'>District</th> */}
+                  {/* <th className='dsa-table-head'>Area</th> */}
                   <th className='dsa-table-head'>View</th>
                 </tr>
               </thead>
@@ -207,8 +207,8 @@ function Applied_Loan() {
                       <td>UKS-DSA-0{loan.dsaNumber}</td>
                       <td>{loan.dsaName}</td>
                       <td>{loan.dsaCompanyName}</td>
-                      <td>{dsaAddress[loan.dsaId]?.district}</td>
-                      <td>{dsaAddress[loan.dsaId]?.area}</td>
+                      {/* <td>{dsaAddress[loan.dsaId]?.district}</td> */}
+                      {/* <td>{dsaAddress[loan.dsaId]?.area}</td> */}
                       <td>
                         <GrView
                           size={15}

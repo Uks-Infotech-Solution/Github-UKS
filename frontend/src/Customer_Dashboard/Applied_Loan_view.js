@@ -223,7 +223,7 @@ function Applied_Loan_View() {
                                         </div>
                                     </Col>
                                 </Row>
-
+{/* 
                                 <div className="loan-contact">
                                     <Row>
                                         <Col>
@@ -247,9 +247,9 @@ function Applied_Loan_View() {
                                             </div>
                                         </Col>
                                     </Row>
-                                </div>
+                                </div> */}
 
-                                <div className="loan-days">
+                                {/* <div className="loan-days">
                                     <Row style={{ paddingTop: '10px' }}>
                                         <Col>
                                             <FaRegAddressCard color="brown" style={{ marginTop: '-5px' }} size={16} className="loan-icon" />
@@ -263,7 +263,7 @@ function Applied_Loan_View() {
                                             </span>
                                         </Col>
                                     </Row>
-                                </div>
+                                </div> */}
 
                                 <div className="loan-days">
                                     <Row style={{ paddingTop: '10px' }}>
@@ -364,9 +364,9 @@ function Applied_Loan_View() {
                                         <thead>
                                             <tr>
                                                 <th>Branch Name</th>
-                                                <th>Branch Location</th>
+                                                {/* <th>Branch Location</th> */}
                                                 <th>Branch Manager</th>
-                                                <th>Contact Number</th>
+                                                {/* <th>Contact Number</th> */}
                                                 <th>Branch Status</th>
                                             </tr>
                                         </thead>
@@ -376,9 +376,9 @@ function Applied_Loan_View() {
                                                 .map((branch, index) => (
                                                     <tr key={index}>
                                                         <td>{branch.branchName}</td>
-                                                        <td>{branch.branchAddress}</td>
+                                                        {/* <td>{branch.branchAddress}</td> */}
                                                         <td>{branch.branchManager}</td>
-                                                        <td>{branch.branchContact}</td>
+                                                        {/* <td>{branch.branchContact}</td> */}
                                                         <td>{branch.branchStatus}</td>
                                                     </tr>
                                                 ))}

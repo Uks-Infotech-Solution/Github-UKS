@@ -28,7 +28,7 @@ function DsaTable() {
 
   const fetchedIdsRef = useRef(new Set());
   const fetchedAddressIdsRef = useRef(new Set());
-  
+
   const [checkedItems, setCheckedItems] = useState({});
   const [allChecked, setAllChecked] = useState(false);
   const [dsaLoanDetails, setDsaLoanDetails] = useState({});
@@ -50,7 +50,7 @@ function DsaTable() {
       const response = await axios.get(`https://uksinfotechsolution.in:8000/api/dsa/list`);
       setDsaData(response.data.dsa);
       setLoading(false);
-  
+
       // Fetch address details for each DSA
       const addressPromises = response.data.dsa.map(dsa => {
         if (!fetchedAddressIdsRef.current.has(dsa._id)) {
@@ -59,7 +59,7 @@ function DsaTable() {
         }
         return Promise.resolve(null); // Skip if already fetched
       });
-  
+
       const addressResponses = await Promise.all(addressPromises);
       const addresses = {};
       addressResponses.forEach((addressResponse, index) => {
@@ -75,17 +75,17 @@ function DsaTable() {
       setLoading(false);
     }
   };
-  
+
   const fetchLoanDetails = async (dsaId) => {
     setLoadingLoanDetails((prevLoadingLoanDetails) => ({
       ...prevLoadingLoanDetails,
       [dsaId]: true,
     }));
-  
+
     try {
       const response = await axios.get(`https://uksinfotechsolution.in:8000/api/dsa/getLoanDetails/${dsaId}`);
       const loanDetails = response.data.loanDetails;
-  
+
       if (loanDetails && Object.keys(loanDetails).length > 0) {
         setDsaLoanDetails((prevDetails) => ({
           ...prevDetails,
@@ -105,7 +105,7 @@ function DsaTable() {
       }));
     }
   };
-  
+
   const handleFilterOptionChange = (option) => {
     setFilterOption(option);
     setShowFilterDropdown(true);
@@ -221,9 +221,9 @@ function DsaTable() {
                   <th className='dsa-table-head'>DSA No</th>
                   <th className='dsa-table-head'>DSA Name</th>
                   <th className='dsa-table-head'>Company Name</th>
-                  <th className='dsa-table-head'>District</th>
-                  <th className='dsa-table-head'>Area</th>
-                  <th className='dsa-table-head'>Contact</th>
+                  {/* <th className='dsa-table-head'>District</th> */}
+                  {/* <th className='dsa-table-head'>Area</th> */}
+                  {/* <th className='dsa-table-head'>Contact</th> */}
                   <th className='dsa-table-head'>Type Of Loan Provide</th>
                   <th className='dsa-table-head'>Cibil Score</th>
                   <th className='dsa-table-head'>Account Status</th>
@@ -231,63 +231,64 @@ function DsaTable() {
                 </tr>
               </thead>
               <tbody>
-  {filteredDsas.length === 0 ? (
-    <tr>
-      <td colSpan="11" className="text-center">No Record Found</td>
-    </tr>
-  ) : (
-    filteredDsas.map((dsa, index) => (
-      <tr key={dsa._id}>
-        {/* Add your checkbox logic here if needed */}
-        <td>{indexOfFirstDsa + index + 1}</td>
-        <td>UKS-DSA-0{dsa.dsaNumber}</td>
-        <td>{dsa.dsaName}</td>
-        <td>{dsa.dsaCompanyName}</td>
+                {filteredDsas.length === 0 ? (
+                  <tr>
+                    <td colSpan="11" className="text-center">No Record Found</td>
+                  </tr>
+                ) : (
+                  filteredDsas.map((dsa, index) => (
+                    <tr key={dsa._id}>
+                      {/* Add your checkbox logic here if needed */}
+                      <td>{indexOfFirstDsa + index + 1}</td>
+                      <td>UKS-DSA-0{dsa.dsaNumber}</td>
+                      <td>{dsa.dsaName}</td>
+                      <td>{dsa.dsaCompanyName}</td>
 
-        <td>{dsaAddress[dsa._id] ? dsaAddress[dsa._id].district || '-' : '-'}</td>
-        <td>{dsaAddress[dsa._id] ? dsaAddress[dsa._id].area || '-' : '-'}</td>
-        <td>{dsa.primaryNumber || '-'}</td>
-        <td>
-          {loadingLoanDetails[dsa._id] ? (
-            'Loading...'
-          ) : (
-            dsaLoanDetails[dsa._id] && dsaLoanDetails[dsa._id].length > 0 ? (
-              dsaLoanDetails[dsa._id].map((loan, index) => (
-                <div key={index}>{loan.typeOfLoan || '-'}</div>
-              ))
-            ) : (
-              '-'
-            )
-          )}
-        </td>
-        <td>
-          {loadingLoanDetails[dsa._id] ? (
-            'Loading...'
-          ) : (
-            dsaLoanDetails[dsa._id] && dsaLoanDetails[dsa._id].length > 0 ? (
-              dsaLoanDetails[dsa._id][0]?.requiredCibilScore || '-'
-            ) : (
-              '-'
-            )
-          )}
-        </td>
-        <td>
-          <span style={{ color: dsa.isActive ? 'green' : 'red', fontWeight: '600' }}>
-            <PiCircleFill size={10} style={{ marginRight: '1px' }} />
-            {dsa.isActive ? 'Active' : 'Inactive'}
-          </span>
-        </td>
-        <td>
-          <GrView
-            size={15}
-            onClick={() => handleViewClick(dsa._id)}
-            style={{ cursor: 'pointer', color: '#2492eb' }}
-          />
-        </td>
-      </tr>
-    ))
-  )}
-</tbody>
+                      {/* <td>{dsaAddress[dsa._id] ? dsaAddress[dsa._id].district || '-' : '-'}</td> */}
+                      {/* <td>{dsaAddress[dsa._id] ? dsaAddress[dsa._id].area || '-' : '-'}</td> */}
+                      {/* <td>{dsa.primaryNumber || '-'}</td> */}
+
+                      <td>
+                        {loadingLoanDetails[dsa._id] ? (
+                          'Loading...'
+                        ) : (
+                          dsaLoanDetails[dsa._id] && dsaLoanDetails[dsa._id].length > 0 ? (
+                            dsaLoanDetails[dsa._id].map((loan, index) => (
+                              <div key={index}>{loan.typeOfLoan || '-'}</div>
+                            ))
+                          ) : (
+                            '-'
+                          )
+                        )}
+                      </td>
+                      <td>
+                        {loadingLoanDetails[dsa._id] ? (
+                          'Loading...'
+                        ) : (
+                          dsaLoanDetails[dsa._id] && dsaLoanDetails[dsa._id].length > 0 ? (
+                            dsaLoanDetails[dsa._id][0]?.requiredCibilScore || '-'
+                          ) : (
+                            '-'
+                          )
+                        )}
+                      </td>
+                      <td>
+                        <span style={{ color: dsa.isActive ? 'green' : 'red', fontWeight: '600' }}>
+                          <PiCircleFill size={10} style={{ marginRight: '1px' }} />
+                          {dsa.isActive ? 'Active' : 'Inactive'}
+                        </span>
+                      </td>
+                      <td>
+                        <GrView
+                          size={15}
+                          onClick={() => handleViewClick(dsa._id)}
+                          style={{ cursor: 'pointer', color: '#2492eb' }}
+                        />
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
 
             </Table>
           </div>

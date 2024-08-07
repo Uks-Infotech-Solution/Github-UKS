@@ -79,7 +79,7 @@ const wss = new WebSocket.Server({ server });
 
 wss.on('connection', function connection(ws) {
     ws.on('message', function incoming(message) {
-        console.log('received: %s', message);
+        // console.log('received: %s', message);
     });
 
     ws.send('something');
@@ -131,10 +131,46 @@ connectDB();
 // Loan Application
 app.use('/api', loanApplicationRoutes);
 
+app.get('/customer-pending-details', async (req, res) => {
+    const { customerId } = req.query;
+    // console.log(customerId);
+
+    try {
+        const address = await Address.findOne({ customerId });
+        const loanProcessingDetails = await LoanProcessing.findOne({ customerId });
+        const previousLoans = await PreviousLoan.find({ customerId });
+
+        const missingTables = [];
+
+        if (!address) {
+            missingTables.push('Address');
+        }
+        if (!loanProcessingDetails) {
+            missingTables.push('LoanProcessing');
+        }
+        if (!previousLoans.length) {
+            missingTables.push('PreviousLoan');
+        }
+
+        const customerDetails = {
+            address,
+            loanProcessingDetails,
+            previousLoans
+        };
+
+        res.json({ customerDetails, missingTables });
+    } catch (error) {
+        res.status(500).json({ error: 'Internal server error' });
+        console.error('Error fetching customer details:', error);
+    }
+});
+
+
+
 app.get('/sales/person/list', async (req, res) => {
     try {
         const salesperson = await User.find({ employeeType: 'Sales' });
-        console.log(salesperson);
+        // console.log(salesperson);
         res.status(200).json(salesperson);
     } catch (error) {
         // res.status(500).json({ message: 'Error fetching salesperson', error });
@@ -168,10 +204,10 @@ app.get('/sales/person/cus/count/:uksId', async (req, res) => {
 
 
 app.get('/sales/person/dsa/reg/:uksId', async (req, res) => {
-    console.log(req.body);
+    // console.log(req.body);
     try {
         const dsa = await SalesPersonDSA.find({ uksId: req.params.uksId });
-        console.log(dsa);
+        // console.log(dsa);
         res.status(200).json(dsa);
     } catch (error) {
         // res.status(500).json({ message: 'Error fetching dsa', error });
@@ -181,7 +217,7 @@ app.get('/sales/person/dsa/reg/:uksId', async (req, res) => {
 
 app.post('/sales/person/dsa/reg', async (req, res) => {
     const { salesPersonName, uksId, dsaName, dsaId } = req.body;
-    console.log(req.body);
+    // console.log(req.body);
     const newDsa = new SalesPersonDSA({
         uksId,
         salesPersonName,
@@ -199,7 +235,7 @@ app.post('/sales/person/dsa/reg', async (req, res) => {
 });
 
 app.get('/sales/person/cus/reg/:uksId', async (req, res) => {
-    console.log(req.body);
+    // console.log(req.body);
     try {
         const customers = await SalesPerson.find({ uksId: req.params.uksId });
         //   console.log(customers);
@@ -211,7 +247,7 @@ app.get('/sales/person/cus/reg/:uksId', async (req, res) => {
 
 app.post('/sales/person/cus/reg', async (req, res) => {
     const { salesPersonName, uksId, customerName, customerId } = req.body;
-    console.log(req.body);
+    // console.log(req.body);
     const newCustomer = new SalesPerson({
         uksId,
         salesPersonName,
@@ -242,7 +278,7 @@ app.get('/sales/packagers', async (req, res) => {
 
 app.get('/api/package/details', async (req, res) => {
     const { pkgId } = req.query; // Use req.query to get query parameters
-    console.log("Fetching package details for pkgId:", pkgId);
+    // console.log("Fetching package details for pkgId:", pkgId);
 
     try {
         const packageDetails = await BuyPackage.findById(pkgId);
@@ -279,7 +315,7 @@ app.get('/buy_packages/dsa/:dsaId', async (req, res) => {
         if (!packages || packages.length === 0) {
             return res.status(404).json({ message: 'No active packages found for this DSA ID' });
         }
-console.log(packages);
+// console.log(packages);
 
         res.status(200).json(packages[0]); // Respond with the most recent active package
     } catch (error) {
@@ -292,7 +328,7 @@ console.log(packages);
 
 
 app.post('/api/dsa/packager/activation', async (req, res) => {
-    console.log(req.body);
+    // console.log(req.body);
     try {
         // Extract data from request body
         const {
@@ -358,7 +394,7 @@ app.post('/api/dsa/packager/activation', async (req, res) => {
 app.post('/package/activate/:token', async (req, res) => {
     const { token } = req.params;
     const { transferAmountRefNumber } = req.body;
-    console.log(req.body, token); // Log request body and token for debugging
+    // console.log(req.body, token); 
 
     try {
         const newBuyPackage = await BuyPackage.findOne({ activationToken: token });
@@ -434,7 +470,7 @@ app.post('/buy_packagers', async (req, res) => {
             if (error) {
                 console.error('Error sending email:', error);
             } else {
-                console.log('DSA Email sent: ' + info.response);
+                // console.log('DSA Email sent: ' + info.response);
             }
         });
 
@@ -449,7 +485,7 @@ app.post('/buy_packagers', async (req, res) => {
 
 
 app.get('/PackageDetails', async (req, res) => {
-    console.log("package detail");
+    // console.log("package detail");
     try {
         const packageDetails = await PackageDetail.find();
         res.status(200).json({ data: packageDetails });
@@ -465,7 +501,7 @@ app.get('/uks/PackageDetails/:uksId', async (req, res) => {
     try {
         const packageDetails = await PackageDetail.find().sort({ createdAt: -1 });
         res.status(200).json({ data: packageDetails });
-        console.log(packageDetails);
+        // console.log(packageDetails);,
     } catch (error) {
         console.error('Error fetching package details:', error);
         // res.status(500).json({ message: 'Error fetching package details.', error });
@@ -475,7 +511,7 @@ app.get('/uks/PackageDetails/:uksId', async (req, res) => {
 // Save or update package details
 app.post('/uks/savePackageDetails', async (req, res) => {
     const { uksId, packageDetails } = req.body;
-    console.log(packageDetails);
+    // console.log(packageDetails);
     try {
         for (let detail of packageDetails) {
             if (detail._id) {
@@ -508,7 +544,7 @@ app.post('/uks/savePackageDetails', async (req, res) => {
 // Delete a package detail by ID
 app.delete('/uks/PackageDetails/:packageId', async (req, res) => {
     const { packageId } = req.params;
-    console.log(packageId);
+    // console.log(packageId);
     try {
         await PackageDetail.findByIdAndDelete(packageId);
         res.status(200).json({ message: 'Package detail deleted successfully.' });
@@ -669,10 +705,10 @@ app.post('/api/customer/dsa/updateStatus', async (req, res) => {
 app.get('/customer/loan/apply/view/count/:customerId', async (req, res) => {
     try {
         const { customerId } = req.params;
-        console.log("view count");
+        // console.log("view count");
         // Count the number of documents with the specified dsaId
         const count = await ApplyViewCount.countDocuments({ customerId });
-        console.log(count);
+        // console.log(count);
         res.status(200).send({ message: 'Count retrieved successfully', count });
     } catch (error) {
         console.error('Error retrieving count:', error.message);
@@ -683,10 +719,10 @@ app.get('/customer/loan/apply/view/count/:customerId', async (req, res) => {
 app.get('/dsa/customer/apply/view/count/:dsaId', async (req, res) => {
     try {
         const { dsaId } = req.params;
-        console.log("view count");
+        // console.log("view count");
         // Count the number of documents with the specified dsaId
         const count = await ApplyViewCount.countDocuments({ dsaId });
-        console.log(count);
+        // console.log(count);
         res.status(200).send({ message: 'Count retrieved successfully', count });
     } catch (error) {
         console.error('Error retrieving count:', error.message);
@@ -726,7 +762,7 @@ app.post('/dsa/customer/apply/view/count', async (req, res) => {
 
 app.get('/api/dsa/applications/loan/:loanId', async (req, res) => {
     const { loanId } = req.params;
-    console.log("Fetching loan applications for Loan ID:", loanId);
+    // console.log("Fetching loan applications for Loan ID:", loanId);
 
     try {
         const loanApplication = await LoanApplication.findById(loanId);
@@ -792,7 +828,7 @@ app.post('/dsa/login/session', async (req, res) => {
 
 // Endpoint to fetch the last (previous) login session for a DSA
 app.get('/dsa/login/last-session', async (req, res) => {
-    console.log("Fetching last login session for DSA ID:", req.query.dsaId);
+    // console.log("Fetching last login session for DSA ID:", req.query.dsaId);
     try {
         const { dsaId } = req.query;
         const sessions = await DSA_LoginSession.find({ dsaId }).sort({ loginDateTime: -1 }).limit(2);
@@ -834,7 +870,7 @@ app.post('/customer/login/session', async (req, res) => {
 });
 
 app.get('/customer/login/last-session', async (req, res) => {
-    console.log("Fetching last login session for customer ID:", req.query.customerId);
+    // console.log("Fetching last login session for customer ID:", req.query.customerId);
     try {
         const { customerId } = req.query;
         const sessions = await LoginSession.find({ customerId }).sort({ loginDateTime: -1 }).limit(2);
@@ -901,7 +937,7 @@ app.post('/loan/api/feedback', async (req, res) => {
 app.get('/api/customer/dsa/loans/:loanId', async (req, res) => {
     try {
         const { loanId } = req.params;
-        console.log("Fetching loans for loanId:", loanId);
+        // console.log("Fetching loans for loanId:", loanId);
 
         // Logic to fetch loan details from your database based on loanId
         const loanApplication = await LoanApplication.findById(loanId);
@@ -943,7 +979,7 @@ app.get('/dsa/customer/applied/loan/:dsaId', async (req, res) => {
 
 app.post('/customer/loan/apply', async (req, res) => {
     try {
-        console.log(req.body);
+        // console.log(req.body);
 
         const {
             customerId,
@@ -1163,7 +1199,7 @@ app.post('/api/dsa/saveLoanDetails', async (req, res) => {
 app.get('/api/dsa', async (req, res) => {
     try {
         const { dsaId } = req.query;
-        console.log("dsa id" + req.query);
+        // console.log("dsa id" + req.query);
 
         const dsa = await DSA.findById(dsaId);
 
@@ -1189,7 +1225,7 @@ app.get('/api/dsa/list', async (req, res) => {
 
 app.get('/dsa/activate/:token', async (req, res) => {
     const { token } = req.params;
-    console.log(token);
+    // console.log(token);
 
     try {
         const dsa = await DSA.findOne({ activationToken: token });
@@ -1249,7 +1285,7 @@ app.post('/api/dsa/register', async (req, res) => {
             if (error) {
                 console.error('Error sending email:', error);
             } else {
-                console.log('DSA Email sent: ' + info.response);
+                // console.log('DSA Email sent: ' + info.response);
             }
         });
         // Send a success response with the saved DSA
@@ -1404,7 +1440,7 @@ app.get('/api/dsa-login', async (req, res) => {
 
 app.post('/dsa/forgotpassword', async (req, res) => {
     const { email } = req.body;
-    console.log('Received email:', email);
+    // console.log('Received email:', email);
 
     try {
         const dsa = await DSA.findOne({ email });
@@ -1415,11 +1451,11 @@ app.post('/dsa/forgotpassword', async (req, res) => {
         const token = crypto.randomBytes(32).toString('hex');
         dsa.resetToken = token;
         dsa.resetTokenExpiration = Date.now() + 3600000; // 1 hour
-        console.log('Generated token:', token);
-        console.log('Token expiration:', new Date(dsa.resetTokenExpiration));
+        // console.log('Generated token:', token);
+        // console.log('Token expiration:', new Date(dsa.resetTokenExpiration));
 
         await dsa.save();
-        console.log('Token saved to database');
+        // console.log('Token saved to database');
 
         const mailOptions = {
             from: process.env.EMAIL_USER,
@@ -1437,7 +1473,7 @@ app.post('/dsa/forgotpassword', async (req, res) => {
                 console.error('Error sending email:', error);
                 return res.status(500).send('Error sending email');
             }
-            console.log('Email sent:', info.response);
+            // console.log('Email sent:', info.response);
             res.send('Password reset email sent');
         });
     } catch (err) {
@@ -1450,8 +1486,8 @@ app.post('/dsa/resetpassword/:token', async (req, res) => {
     const { token } = req.params;
     const { password } = req.body;
 
-    console.log('Received password reset request for token:', token);
-    console.log('New password:', password);
+    // console.log('Received password reset request for token:', token);
+    // console.log('New password:', password);
 
     try {
         const dsa = await DSA.findOne({
@@ -1460,7 +1496,7 @@ app.post('/dsa/resetpassword/:token', async (req, res) => {
         });
 
         if (!dsa) {
-            console.log('Password reset token is invalid or has expired.');
+            // console.log('Password reset token is invalid or has expired.');
             return res.status(400).send('Password reset token is invalid or has expired.');
         }
 
@@ -1473,7 +1509,7 @@ app.post('/dsa/resetpassword/:token', async (req, res) => {
         dsa.resetTokenExpiration = undefined;
 
         await dsa.save();
-        console.log('Password has been reset and saved successfully.');
+        // console.log('Password has been reset and saved successfully.');
 
         res.send('Password has been reset');
     } catch (err) {
@@ -1530,7 +1566,7 @@ app.post('/api/block_status_update', async (req, res) => {
         const customer = await Customer.findById(customerId);
 
         if (!customer) {
-            console.log('Customer not found');
+            // console.log('Customer not found');
             return res.status(404).json({ message: 'Customer not found' });
         }
 
@@ -1546,7 +1582,7 @@ app.post('/api/block_status_update', async (req, res) => {
             { new: true, upsert: true }
         );
 
-        console.log('Loan processing details updated:', updatedLoanProcessing);
+        // console.log('Loan processing details updated:', updatedLoanProcessing);
         res.status(201).json({ message: 'Loan processing details saved successfully', loanProcessing: updatedLoanProcessing });
     } catch (error) {
         console.error('Error saving loan processing details:', error);
@@ -1566,7 +1602,7 @@ app.get('/calculate/dsa/download', async (req, res) => {
 
         // Count the number of documents with the provided dsaId
         const download = await DSA_Customer_downloadTable.find({ dsaId });
-        console.log(download);
+        // console.log(download);
 
         res.status(200).json({ download });
     } catch (error) {
@@ -1586,7 +1622,7 @@ app.get('/dsa/download/count', async (req, res) => {
 
         // Count the number of documents with the provided customerId
         const count = await DSA_Customer_downloadTable.countDocuments({ dsaId: new mongoose.Types.ObjectId(dsaId) });
-        console.log(count);
+        // console.log(count);
 
         res.status(200).json({ count });
     } catch (error) {
@@ -1896,6 +1932,7 @@ app.get('/salariedperson', async (req, res) => {
 // CUSTOMER ADDRESS
 app.post('/add-address', async (req, res) => {
     const { customerId, address } = req.body;
+    console.log(req.body);
     
     try {
         const customer = await Customer.findById(customerId);
@@ -1927,7 +1964,7 @@ app.post('/add-address', async (req, res) => {
 });
 
 app.get('/loanapply/address/check', async (req, res) => {
-    console.log("loan apply");
+    // console.log("loan apply");
     
     const { customerId } = req.query;
     try {
@@ -1937,7 +1974,7 @@ app.get('/loanapply/address/check', async (req, res) => {
         }
 
         const address = await Address.findOne({ customerId: customer._id });
-        console.log(address);
+        // console.log(address);
         
         if (!address) {
             // return res.status(404).json({ error: 'Address not found' });
@@ -2016,10 +2053,15 @@ app.get('/get-previous-loans', async (req, res) => {
 // Endpoint to delete a previous loan
 app.delete('/delete-previous-loan/:loanId', async (req, res) => {
     const { loanId } = req.params;
+    console.log("Received loanId to delete: " + loanId);
+    
     try {
         const deletedLoan = await PreviousLoan.findByIdAndDelete(loanId);
         if (!deletedLoan) {
+            console.log("loan not found");
+
             return res.status(404).json({ message: 'Loan not found' });
+            
         }
         res.json({ message: 'Previous loan deleted successfully' });
     } catch (error) {
@@ -2031,11 +2073,13 @@ app.delete('/delete-previous-loan/:loanId', async (req, res) => {
 
 
 
+
 // CUSTOMER LOAN PROCESSING API
 
 app.post('/api/save-loan-processing', async (req, res) => {
     try {
-        const { customerEmail, checkBounds, blockStatus, fileStatus, loanType, documentStatus, monthlyIncome, msneNo, gstNo, cibilRecord, selectedOptions, documentType, customerId } = req.body; // Add documentType to the request body
+        const { checkBounds, blockStatus, fileStatus, loanType, documentStatus, monthlyIncome, msneNo, gstNo, cibilRecord, selectedOptions, documentType, customerId } = req.body; // Add documentType to the request body
+// console.log(req.body);
 
         // Find the customer by email
         const customer = await Customer.findById(customerId);
@@ -2059,7 +2103,7 @@ app.post('/api/save-loan-processing', async (req, res) => {
                 msneNo,
                 gstNo,
                 cibilRecord,
-                itReturns: selectedOptions.map(option => option.value) // Map selectedOptions to itReturns
+                itReturns: selectedOptions// Map selectedOptions to itReturns
             },
             { new: true, upsert: true }
         );
@@ -2086,7 +2130,6 @@ app.get('/get-loan-processing', async (req, res) => {
         const loanProcessingDetails = await LoanProcessing.findOne({ customerId: customer._id });
         if (!loanProcessingDetails) {
             // return res.status(404).json({ message: 'Loan processing details not found' });
-            console.log("not fount");
         }
 
         res.status(200).json(loanProcessingDetails);
@@ -2110,19 +2153,19 @@ app.post('/customer/forgotpassword', async (req, res) => {
         const customer = await Customer.findOne({ customermailid });
 
         if (!customer) {
-            console.log('User not found for email:', customermailid);
+            // console.log('User not found for email:', customermailid);
             return res.status(404).send('User not found');
         }
 
         const token = crypto.randomBytes(32).toString('hex');
-        console.log('Generated token:', token);
+        // console.log('Generated token:', token);
 
         customer.resetToken = token;
         customer.resetTokenExpiration = Date.now() + 3600000; // 1 hour
-        console.log('Token expiration:', new Date(customer.resetTokenExpiration));
+        // console.log('Token expiration:', new Date(customer.resetTokenExpiration));
 
         await customer.save();
-        console.log('Token saved to database for customer:', customer.customermailid);
+        // console.log('Token saved to database for customer:', customer.customermailid);
 
         const mailOptions = {
             from: process.env.EMAIL_USER,
@@ -2141,7 +2184,7 @@ app.post('/customer/forgotpassword', async (req, res) => {
                 console.error('Error sending email:', error);
                 return res.status(500).send('Error sending email');
             }
-            console.log('Email sent:', info.response);
+            // console.log('Email sent:', info.response);
             res.send('Password reset email sent');
         });
     } catch (err) {
@@ -2155,8 +2198,8 @@ app.post('/customer/resetpassword/:token', async (req, res) => {
     const { token } = req.params;
     const { password } = req.body;
 
-    console.log('Received password reset request for token:', token);
-    console.log('New password:', password);
+    // console.log('Received password reset request for token:', token);
+    // console.log('New password:', password);
 
     try {
         const customer = await Customer.findOne({
@@ -2165,7 +2208,7 @@ app.post('/customer/resetpassword/:token', async (req, res) => {
         });
 
         if (!customer) {
-            console.log('Password reset token is invalid or has expired.');
+            // console.log('Password reset token is invalid or has expired.');
             return res.status(400).send('Password reset token is invalid or has expired.');
         }
 
@@ -2178,7 +2221,7 @@ app.post('/customer/resetpassword/:token', async (req, res) => {
         customer.resetTokenExpiration = undefined;
 
         await customer.save();
-        console.log('Password has been reset and saved successfully.');
+        // console.log('Password has been reset and saved successfully.');
 
         res.send('Password has been reset');
     } catch (err) {
@@ -2297,7 +2340,7 @@ app.post('/register', async (req, res) => {
             if (error) {
                 console.error('Error sending email:', error);
             } else {
-                console.log('Email sent: ' + info.response);
+                // console.log('Email sent: ' + info.response);
             }
         });
 
@@ -2465,7 +2508,7 @@ app.post('/api/uksregister', async (req, res) => {
             if (error) {
                 console.error('Error sending email:', error);
             } else {
-                console.log('UKS Email sent: ' + info.response);
+                // console.log('UKS Email sent: ' + info.response);
             }
         });
 
@@ -2479,7 +2522,7 @@ app.post('/api/uksregister', async (req, res) => {
 });
 app.get('/uks/activate/:token', async (req, res) => {
     const { token } = req.params;
-    console.log('Activation token:', token);
+    // console.log('Activation token:', token);
 
     try {
         const user = await User.findOne({ activationToken: token });
@@ -2565,7 +2608,7 @@ app.get('/api/ukslogin', async (req, res) => {
 
 app.post('/uks/forgotpassword', async (req, res) => {
     const { email } = req.body;
-    console.log('Received email:', email);
+    // console.log('Received email:', email);
 
     try {
         // Case-insensitive query for email
@@ -2573,19 +2616,19 @@ app.post('/uks/forgotpassword', async (req, res) => {
 
 
         if (!user) {
-            console.log('User not found for email:', email);
+            // console.log('User not found for email:', email);
             return res.status(404).send('User not found');
         }
 
         const token = crypto.randomBytes(32).toString('hex');
-        console.log('Generated token:', token);
+        // console.log('Generated token:', token);
 
         user.resetToken = token;
         user.resetTokenExpiration = Date.now() + 3600000; // 1 hour
-        console.log('Token expiration:', new Date(user.resetTokenExpiration));
+        // console.log('Token expiration:', new Date(user.resetTokenExpiration));
 
         await user.save();
-        console.log('Token saved to database for customer:', user.customermailid);
+        // console.log('Token saved to database for customer:', user.customermailid);
 
         const mailOptions = {
             from: process.env.EMAIL_USER,
@@ -2602,7 +2645,7 @@ app.post('/uks/forgotpassword', async (req, res) => {
                 console.error('Error sending email:', error);
                 return res.status(500).send('Error sending email');
             }
-            console.log('Email sent:', info.response);
+            // console.log('Email sent:', info.response);
             res.send('Password reset email sent');
         });
     } catch (err) {
@@ -2615,8 +2658,8 @@ app.post('/uks/resetpassword/:token', async (req, res) => {
     const { token } = req.params;
     const { password } = req.body;
 
-    console.log('Received password reset request for token:', token);
-    console.log('New password:', password);
+    // console.log('Received password reset request for token:', token);
+    // console.log('New password:', password);
 
     try {
         const user = await User.findOne({
@@ -2625,7 +2668,7 @@ app.post('/uks/resetpassword/:token', async (req, res) => {
         });
 
         if (!user) {
-            console.log('Password reset token is invalid or has expired.');
+            // console.log('Password reset token is invalid or has expired.');
             return res.status(400).send('Password reset token is invalid or has expired.');
         }
 
@@ -2637,7 +2680,7 @@ app.post('/uks/resetpassword/:token', async (req, res) => {
         user.resetTokenExpiration = undefined;
 
         await user.save();
-        console.log('Password has been reset and saved successfully.');
+        // console.log('Password has been reset and saved successfully.');
 
         res.send('Password has been reset');
     } catch (err) {
@@ -2798,7 +2841,7 @@ app.get('/api/download-pdf/:customerId', async (req, res) => {
         const pdf = await PdfModel.findOne({ customerId });
 
         if (!pdf) {
-            // return res.status(404).json({ error: 'PDF not found' });
+            return res.status(404).json({ error: 'PDF not found' });
         }
 
         res.set({
@@ -2808,8 +2851,8 @@ app.get('/api/download-pdf/:customerId', async (req, res) => {
 
         res.send(pdf.data);
     } catch (error) {
-        console.error('Error downloading PDF:', error);
-        res.status(500).json({ error: 'Failed to download PDF' });
+        // console.error('Error downloading PDF:', error);
+        res.status(500).json({ error: 'Pdf Not Available' });
     }
 });
 

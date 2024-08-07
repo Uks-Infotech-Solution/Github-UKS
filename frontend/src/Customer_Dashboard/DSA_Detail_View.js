@@ -102,7 +102,7 @@ function DSA_Detail_View() {
             <Container fluid className={`dsa-detail-view-container ${isSidebarExpanded ? 'sidebar-expanded' : ''}`}>
                 <PathnameUrlPath location={location} homepage={homepage} />
                 <Row className="dsa-detail-view-header-row">
-                    <Col className="dsa-detail-view-header-col" sm={10} lg={7} style={{float:'left'}}>
+                    <Col className="dsa-detail-view-header-col" sm={10} lg={7} style={{ float: 'left' }}>
                         <Row className="dsa-detail-view-header-inner-row">
                             <span className="dsa-detail-view-header">DSA Detail View</span>
                         </Row>
@@ -132,7 +132,7 @@ function DSA_Detail_View() {
                                 />
                             </Col>
                         </Row>
-                        <Row className="dsa-detail-view-row">
+                        {/* <Row className="dsa-detail-view-row">
                             <Col className='dsa-detail-view-label-col' lg={4}>
                                 <span className="dsa-detail-view-label">Contact Number:</span>
                             </Col>
@@ -183,7 +183,7 @@ function DSA_Detail_View() {
                                     readOnly
                                 />
                             </Col>
-                        </Row>
+                        </Row> */}
                         <Row className="dsa-detail-view-row">
                             <Col className='dsa-detail-view-label-col' lg={4}>
                                 <span className="dsa-detail-view-label">Website:</span>
@@ -197,7 +197,7 @@ function DSA_Detail_View() {
                                 />
                             </Col>
                         </Row>
-                        <Row className="dsa-detail-view-row">
+                        {/* <Row className="dsa-detail-view-row">
                             <Col className='dsa-detail-view-label-col' lg={4}>
                                 <span className="dsa-detail-view-label">Address:</span>
                             </Col>
@@ -206,7 +206,7 @@ function DSA_Detail_View() {
                                     {formData.permanentAddress.area}, {formData.permanentAddress.city}, {formData.permanentAddress.district}, {formData.permanentAddress.state}
                                 </div>
                             </Col>
-                        </Row>
+                        </Row> */}
 
                     </Col>
                     {!feedbacksLoaded ? (
@@ -227,12 +227,14 @@ function DSA_Detail_View() {
                                                 <div className="feedback-info">
                                                     <Row>
 
-                                                        <Col >
-                                                            <strong>Rating :
-                                                                {[...Array(feedback.rating)].map((_, i) => (
-                                                                    <MdStar key={i} style={{ marginLeft: '2px', marginRight: '2px', marginTop: '-2px' }} size={15} color={'#ffd700'} />
-                                                                ))}</strong>
-                                                        </Col>
+                                                        <div >
+                                                            <Col>
+                                                                <strong>Rating :
+                                                                    {[...Array(feedback.rating)].map((_, i) => (
+                                                                        <MdStar key={i} style={{ marginLeft: '2px', marginRight: '2px', marginTop: '-2px' }} size={15} color={'#ffd700'} />
+                                                                    ))}</strong>
+                                                            </Col>
+                                                        </div>
                                                         <Col>
                                                             <strong>Service :</strong> {feedback.serviceQuality}
                                                         </Col>
@@ -263,9 +265,9 @@ function DSA_Detail_View() {
                                 <thead>
                                     <tr>
                                         <th>Branch Name</th>
-                                        <th>Branch Location</th>
+                                        {/* <th>Branch Location</th> */}
                                         <th>Branch Manager</th>
-                                        <th>Contact Number</th>
+                                        {/* <th>Contact Number</th> */}
                                         <th>Branch Status</th>
                                     </tr>
                                 </thead>
@@ -275,9 +277,9 @@ function DSA_Detail_View() {
                                         .map((branch, index) => (
                                             <tr key={index}>
                                                 <td>{branch.branchName}</td>
-                                                <td>{branch.branchAddress}</td>
+                                                {/* <td>{branch.branchAddress}</td> */}
                                                 <td>{branch.branchManager}</td>
-                                                <td>{branch.branchContact}</td>
+                                                {/* <td>{branch.branchContact}</td> */}
                                                 <td>{branch.branchStatus}</td>
                                             </tr>
                                         ))}

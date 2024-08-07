@@ -98,13 +98,13 @@ const DashbordUserLogin = () => {
         <Row className="uks-log">
           <Col lg={3} md={4} sm={5}>
             <div className='employe-login-div'>
-              <h2 className="text-center">Employer Login</h2>
+              <h2 className="text-center">Employee Login</h2>
               <Form onSubmit={handleSubmit}>
                 <Form.Group controlId="formBasicUksNumber" className="mb-3 mt-5">
-                  <Form.Label>Employee Number</Form.Label>
+                  <Form.Label>Employee Code</Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder="UKS-"
+                    placeholder="Example: UKS-0"
                     value={uksNumber}
                     onChange={(e) => setUksNumber(e.target.value)}
                     required

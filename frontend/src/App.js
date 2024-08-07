@@ -67,6 +67,8 @@ import Sales_Person_dashboard from './Sales_Person/Sales_Person_Dashboard';
 import Sales_Packagers from './Sales_Person/Sales_Packagers';
 import Applied_Loan from './Customer_Dashboard/Applied_Loan';
 import Purchased_Package from './DSA/DSA_Dashboard/Purchase_Package';
+import Customer_Missing_Details from './DashBoard/Customer/Uks_Customer_Pending';
+import Customer_Updation from './Customer-Dashboard/Customer-Profile/Customer_Updation';
 
 function App() {
   return (
@@ -96,6 +98,7 @@ function App() {
 
 
           <Route path="/package/activate/:token" element={<Package_Activate />} />
+          <Route path="/uks/customer/details/missing/table" element={<Customer_Missing_Details />} />
 
 
           <Route path="/*" element={<OtherPages />} />
@@ -113,7 +116,7 @@ function App() {
           <Routes>
             {/* CUSTOMER */}
             <Route path="/customer/profile/download" element={<Profile_Download />} />
-            <Route path="/customer/profile/view" element={<Profile_View />} />
+            <Route path="/customer/profile/view" element={<Customer_Updation />} />
 
             {/* Customer DashBoard */}
             <Route path="/customer-dashboard" element={<Customer_Login_Dashboard />} />

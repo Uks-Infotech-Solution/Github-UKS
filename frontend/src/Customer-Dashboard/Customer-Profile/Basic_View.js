@@ -1385,12 +1385,12 @@ function Profile_View() {
 
                                             </div>
                                         </div>
-                                        {/* <Col lg={1}>
+                                        <Col lg={1}>
                                             {!editiloanprocess && (
                                                 <Button style={{ width: "80px", marginTop: '20px' }} onClick={handleEditLoanProcess}>Edit</Button>
 
                                             )}
-                                        </Col> */}
+                                        </Col>
                                     </div>
 
                                 </Row>
@@ -1399,7 +1399,7 @@ function Profile_View() {
                                     <div>Loading...</div>
                                 ) : editiloanprocess ? (
                                     <>
-                                        {/* <Row >
+                                        <Row >
                                             <Col>
                                                 <Row className="Row1 view-row-size">
                                                     <Col lg={3}><span className="customer-sentence">IT Returns</span></Col>
@@ -1513,7 +1513,7 @@ function Profile_View() {
                                                     </Col>
                                                 </Row>
                                             </Col>
-                                        </Row> */}
+                                        </Row>
                                     </>
                                 ) : (
                                     <>
