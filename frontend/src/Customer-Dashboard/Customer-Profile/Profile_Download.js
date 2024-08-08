@@ -398,15 +398,7 @@ function Profile_View( ) {
                                     </View>
                                 </>
                             )}
-                            <View style={styles.row}>
-                                <Text style={styles.label}>Document</Text>
-                                <Text style={styles.value}>:    {loanProcessingDetails?.documentStatus}</Text>
-                            </View>
-
-                            <View style={styles.row}>
-                                <Text style={styles.label}>Document Type</Text>
-                                <Text style={styles.value}>:    {loanProcessingDetails?.documentType}</Text>
-                            </View>
+                           
                         </View>
 
                     </View>
@@ -746,10 +738,10 @@ function Profile_View( ) {
                                 <Col className='basic-col-width' lg={2}><span className="customer-sentence">Loan Required</span></Col>
                                 <Col><div className="box customer-data-font">{customerDetails.loanRequired}</div></Col>
                             </Row>
-                            <Row className="Row1 view-row-size">
+                            {/* <Row className="Row1 view-row-size">
                                 <Col className='basic-col-width' lg={2}><span className="customer-sentence">Loan Level</span></Col>
                                 <Col><div className="box customer-data-font">{customerDetails.level}</div></Col>
-                            </Row>
+                            </Row> */}
 
                             {/* Display other customer details similarly */}
                         </Row>
@@ -997,10 +989,7 @@ function Profile_View( ) {
                                 </Row>
                                 <Row>
                                     <Col>
-                                        <Row className="Row1 view-row-size">
-                                            <Col lg={2}><span className="customer-sentence">Loan</span></Col>
-                                            <Col lg={2}><div className="box customer-data-font">{loanProcessingDetails && loanProcessingDetails.loanType}</div></Col>
-                                        </Row>
+                                       
 
                                         <Row className="Row1 view-row-size">
                                             <Col lg={2}><span className="customer-sentence">Cibil Record</span></Col>
@@ -1022,14 +1011,7 @@ function Profile_View( ) {
                                                     <Col lg={2}><div className="box customer-data-font">{loanProcessingDetails && loanProcessingDetails.gstNo}</div></Col>
                                                 </Row>
                                             </>)}
-                                        <Row className="Row1 view-row-size">
-                                            <Col lg={2}><span className="customer-sentence">Document</span></Col>
-                                            <Col lg={2}><div className="box customer-data-font">{loanProcessingDetails && loanProcessingDetails.documentStatus}</div></Col>
-                                        </Row>
-                                        <Row className="Row1 view-row-size">
-                                            <Col lg={2}><span className="customer-sentence">Document Type</span></Col>
-                                            <Col lg={2}><div className="box customer-data-font">{loanProcessingDetails && loanProcessingDetails.documentType}</div></Col>
-                                        </Row>
+                                        
                                     </Col>
                                 </Row>
                             </Row>

@@ -332,16 +332,6 @@ function CustomerTable() {
             <Table striped bordered hover className='dsa-table-line'>
               <thead>
                 <tr>
-                  {/* <th>
-                    <input
-                      type="checkbox"
-                      checked={allChecked}
-                      onChange={(e) => {
-                        setAllChecked(e.target.checked);
-                        handleAllChecked(e);
-                      }}
-                    />
-                  </th> */}
                   <th className='Customer-Table-head'>SI.No</th>
                   <th className='Customer-Table-head'>Customer No</th>
                   <th className='Customer-Table-head'>Name</th>
@@ -350,7 +340,6 @@ function CustomerTable() {
                   <th className='Customer-Table-head'>Cibil Score</th>
                   <th className='Customer-Table-head'>Customer Status</th>
                   <th className='Customer-Table-head'>View</th>
-                  {/* <th className='Customer-Table-head'>Pdf</th> */}
                 </tr>
               </thead>
               <tbody>
@@ -358,14 +347,7 @@ function CustomerTable() {
                 {filteredCustomers.slice(indexOfFirstCustomer, indexOfLastCustomer).map((customer, index) => (
 
                   <tr key={customer._id}>
-                    {/* <td >
-                      <input
-                        type='checkbox'
-                        className='customer-list-checkbox'
-                        checked={checkedItems[customer._id]}
-                        onChange={(e) => handleCheckboxChange(e, customer._id)}
-                      />
-                    </td> */}
+               
                     <td>{indexOfFirstCustomer + index + 1}</td>
                     <td style={{ width: '100px', fontSize: '12px' }}>
                       {customer.customerNo ? `UKS-CU-${customer.customerNo.toString().padStart(3, '0')}` : 'N/A'}

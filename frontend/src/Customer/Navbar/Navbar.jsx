@@ -60,7 +60,6 @@ const StickyNavbar = () => {
         localStorage.setItem('login', true);
         localStorage.setItem('customerId', customerId);
         fetchCustomerDetails(customerId);
-        fetchProfilePicture(customerId);
       }
       else if (dsaId) {
         setLogin(true);
@@ -82,7 +81,6 @@ const StickyNavbar = () => {
 
       if (storedCustomerId) {
         fetchCustomerDetails(storedCustomerId);
-        fetchProfilePicture(storedCustomerId);
       } else if (storedDsaId) {
         fetchDSADetails(storedDsaId);
       } else if (storedUksId) {
@@ -136,27 +134,6 @@ const StickyNavbar = () => {
     }
   };
 
-  const fetchProfilePicture = async (customerId) => {
-    try {
-      const response = await axios.get(`https://uksinfotechsolution.in:8000/api/profile/view-profile-picture?customerId=${customerId}`, {
-        responseType: 'arraybuffer'
-      });
-      const contentType = response.headers['content-type'];
-
-      if (contentType && contentType.startsWith('image')) {
-        const base64Image = `data:${contentType};base64,${btoa(
-          new Uint8Array(response.data).reduce((data, byte) => data + String.fromCharCode(byte), '')
-        )}`;
-        setImageSrc(base64Image);
-        localStorage.setItem('profileImage', base64Image);
-      }
-    } catch (err) {
-      // console.error('Error retrieving profile picture:', err);
-      setImageSrc(null);
-      // localStorage.removeItem('profileImage');
-    }
-  };
-
   const handleLogout = async () => {
     try {
       localStorage.clear();
@@ -170,7 +147,6 @@ const StickyNavbar = () => {
       localStorage.removeItem('customerId');
       localStorage.removeItem('dsaId');
       localStorage.removeItem('uksId');
-      localStorage.removeItem('profileImage');
       navigate('/ldp/finserv');
     } catch (err) {
       console.error('Error during logout:', err);
@@ -257,11 +233,9 @@ const StickyNavbar = () => {
             <Nav.Link as={Link} to="/contact"><FaShoppingCart size={23} /></Nav.Link>
             <div ref={profileContainerRef} className='profile-container' onClick={toggleProfileDropdown}>
               <span className='navbar-profile-hide'>Hi <span className='customer-name-right'>{(customerDetails && customerDetails.customerFname) || (dsaData && dsaData.dsaName) || (uksData && uksData.name)}</span></span>
-              {imageSrc ? (
-                <img className='navbar-profile-image' src={imageSrc} alt="Profile" />
-              ) : (
+             
                 <FaUserCircle size={45} className='navbar-profile-icon' />
-              )}
+              
               <NavDropdown show={showDropdown} title="" id="basic-nav-dropdown" align="end">
                 <NavDropdown.Item onClick={handleHomeChange} className='d-flex align-items-center'>
                   <MdHome size={25} />

@@ -112,73 +112,6 @@ function Customer_Updation() {
         }
     };
 
-
-    // PROFILE PICTURE UPLOAD
-    const onFileChange = (e) => {
-        setFile(e.target.files[0]);
-    };
-
-    const [imageSrc, setImageSrc] = useState(null);
-    const [file, setFile] = useState(null);
-
-    const [fileName, setFileName] = useState('');
-    const onUpload = async () => {
-        if (!file) {
-            alert('Please select a file first.');
-            return;
-        }
-        const formData = new FormData();
-        formData.append('profilePicture', file);
-        formData.append('customerId', customerId);
-        try {
-            const response = await axios.post('https://uksinfotechsolution.in:8000/api/profile/upload-profile-picture', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            });
-            alert('Profile picture uploaded successfully');
-            fetchProfilePicture(customerId);
-            window.location.reload();
-
-        } catch (error) {
-            console.error('Error uploading file:', error);
-            alert('Failed to upload profile picture');
-        }
-    };
-
-
-    // FETCH PROFILE PICTURE
-
-    const fetchProfilePicture = async (customerId) => {
-        try {
-            const response = await axios.get(`https://uksinfotechsolution.in:8000/api/profile/view-profile-picture?customerId=${customerId}`, {
-                responseType: 'arraybuffer'
-            });
-            const contentType = response.headers['content-type'];
-
-            if (contentType && contentType.startsWith('image')) {
-                const base64Image = `data:${contentType};base64,${btoa(
-                    String.fromCharCode(...new Uint8Array(response.data))
-                )}`;
-                setImageSrc(base64Image);
-                setError(null);
-            } else {
-                setError('Response is not an image');
-                setImageSrc(null);
-            }
-        } catch (err) {
-            // console.error('Error retrieving profile picture:', err);
-            // setError('Failed to load profile picture');
-            setImageSrc(null);
-        }
-    };
-
-    useEffect(() => {
-        if (customerId) {
-            fetchProfilePicture(customerId);
-        }
-    }, [customerId]);
-
     const handleDownloadClick = async (e) => {
         e.preventDefault();
         
@@ -252,32 +185,7 @@ function Customer_Updation() {
                             </Col>
                             <hr style={{ margin: "5px", width: "98%" }} />
                         </Row>
-                        <Row className={`Upload-profile-row ${isSidebarExpanded ? 'sidebar-expanded' : ''}`}>
-                            <div className='Upload-profile-div'>
-                                <h6 >Upload Profile Picture</h6>
-
-                                <div>
-                                    {imageSrc ? (
-                                        <img style={{ height: '150px', borderStyle: "solid", borderWidth: 'thin', padding: '1px' }} src={imageSrc} alt="Profile" />
-                                    ) : (
-                                        <div></div>
-                                    )}
-                                </div>
-                                <div>
-                                    <input
-                                        type="file"
-                                        accept="image/jpeg, image/png"
-                                        onChange={onFileChange}
-                                        className="file-input"
-                                        style={{ margin: '10px 0', wordWrap: "break-word" }}
-                                    />
-                                    <div className="file-name">{fileName}</div>
-                                    <div>
-                                        <Button onClick={onUpload} style={{ border: 'none' }} >Upload</Button>
-                                    </div>
-                                </div>
-                            </div>
-                        </Row>
+                        
                         <Row className="Row1 view-row-size">
                             <Col className='basic-col-width' lg={2}>
                                 <span className="customer-sentence">Customer Type</span>
