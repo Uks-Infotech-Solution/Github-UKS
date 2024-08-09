@@ -525,9 +525,9 @@ app.post('/buy_packagers', async (req, res) => {
             to: process.env.EMAIL_USER, // Send email to the customer's email address
             subject: 'Package Activation',
             html: `
-          <h4>${dsaName} (UKS-DSA_0${dsaNumber}) Package Activation Mail,</h4>
+          <h4>${dsaName} (UKS-DSA_0${dsaNumber})</h4>
           <p>${dsaName} has selected the ${packageName} (${packageAmount}) Package,</p>
-          <p>To activate this package <a href="https://uksinfotechsolution.in/package/activate/${token}">Click Here</a>.</p>
+          <p>Your Package will be Activate Soon. Please Contact Admin</p>
           <p>Thanks & regards,<br>LDP Finanserv.</p>`,
         };
 
