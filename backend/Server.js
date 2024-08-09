@@ -43,6 +43,8 @@ const BuyPackage = require('./UKS/Buy_Packegers');
 const Package_Activation = require('../backend/UKS/Dsa_Package_Activation');
 const SalesPerson = require('./UKS/Sales_person_cus_reg');
 const SalesPersonDSA = require('./UKS/Sales_person_dsa_reg');
+const Uks_Customer_Activation = require('./UKS/Customer_Activation');
+const Uks_Customer_Deactivation = require('./UKS/Customer_Deactivation');
 
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
@@ -131,6 +133,69 @@ connectDB();
 // Loan Application
 app.use('/api', loanApplicationRoutes);
 
+
+app.post('/uks/customer/deactivation', async (req, res) => {
+    try {
+      const { uksId, customerId, customerFname, customermailid } = req.body;
+    //   console.log(req.body);
+  
+      // Create and save activation data
+      const activation = new Uks_Customer_Deactivation({
+        uksId,
+        customerId,
+        customerFname,
+        customermailid,
+      });
+      const customer = await Customer.findOneAndUpdate(
+        { _id: customerId },
+        { isActive: false },
+        { new: true } // Return the updated document
+      );
+  
+      if (!customer) {
+        return res.status(404).json({ message: 'Customer not found' });
+      }
+      await activation.save();
+  
+      res.status(201).json({ message: 'Deactivation successful', activation, customer });
+    } catch (error) {
+      console.error('Error Deactivating customer:', error);  // Log the error to see what happened
+      res.status(500).json({ message: 'Error Deactivating customer', error });
+    }
+  });
+  
+
+
+app.post('/uks/customer/activation', async (req, res) => {
+    try {
+      const { uksId, customerId, customerFname, customermailid } = req.body;
+    //   console.log(req.body);
+  
+      // Create and save activation data
+      const activation = new Uks_Customer_Activation({
+        uksId,
+        customerId,
+        customerFname,
+        customermailid,
+      });
+      const customer = await Customer.findOneAndUpdate(
+        { _id: customerId },
+        { isActive: true },
+        { new: true } // Return the updated document
+      );
+  
+      if (!customer) {
+        return res.status(404).json({ message: 'Customer not found' });
+      }
+      await activation.save();
+  
+      res.status(201).json({ message: 'Activation successful', activation, customer });
+    } catch (error) {
+      console.error('Error activating customer:', error);  // Log the error to see what happened
+      res.status(500).json({ message: 'Error activating customer', error });
+    }
+  });
+  
 app.get('/customer-pending-details', async (req, res) => {
     const { customerId } = req.query;
     // console.log(customerId);
@@ -160,8 +225,8 @@ app.get('/customer-pending-details', async (req, res) => {
 
         res.json({ customerDetails, missingTables });
     } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
-        console.error('Error fetching customer details:', error);
+        // res.status(500).json({ error: 'Internal server error' });
+        // console.error('Error fetching customer details:', error);
     }
 });
 
@@ -2814,27 +2879,28 @@ app.post('/api/upload-pdf', upload.single('pdfFile'), async (req, res) => {
 });
 app.get('/api/check-pdf', async (req, res) => {
     try {
-        const { email } = req.query;
-        // console.log(email);
-        const customer = await Customer.findOne({ customermailid: email });
+        const { customerId } = req.query;
+        // console.log(customerId);
 
-
-        if (!customer) {
-            // return res.status(404).json({ message: 'Customer not found' });
-        }
-
-        const pdf = await PdfModel.findOne({ customerId: customer._id });
+        // Search for a PDF associated with the given customerId
+        const pdf = await PdfModel.findOne({ customerId: customerId });
 
         if (!pdf) {
-            // return res.status(404).json({ message: 'No PDF found for this customer' });
+            // No PDF found, return a 404 status with a message
+            return res.status(404).json({ message: 'No PDF found for this customer' });
         }
 
-        res.status(200).json({ message: 'PDF exists', customerId: customer._id });
+        // PDF found, return details with a 200 status
+        res.status(200).json({ 
+            message: 'PDF exists', 
+            pdfName: pdf.filename // Adjust based on your PDF model's schema
+        });
     } catch (error) {
-        // console.error('Error checking PDF:', error);
-        // res.status(500).json({ error: 'Failed to check PDF' });
+        console.error('Error checking PDF:', error);
+        res.status(500).json({ error: 'Failed to check PDF' });
     }
 });
+
 app.get('/api/download-pdf/:customerId', async (req, res) => {
     try {
         const { customerId } = req.params;

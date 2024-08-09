@@ -91,8 +91,8 @@ function Dsa_Profile_View() {
             if (error.response && error.response.status === 404) {
                 // Loan processing details not found
             } else {
-                console.error('Error fetching loan processing details:', error);
-                alert('Failed to fetch loan processing details');
+                // console.error('Error fetching loan processing details:', error);
+                // alert('Failed to fetch loan processing details');
             }
         }
     };
@@ -199,7 +199,7 @@ function Dsa_Profile_View() {
                     setEditingModeAddress(true);
                 }
             } catch (error) {
-                console.error('Error fetching address details:', error);
+                // console.error('Error fetching address details:', error);
                 setEditingModeAddress(true);
             }
         };
@@ -260,7 +260,7 @@ function Dsa_Profile_View() {
                     setSalariedPersons(data);
                 }
             } catch (error) {
-                alert("Error fetching Salaried Person details")
+                // alert("Error fetching Salaried Person details")
                 console.error('Error fetching Salaried Person details:', error);
             } finally {
                 setLoading(false);
@@ -514,13 +514,13 @@ function Dsa_Profile_View() {
                 <Page size="A4" style={styles.page}>
                     <View style={styles.fullcontainer}>
                         <View style={styles.container}>
-                            {imageSrc ? (
+                            {/* {imageSrc ? (
                                 <Image style={styles.image} src={imageSrc}
                                 />) : (
                                 <div>Profile Picture : Null</div>
                             )}
                             <Text style={styles.cibil}>Cibil Score</Text>
-                            <Text style={styles.cibil2}>: {loanProcessingDetails?.cibilRecord}</Text>
+                            <Text style={styles.cibil2}>: {loanProcessingDetails?.cibilRecord}</Text> */}
                             <Text style={styles.headingmain} className='Main-head'>Customer Profile Report</Text>
                             <Text style={styles.heading} className='Main-head'>Customer Details</Text>
                             <View style={styles.row}>
@@ -697,10 +697,10 @@ function Dsa_Profile_View() {
                             </View>
                             {customerDetails.customerType === 'Business' && (
                                 <>
-                                    {/* <View style={styles.row}>
+                                    <View style={styles.row}>
                                         <Text style={styles.label}>Monthly Income</Text>
                                         <Text style={styles.value}>:    {loanProcessingDetails?.monthlyIncome}</Text>
-                                    </View> */}
+                                    </View>
                                     <View style={styles.row}>
                                         <Text style={styles.label}>MSNE Reg.No</Text>
                                         <Text style={styles.value}>:    {loanProcessingDetails?.msneNo}</Text>
@@ -818,7 +818,7 @@ function Dsa_Profile_View() {
 }
                             <hr style={{ margin: "5px" }} />
                         </Row>
-                        <Row className={`Upload-profile-row ${isSidebarExpanded ? 'sidebar-expanded' : ''}`}>
+                        {/* <Row className={`Upload-profile-row ${isSidebarExpanded ? 'sidebar-expanded' : ''}`}>
                             <div className='Upload-profile-div' style={{ paddingBottom: '30px' }}>
                                 <h6 >Profile Picture</h6>
                                 <div>
@@ -834,7 +834,7 @@ function Dsa_Profile_View() {
                                     Cibil Score: <span style={{ fontWeight: '400' }}>{loanProcessingDetails.cibilRecord}</span>
                                 </div>
                             ) : null}
-                        </Row>
+                        </Row> */}
                         <Row className='Section-1-Row'>
                             <Row className='Row1 view-row-size'>
                                 <Col className='basic-col-width' lg={2}><span className="customer-sentence">Customer No</span></Col>

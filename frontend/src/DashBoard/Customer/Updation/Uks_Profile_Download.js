@@ -7,22 +7,24 @@ import { IoCloseSharp } from "react-icons/io5";
 import { Country, State, City } from "country-state-city";
 import { useNavigate } from 'react-router-dom';
 import { GoDotFill } from "react-icons/go";
-import { useSidebar } from '../../Customer/Navbar/SidebarContext';
+import { useSidebar } from '../../../Customer/Navbar/SidebarContext';
 import { Document, Page, View, Text, StyleSheet, pdf, Image } from '@react-pdf/renderer';
 import { saveAs } from 'file-saver';
 import './Profile_Download.css';
 import { FaDownload } from "react-icons/fa6";
 import { MdHome, MdArrowForwardIos, MdEdit } from 'react-icons/md';
-import CustomerTable from '../../Customer/Table/Table';
+import CustomerTable from '../../../Customer/Table/Table';
 import { useLocation } from 'react-router-dom';
 
 
-function Profile_View( ) {
+function Uks_Profile_View( ) {
     const homepage = () => {
         navigate('/customer');
     };
     const location = useLocation();
     const { customerId } = location.state || {};
+    const { uksId } = location.state || {};
+
     console.log({customerId});
     const [customerDetails, setCustomerDetails] = useState(null);
 
@@ -201,11 +203,6 @@ function Profile_View( ) {
                 <Page size="A4" style={styles.page}>
                     <View style={styles.fullcontainer}>
                         <View style={styles.container}>
-
-                            {/* {imageSrc && (
-                                <Image style={styles.image} src={imageSrc}
-                                />
-                            )} */}
                             <Text style={styles.cibil}>Cibil Score</Text>
                             <Text style={styles.cibil2}>: {loanProcessingDetails?.cibilRecord}</Text>
                             <Text style={styles.headingmain} className='Main-head'>Customer Profile Report</Text>
@@ -435,8 +432,8 @@ function Profile_View( ) {
             if (error.response && error.response.status === 404) {
                 // Loan processing details not found
             } else {
-                // console.error('Error fetching loan processing details:', error);
-                // alert('Failed to fetch loan processing details');
+                console.error('Error fetching loan processing details:', error);
+                alert('Failed to fetch loan processing details');
             }
         }
     };
@@ -455,7 +452,7 @@ function Profile_View( ) {
             });
             setPreviousLoanDetails(response.data);
         } catch (error) {
-            // console.error('Error fetching previous loans:', error);
+            console.error('Error fetching previous loans:', error);
         }
     };
     useEffect(() => {
@@ -554,38 +551,7 @@ function Profile_View( ) {
             fetchAddressDetails();
         }
     }, [customerId]);
-    // const [imageSrc, setImageSrc] = useState(null);
-    // // Function to fetch profile picture
 
-    // const fetchProfilePicture = async (customerId) => {
-    //     try {
-    //         const response = await axios.get(`https://uksinfotechsolution.in:8000/api/profile/view-profile-picture?customerId=${customerId}`, {
-    //             responseType: 'arraybuffer'
-    //         });
-    //         const contentType = response.headers['content-type'];
-
-    //         if (contentType && contentType.startsWith('image')) {
-    //             const base64Image = `data:${contentType};base64,${btoa(
-    //                 String.fromCharCode(...new Uint8Array(response.data))
-    //             )}`;
-    //             setImageSrc(base64Image);
-    //             // setError(null);
-    //         // } else {
-    //             setError('Response is not an image');
-    //             setImageSrc(null);
-    //         }
-    //     } catch (err) {
-    //         console.error('Error retrieving profile picture:', err);
-    //         setError('Failed to load profile picture');
-    //         setImageSrc(null);
-    //     }
-    // };
-
-    // useEffect(() => {
-    //     if (customerId) {
-    //         fetchProfilePicture(customerId);
-    //     }
-    // }, [customerId]);
 
     useEffect(() => {
         if (customerDetails?.customerType === 'Salaried Person') {
@@ -677,23 +643,6 @@ function Profile_View( ) {
                             </Col>
                             <hr style={{ margin: "5px" }} />
                         </Row>
-                        {/* <Row className={`Upload-profile-row ${isSidebarExpanded ? 'sidebar-expanded' : ''}`}>
-                            <div className='Upload-profile-div' style={{ paddingBottom: '30px' }}>
-                                <h6 >Profile Picture</h6>
-                                <div>
-                                    {imageSrc ? (
-                                        <img style={{ height: '150px', borderStyle: "solid", borderWidth: 'thin', padding: '1px' }} src={imageSrc} alt="Profile" />
-                                    ) : (
-                                        <div>Loading</div>
-                                    )}
-                                </div>
-                            </div>
-                            {loanProcessingDetails && loanProcessingDetails.cibilRecord ? (
-                                <div style={{ textAlign: "center", fontWeight: "500", marginTop: "8px", color: "green" }}>
-                                    Cibil Score: <span style={{ fontWeight: '400' }}>{loanProcessingDetails.cibilRecord}</span>
-                                </div>
-                            ) : null}
-                        </Row> */}
                         <Row>
                             <Row className='Row1 view-row-size'>
                                 <Col className='basic-col-width' lg={2}><span className="customer-sentence">Customer No</span></Col>
@@ -1027,4 +976,4 @@ function Profile_View( ) {
     );
 }
 
-export default Profile_View;
+export default Uks_Profile_View;

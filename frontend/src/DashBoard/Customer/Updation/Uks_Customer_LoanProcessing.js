@@ -12,7 +12,7 @@ const options = [
     { value: '2024-2025', label: '2024-2025' }
 ];
 
-function Customer_LoanProcessing({ refetchData }) {
+function Uks_Customer_LoanProcessing({ refetchData }) {
     const navigate = useNavigate();
     const location = useLocation();
     const { customerId } = location.state || {};
@@ -128,11 +128,17 @@ function Customer_LoanProcessing({ refetchData }) {
                 const response = await axios.get('https://uksinfotechsolution.in:8000/api/check-pdf', {
                     params: { customerId: customerId }
                 });
-                if (response.status === 200) {
+                if (response.status === 200 && response.data.pdfName) {
+                    setPdfName(response.data.pdfName);
                     setShowDownloadLink(true);
+                    // console.log(response.data);
+                    
+                } else {
+                    setShowDownloadLink(false);
                 }
             } catch (error) {
-                // console.log('No existing PDF found for this customer');
+                console.error('Error checking PDF availability:', error);
+                setShowDownloadLink(false);
             }
         };
 
@@ -173,6 +179,7 @@ function Customer_LoanProcessing({ refetchData }) {
             });
             alert('PDF uploaded successfully');
             setShowDownloadLink(true); // Show the download link after successful upload
+            window.location.reload();
         } catch (error) {
             console.error('Error uploading PDF:', error);
             alert('Failed to upload PDF');
@@ -186,7 +193,7 @@ function Customer_LoanProcessing({ refetchData }) {
 
     return (
         <Container fluid>
-            <Row className="dsa-detail-view-header-row" style={{ padding: '10px' }}>
+            <Row className="dsa-detail-view-header-row" >
                 <Row style={{ alignItems: 'center', paddingBottom: '10px' }}>
                     <Col>
                         <div>Loan Processing Details</div>
@@ -197,29 +204,13 @@ function Customer_LoanProcessing({ refetchData }) {
                         </Col>
                     )}
                 </Row>
-                {/* <Row >
-                    <div className='Upload-profile-div'>
-                        <h6 >Upload Pdf</h6>
 
-                        <div>
-                            <input type="file" onChange={handleFileChange} style={{}} />
-
-                            <div className="file-name">{pdfName}</div>
-                            <div>
-                                <Button onClick={handleUpload}>Upload</Button>
-
-                            </div>
-                        </div>
-
-                    </div>
-
-                </Row> */}
                 <Col className="">
                     <Row className="Row1 view-row-size">
-                        <Col className='basic-col-width' lg={3}>
+                        <Col className='basic-col-width' >
                             <span className="">IT Returns</span>
                         </Col>
-                        <Col lg={2}>
+                        <Col >
                             <Select
                                 options={options}
                                 isMulti
@@ -231,17 +222,17 @@ function Customer_LoanProcessing({ refetchData }) {
                         </Col>
                     </Row>
                     <Row className="Row1 view-row-size">
-                        <Col className='basic-col-width' lg={3}>
+                        <Col className='basic-col-width' >
                             <span className="">Check Bounds Status</span>
                         </Col>
-                        <Col lg={6}>
+                        <Col >
                             <select
                                 name="checkBounds"
                                 className="dropdown box"
                                 style={{ minWidth: '200px' }}
                                 value={formData.checkBounds || ''}
                                 onChange={handleChange}
-                                disabled={!editingMode || editingMode}
+                                disabled={!editingMode}
                             >
                                 <option value="">Select</option>
                                 <option value="Yes">Yes</option>
@@ -250,7 +241,7 @@ function Customer_LoanProcessing({ refetchData }) {
                         </Col>
                     </Row>
                     <Row className="Row1 view-row-size">
-                        <Col className='basic-col-width' lg={3}>
+                        <Col className='basic-col-width' >
                             <span className="">Customer Block Status</span>
                         </Col>
                         <Col>
@@ -259,7 +250,7 @@ function Customer_LoanProcessing({ refetchData }) {
                                 className="dropdown box"
                                 value={formData.blockStatus || ''}
                                 onChange={handleChange}
-                                disabled={!editingMode || editingMode}
+                                disabled={!editingMode}
                             >
                                 <option value="">Select</option>
                                 <option value="Active">Active</option>
@@ -268,7 +259,7 @@ function Customer_LoanProcessing({ refetchData }) {
                         </Col>
                     </Row>
                     <Row className="Row1 view-row-size">
-                        <Col className='basic-col-width' lg={3}>
+                        <Col className='basic-col-width' >
                             <span className="">File Status</span>
                         </Col>
                         <Col>
@@ -278,14 +269,14 @@ function Customer_LoanProcessing({ refetchData }) {
                                 className="box"
                                 value={formData.fileStatus || ''}
                                 onChange={handleChange}
-                                readOnly={!editingMode || editingMode}
+                                readOnly={!editingMode}
                             />
                         </Col>
                     </Row>
                     {customerDetails && customerDetails.customerType === 'Business' && (
                         <>
                             <Row className="Row1 view-row-size">
-                                <Col className='basic-col-width' lg={3}>
+                                <Col className='basic-col-width' >
                                     <span className="">Monthly Income</span>
                                 </Col>
                                 <Col>
@@ -300,7 +291,7 @@ function Customer_LoanProcessing({ refetchData }) {
                                 </Col>
                             </Row>
                             <Row className="Row1 view-row-size">
-                                <Col className='basic-col-width' lg={3}>
+                                <Col className='basic-col-width' >
                                     <span className="">MSNE Reg No.</span>
                                 </Col>
                                 <Col>
@@ -315,7 +306,7 @@ function Customer_LoanProcessing({ refetchData }) {
                                 </Col>
                             </Row>
                             <Row className="Row1 view-row-size">
-                                <Col className='basic-col-width' lg={3}>
+                                <Col className='basic-col-width' >
                                     <span className="">Gst No</span>
                                 </Col>
                                 <Col>
@@ -332,7 +323,7 @@ function Customer_LoanProcessing({ refetchData }) {
                         </>
                     )}
                     <Row className="Row1 view-row-size">
-                        <Col className='basic-col-width' lg={3}>
+                        <Col className='basic-col-width' >
                             <span className="">Cibil Record</span>
                         </Col>
                         <Col>
@@ -354,9 +345,25 @@ function Customer_LoanProcessing({ refetchData }) {
                         </Row>
                     )}
                 </Col>
+                <Col>
+                    <div className='Upload-profile-div'>
+                        <h6 >Upload Pdf</h6>
+                        <div>
+                            <input type="file" onChange={handleFileChange} style={{}} />
+
+                            <div className="file-name">{pdfName}</div>
+                            <div>
+                                <Button onClick={handleUpload}>Upload</Button>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </Col>
             </Row>
         </Container>
     );
 }
 
-export default Customer_LoanProcessing;
+export default Uks_Customer_LoanProcessing;

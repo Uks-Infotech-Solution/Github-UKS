@@ -54,8 +54,7 @@ import CustomerTable from './DSA/DSA_Dashboard/Customer_List';
 import Customer_reg from './Sales_Person/Customer_Reg/Customer_reg';
 import Customer from './Sales_Person/Customer_Menu';
 import DSA from './Sales_Person/DSA_Menu';
-import Uks_Customer_List from './DashBoard/Customer/Uks_Customer_List';
-import Uks_Customer_View from './DashBoard/Customer/Uks_Customer_Details';
+
 import Uks_Loan_Applications from './DashBoard/Customer/Uks_Loan_Applications';
 import UKS_DSA_List from './DashBoard/DSA/Uks_DSA_List';
 import DSA_Package_List from './DashBoard/DSA_Package_List';
@@ -69,6 +68,7 @@ import Applied_Loan from './Customer_Dashboard/Applied_Loan';
 import Purchased_Package from './DSA/DSA_Dashboard/Purchase_Package';
 import Customer_Missing_Details from './DashBoard/Customer/Uks_Customer_Pending';
 import Customer_Updation from './Customer-Dashboard/Customer-Profile/Customer_Updation';
+import Uks_Customer_Updation from './DashBoard/Customer/Uks_Customer_Updation';
 
 function App() {
   return (
@@ -98,8 +98,6 @@ function App() {
 
 
           <Route path="/package/activate/:token" element={<Package_Activate />} />
-          <Route path="/uks/customer/details/missing/table" element={<Customer_Missing_Details />} />
-
 
           <Route path="/*" element={<OtherPages />} />
           {/* <Route path="/customer/updatecustomer" element={<UpdateCustomer />} /> */}
@@ -153,8 +151,8 @@ function App() {
 
 
             <Route path="/uks/activate/:token" element={<UKS_Activate />} />
-            <Route path="/uks/customer/list" element={<Uks_Customer_List />} />
-            <Route path="/uks/customer/detail/view" element={<Uks_Customer_View />} />
+            <Route path="/uks/customer/list" element={<Customer_Missing_Details />} />
+            <Route path="/uks/customer/detail/view" element={<Uks_Customer_Updation />} />
             <Route path="/uks/loan/appliation" element={<Uks_Loan_Applications />} />
             <Route path="/uks/dsa/list" element={<UKS_DSA_List />} />
             <Route path="/uks/dashboard" element={<UKS_Dashboard />} />
