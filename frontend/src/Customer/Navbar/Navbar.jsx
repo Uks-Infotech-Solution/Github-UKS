@@ -212,7 +212,7 @@ const StickyNavbar = () => {
   const Uks_DSA = () => { if (uksId) { navigate('/uks/dsa/list', { state: { uksId } }); } }
   const Package_Inactive = () => { if (uksId) { navigate('/dsa/package/list', { state: { uksId } }); } }
 
-
+  const Total_Customer_List = () => { if (dsaId) { navigate('/dsa/total/customers', { state: { dsaId } }); } }
   const Customer_List = () => { if (dsaId) { navigate('/customer/list', { state: { dsaId } }); } }
   const Applied_Customers = () => { if (dsaId) { navigate('/applied/customer/list', { state: { dsaId } }); } }
   const DSA_Purchased_Package = () => { if (dsaId) { navigate('/purchased/package', { state: { dsaId } }); } }
@@ -506,6 +506,12 @@ const StickyNavbar = () => {
                   <li>
                     <Nav.Link onClick={DSA_Purchased_Package} className='font-size-dropdown'>
                     <MdDashboard className='Customer-icon' style={{ color: 'white' }} />Purchased Packages</Nav.Link>
+                  </li>
+                </ul>
+                <ul className='side-menu-customer-link'>
+                  <li>
+                    <Nav.Link onClick={Total_Customer_List} className='font-size-dropdown'>
+                    <MdDashboard className='Customer-icon' style={{ color: 'white' }} />Total Customer List</Nav.Link>
                   </li>
                 </ul>
                 <ul className='side-menu-customer-link'>

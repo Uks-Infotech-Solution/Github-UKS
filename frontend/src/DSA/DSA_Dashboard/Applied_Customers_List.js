@@ -273,8 +273,8 @@ function Applied_Customer_List() {
                   <th className='Customer-Table-head'>Application No</th>
                   <th className='Customer-Table-head'>Customer No</th>
                   <th className='Customer-Table-head'>Name</th>
-                   <th className='Customer-Table-head'>District</th>
-                  <th className='Customer-Table-head'>Area</th> 
+                   {/* <th className='Customer-Table-head'>District</th>
+                  <th className='Customer-Table-head'>Area</th>  */}
                   <th className='Customer-Table-head'>Type of Loan</th>
                   <th className='Customer-Table-head'>Amount</th>
                   <th className='Customer-Table-head'>Required Days</th>
@@ -310,12 +310,12 @@ function Applied_Customer_List() {
                       )}
                       <span style={{ textAlign: 'center' }}>{customer.customerName}</span>
                     </td>
-                     {addresses[customer._id] && (
+                     {/* {addresses[customer._id] && (
                       <>
                         <td>{addresses[customer._id].aadharDistrict || 'No District'}</td>
                         <td>{addresses[customer._id].aadharCity || 'No City'}</td>
                       </>
-                    )} 
+                    )}  */}
                     <td>{customer.loanType}</td>
                     <td>{customer.loanAmount}</td>
                     <td>{customer.loanRequiredDays}</td>

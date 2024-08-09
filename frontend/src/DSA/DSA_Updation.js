@@ -335,13 +335,13 @@ function DSA_Updation() {
                         <DSA_Loan_Details />
                         <hr />
 
-                        <Row>
+                        {/* <Row>
                             <div style={{ textAlign: "end" }}>
                                 <a href='' style={{ textDecoration: "none" }} onClick={(e) => {e.preventDefault(); handleDeactivateClick(); }}>
                                     Are you Delete Your Account ?
                                 </a>
                             </div>
-                        </Row>
+                        </Row> */}
                     </Col>
                 </Row>
             </Container>

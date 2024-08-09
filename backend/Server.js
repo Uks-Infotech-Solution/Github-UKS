@@ -98,7 +98,7 @@ const customerSchema = new Schema({
     customeralterno: String,
     customerwhatsapp: String,
     customermailid: String,
-    ReferedBy:String,
+    ReferedBy: String,
     typeofloan: String,
     loanRequired: Number,
     userpassword: String,
@@ -136,66 +136,66 @@ app.use('/api', loanApplicationRoutes);
 
 app.post('/uks/customer/deactivation', async (req, res) => {
     try {
-      const { uksId, customerId, customerFname, customermailid } = req.body;
-    //   console.log(req.body);
-  
-      // Create and save activation data
-      const activation = new Uks_Customer_Deactivation({
-        uksId,
-        customerId,
-        customerFname,
-        customermailid,
-      });
-      const customer = await Customer.findOneAndUpdate(
-        { _id: customerId },
-        { isActive: false },
-        { new: true } // Return the updated document
-      );
-  
-      if (!customer) {
-        return res.status(404).json({ message: 'Customer not found' });
-      }
-      await activation.save();
-  
-      res.status(201).json({ message: 'Deactivation successful', activation, customer });
+        const { uksId, customerId, customerFname, customermailid } = req.body;
+        //   console.log(req.body);
+
+        // Create and save activation data
+        const activation = new Uks_Customer_Deactivation({
+            uksId,
+            customerId,
+            customerFname,
+            customermailid,
+        });
+        const customer = await Customer.findOneAndUpdate(
+            { _id: customerId },
+            { isActive: false },
+            { new: true } // Return the updated document
+        );
+
+        if (!customer) {
+            return res.status(404).json({ message: 'Customer not found' });
+        }
+        await activation.save();
+
+        res.status(201).json({ message: 'Deactivation successful', activation, customer });
     } catch (error) {
-      console.error('Error Deactivating customer:', error);  // Log the error to see what happened
-      res.status(500).json({ message: 'Error Deactivating customer', error });
+        console.error('Error Deactivating customer:', error);  // Log the error to see what happened
+        res.status(500).json({ message: 'Error Deactivating customer', error });
     }
-  });
-  
+});
+
 
 
 app.post('/uks/customer/activation', async (req, res) => {
     try {
-      const { uksId, customerId, customerFname, customermailid } = req.body;
-    //   console.log(req.body);
-  
-      // Create and save activation data
-      const activation = new Uks_Customer_Activation({
-        uksId,
-        customerId,
-        customerFname,
-        customermailid,
-      });
-      const customer = await Customer.findOneAndUpdate(
-        { _id: customerId },
-        { isActive: true },
-        { new: true } // Return the updated document
-      );
-  
-      if (!customer) {
-        return res.status(404).json({ message: 'Customer not found' });
-      }
-      await activation.save();
-  
-      res.status(201).json({ message: 'Activation successful', activation, customer });
+        const { uksId, customerId, customerFname, customermailid } = req.body;
+        //   console.log(req.body);
+
+        // Create and save activation data
+        const activation = new Uks_Customer_Activation({
+            uksId,
+            customerId,
+            customerFname,
+            customermailid,
+        });
+        const customer = await Customer.findOneAndUpdate(
+            { _id: customerId },
+            { isActive: true },
+            { new: true } // Return the updated document
+        );
+
+        if (!customer) {
+            return res.status(404).json({ message: 'Customer not found' });
+        }
+        await activation.save();
+
+        res.status(201).json({ message: 'Activation successful', activation, customer });
     } catch (error) {
-      console.error('Error activating customer:', error);  // Log the error to see what happened
-      res.status(500).json({ message: 'Error activating customer', error });
+        console.error('Error activating customer:', error);  // Log the error to see what happened
+        res.status(500).json({ message: 'Error activating customer', error });
     }
-  });
-  
+});
+
 app.get('/customer-pending-details', async (req, res) => {
     const { customerId } = req.query;
     // console.log(customerId);
@@ -380,7 +380,7 @@ app.get('/buy_packages/dsa/:dsaId', async (req, res) => {
         if (!packages || packages.length === 0) {
             return res.status(404).json({ message: 'No active packages found for this DSA ID' });
         }
-// console.log(packages);
+        // console.log(packages);
 
         res.status(200).json(packages[0]); // Respond with the most recent active package
     } catch (error) {
@@ -525,9 +525,9 @@ app.post('/buy_packagers', async (req, res) => {
             to: process.env.EMAIL_USER, // Send email to the customer's email address
             subject: 'Package Activation',
             html: `
-          <h4>${dsaName} (UKS-DSA_0${dsaNumber})</h4>
+          <h4>${dsaName} (UKS-DSA_0${dsaNumber}) Package Activation Mail,</h4>
           <p>${dsaName} has selected the ${packageName} (${packageAmount}) Package,</p>
-          <p>Your Package will be Activate Soon. Please Contact Admin</p>
+                    <p>Your Package will be Activate Soon. Please Contact Admin</p>
           <p>Thanks & regards,<br>LDP Finanserv.</p>`,
         };
 
@@ -1998,7 +1998,7 @@ app.get('/salariedperson', async (req, res) => {
 app.post('/add-address', async (req, res) => {
     const { customerId, address } = req.body;
     console.log(req.body);
-    
+
     try {
         const customer = await Customer.findById(customerId);
 
@@ -2030,7 +2030,7 @@ app.post('/add-address', async (req, res) => {
 
 app.get('/loanapply/address/check', async (req, res) => {
     // console.log("loan apply");
-    
+
     const { customerId } = req.query;
     try {
         const customer = await Customer.findById(customerId);
@@ -2040,7 +2040,7 @@ app.get('/loanapply/address/check', async (req, res) => {
 
         const address = await Address.findOne({ customerId: customer._id });
         // console.log(address);
-        
+
         if (!address) {
             // return res.status(404).json({ error: 'Address not found' });
         }
@@ -2119,14 +2119,14 @@ app.get('/get-previous-loans', async (req, res) => {
 app.delete('/delete-previous-loan/:loanId', async (req, res) => {
     const { loanId } = req.params;
     console.log("Received loanId to delete: " + loanId);
-    
+
     try {
         const deletedLoan = await PreviousLoan.findByIdAndDelete(loanId);
         if (!deletedLoan) {
             console.log("loan not found");
 
             return res.status(404).json({ message: 'Loan not found' });
-            
+
         }
         res.json({ message: 'Previous loan deleted successfully' });
     } catch (error) {
@@ -2144,7 +2144,7 @@ app.delete('/delete-previous-loan/:loanId', async (req, res) => {
 app.post('/api/save-loan-processing', async (req, res) => {
     try {
         const { checkBounds, blockStatus, fileStatus, loanType, documentStatus, monthlyIncome, msneNo, gstNo, cibilRecord, selectedOptions, documentType, customerId } = req.body; // Add documentType to the request body
-// console.log(req.body);
+        // console.log(req.body);
 
         // Find the customer by email
         const customer = await Customer.findById(customerId);
@@ -2355,7 +2355,7 @@ app.get('/customer/activate/:token', async (req, res) => {
 });
 
 app.post('/register', async (req, res) => {
-    const { title, customerFname, customerLname, gender, customercontact, customeralterno, customerwhatsapp, ReferedBy,customermailid, typeofloan, userpassword, customerType, loanRequired, level } = req.body;
+    const { title, customerFname, customerLname, gender, customercontact, customeralterno, customerwhatsapp, ReferedBy, customermailid, typeofloan, userpassword, customerType, loanRequired, level } = req.body;
     // console.log(req.body);
     try {
         const token = crypto.randomBytes(32).toString('hex');
@@ -2422,7 +2422,7 @@ app.post('/register', async (req, res) => {
 app.put('/update-customer-details', async (req, res) => {
     try {
         const { customerId, updatedDetails } = req.body;
-// console.log(customerId,updatedDetails);
+        // console.log(customerId,updatedDetails);
 
         if (!customerId || !updatedDetails) {
             console.error('Received incomplete data:', req.body);
@@ -2891,8 +2891,8 @@ app.get('/api/check-pdf', async (req, res) => {
         }
 
         // PDF found, return details with a 200 status
-        res.status(200).json({ 
-            message: 'PDF exists', 
+        res.status(200).json({
+            message: 'PDF exists',
             pdfName: pdf.filename // Adjust based on your PDF model's schema
         });
     } catch (error) {

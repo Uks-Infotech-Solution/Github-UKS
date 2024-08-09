@@ -97,7 +97,7 @@ const DSA_LoanGridView = () => {
 
     return (
         <Container fluid className={`grid-view-page-container ${isSidebarExpanded ? 'sidebar-expanded' : ''}`}>
-            <PathnameUrlPath location={location} homepage={() => navigate('/customer-dashboard')} />
+            {/* <PathnameUrlPath location={location} homepage={() => navigate('/customer-dashboard')} /> */}
             <hr />
             <h4 style={{ color: 'brown' }} className="mt-4 mb-4">Customers in <span style={{ color: 'brown', textDecoration: 'underline' }}>{area}</span>:</h4>
             <Row style={{ justifyContent: 'center', alignItems: 'center' }}>

@@ -13,6 +13,7 @@ function Popup({ show, handleClose, dsaNumber }) {
                 <img src={successIcon} alt="Success Icon" className="mb-3" style={{ width: '50px', height: '50px' }} />
                 <h3>Register.No: UKS-DSA- {dsaNumber}</h3>
                 <p>DSA Registration is successful</p>
+                <p>Check Your Email to Activate Your Account </p>
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="primary" onClick={handleClose}>

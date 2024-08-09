@@ -169,7 +169,8 @@ const PricingBox = () => {
           <Modal.Title style={{ color: 'green' }}>Success</Modal.Title>
         </Modal.Header>
         <Modal.Body style={{ textAlign: 'center', color: 'green' }}>
-          Your Package Has Been Successfully Purchased!
+          Package Has Been Successfully Purchased!
+          <p>Your Package will be Activate Soon. Please Contact Admin</p>
         </Modal.Body>
       </Modal>
     </Container>

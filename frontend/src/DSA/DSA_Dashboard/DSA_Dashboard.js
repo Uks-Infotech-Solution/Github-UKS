@@ -152,7 +152,7 @@ function DSA_Login_Dashboard() {
     return (
         <>
             <div className={`dash-url-expand ${isSidebarExpanded ? 'sidebar-expanded' : ''}`}>
-                <PathnameUrlPath location={location} homepage={homepage} />
+                {/* <PathnameUrlPath location={location} homepage={homepage} /> */}
             </div>
             <Container fluid className={`Customer-dash-container Customer-table-container-second ${isSidebarExpanded ? 'sidebar-expanded' : ''}`}>
 

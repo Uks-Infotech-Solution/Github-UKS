@@ -69,6 +69,7 @@ import Purchased_Package from './DSA/DSA_Dashboard/Purchase_Package';
 import Customer_Missing_Details from './DashBoard/Customer/Uks_Customer_Pending';
 import Customer_Updation from './Customer-Dashboard/Customer-Profile/Customer_Updation';
 import Uks_Customer_Updation from './DashBoard/Customer/Uks_Customer_Updation';
+import Dsa_Total_Customers from './DSA/DSA_Dashboard/Total_Customers';
 
 function App() {
   return (
@@ -138,6 +139,7 @@ function App() {
             <Route path="/applied/customer/view" element={<Applied_Customer_View />} />
             <Route path="/customer/grid/view" element={<DSA_LoanGridView />} />
             <Route path="/customer/list" element={<CustomerTable />} />
+            <Route path="/dsa/total/customers" element={<Dsa_Total_Customers />} />
             <Route path="/applied/customer/list" element={<Applied_Customer_List />} />
 
             <Route path="/dsa/updation" element={<DSA_Updation />} />
@@ -148,7 +150,6 @@ function App() {
 
 
             <Route path="/dsa/customer/download" element={<Dsa_Profile_View />} />
-
 
             <Route path="/uks/activate/:token" element={<UKS_Activate />} />
             <Route path="/uks/customer/list" element={<Customer_Missing_Details />} />
