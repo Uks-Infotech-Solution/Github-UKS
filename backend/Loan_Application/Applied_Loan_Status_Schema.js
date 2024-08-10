@@ -18,7 +18,7 @@ const AppliedLoanStatusSchema = new mongoose.Schema({
     status: {
         type: String,
         required: true,
-        enum: ['Waiting List', 'Cibil Process', 'Success', 'Approved', 'Rejected']
+        
     },
     dateTime: {
         type: Date,

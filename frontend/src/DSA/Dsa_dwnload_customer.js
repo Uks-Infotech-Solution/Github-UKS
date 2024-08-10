@@ -26,8 +26,8 @@ function Dsa_Profile_View() {
     const dsaId = location.state?.dsaId;
     const customerId = location.state?.customerId;
 
-    console.log("DSA ID:", dsaId);
-    console.log("Customer ID:", customerId);
+    // console.log("DSA ID:", dsaId);
+    // console.log("Customer ID:", customerId);
 
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
@@ -181,7 +181,7 @@ function Dsa_Profile_View() {
     useEffect(() => {
         const fetchAddressDetails = async () => {
             try {
-                console.log(`Fetching address details for customerId: ${customerId}`);
+                // console.log(`Fetching address details for customerId: ${customerId}`);
                 const response = await axios.get(`https://uksinfotechsolution.in:8000/view-address`, {
                     params: { customerId: customerId }
                 });
@@ -209,38 +209,37 @@ function Dsa_Profile_View() {
         }
     }, [customerId]);
 
-    const [imageSrc, setImageSrc] = useState(null);
-    // Function to fetch profile picture
+    // const [imageSrc, setImageSrc] = useState(null);
 
-    const fetchProfilePicture = async (customerId) => {
-        try {
-            const response = await axios.get(`https://uksinfotechsolution.in:8000/api/profile/view-profile-picture?customerId=${customerId}`, {
-                responseType: 'arraybuffer'
-            });
-            const contentType = response.headers['content-type'];
+    // const fetchProfilePicture = async (customerId) => {
+    //     try {
+    //         const response = await axios.get(`https://uksinfotechsolution.in:8000/api/profile/view-profile-picture?customerId=${customerId}`, {
+    //             responseType: 'arraybuffer'
+    //         });
+    //         const contentType = response.headers['content-type'];
 
-            if (contentType && contentType.startsWith('image')) {
-                const base64Image = `data:${contentType};base64,${btoa(
-                    String.fromCharCode(...new Uint8Array(response.data))
-                )}`;
-                setImageSrc(base64Image);
-                // setError(null);
-            } else {
-                // setError('Response is not an image');
-                setImageSrc(null);
-            }
-        } catch (err) {
-            // console.error('Error retrieving profile picture:', err);
-            // setError('Failed to load profile picture');
-            setImageSrc(null);
-        }
-    };
+    //         if (contentType && contentType.startsWith('image')) {
+    //             const base64Image = `data:${contentType};base64,${btoa(
+    //                 String.fromCharCode(...new Uint8Array(response.data))
+    //             )}`;
+    //             setImageSrc(base64Image);
+    //             // setError(null);
+    //         } else {
+    //             // setError('Response is not an image');
+    //             setImageSrc(null);
+    //         }
+    //     } catch (err) {
+    //         // console.error('Error retrieving profile picture:', err);
+    //         // setError('Failed to load profile picture');
+    //         setImageSrc(null);
+    //     }
+    // };
 
-    useEffect(() => {
-        if (customerId) {
-            fetchProfilePicture(customerId);
-        }
-    }, [customerId]);
+    // useEffect(() => {
+    //     if (customerId) {
+    //         fetchProfilePicture(customerId);
+    //     }
+    // }, [customerId]);
 
     // SALARY 
     const [salariedPersons, setSalariedPersons] = useState([]);
@@ -283,7 +282,7 @@ function Dsa_Profile_View() {
                 const response = await axios.get('https://uksinfotechsolution.in:8000/api/file-status');
                 const fileStatusesData = response.data.map(status => status.type); // Assuming the status object has a 'type' field
                 setFileStatuses(fileStatusesData);
-                console.log('Fetched file statuses:', fileStatusesData); // Log the fetched data
+                // console.log('Fetched file statuses:', fileStatusesData); 
             } catch (error) {
                 console.error('Error fetching file statuses:', error);
             }
@@ -302,7 +301,7 @@ function Dsa_Profile_View() {
                 dsaId: dsaId // Add dsaId here
             };
             const response = await axios.post('https://uksinfotechsolution.in:8000/api/customer_file_status_update', data);
-            console.log('File status update response:', response.data);
+            // console.log('File status update response:', response.data);
             setIsEditing(false);
             alert('File status updated');
             fetchLoanProcessingDetails();
@@ -344,12 +343,12 @@ function Dsa_Profile_View() {
     // Function to fetch download table count
     const fetchDownloadTableCount = async () => {
         try {
-            console.log('Fetching download table count for dsaId:', dsaId);
+            // console.log('Fetching download table count for dsaId:', dsaId);
             const response = await axios.get(`https://uksinfotechsolution.in:8000/dsa/download/count`, {
                 params: { dsaId: dsaId }
             });
             setDownloadTableCount(response.data.count);
-            console.log('Download table count:', response.data.count);
+            // console.log('Download table count:', response.data.count);
         } catch (error) {
             console.error('Error fetching download table count:', error.message);
         }
@@ -751,7 +750,7 @@ function Dsa_Profile_View() {
                 // console.log('Store data response:', storeDataResponse.data);
 
                 if (storeDataResponse.status === 201) {
-                    console.log(storeDataResponse.data.message); // Data stored successfully
+                    // console.log(storeDataResponse.data.message); 
                 } else {
                     console.error('Failed to store data:', storeDataResponse.statusText);
                 }
@@ -778,8 +777,8 @@ function Dsa_Profile_View() {
     };
 
     const packagesArray = Array.isArray(packages) ? packages : [packages];
-    console.log('packages:', packages);
-    console.log('Is packages an array?', Array.isArray(packages));
+    // console.log('packages:', packages);
+    // console.log('Is packages an array?', Array.isArray(packages));
     const hasActivePackage = packagesArray.some(pkg => pkg.packageStatus === 'Active');
     return (
         <>

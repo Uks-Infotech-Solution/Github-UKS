@@ -26,10 +26,31 @@ const BuyPackageSchema = new mongoose.Schema({
   salespersonname: { type: String, default: null },
   transferAmountRefNumber: { type: String, default: null },
   purchaseDate: { type: Date, default: Date.now },
+  activationDate: { type: Date, default: null },
+  expiryDate: { type: Date, default: null },
   activationToken: { type: String },
   resetToken: String,
   resetTokenExpiration: Date,
-  
 });
 
+// // Middleware to check expiry date before saving
+// BuyPackageSchema.pre('save', function(next) {
+//   const currentDate = new Date();
+
+//   // Check if the expiry date has passed
+//   if (this.expiryDate && this.expiryDate <= currentDate) {
+//     this.packageStatus = 'Inactive';
+//   } 
+
+//   next();
+// });
+
+// // Middleware to check expiry date during queries
+// BuyPackageSchema.pre('find', function(next) {
+//   const currentDate = new Date();
+//   this.where('expiryDate').lte(currentDate).updateMany({}, { packageStatus: 'Inactive' });
+//   next();
+// });
+
+// Create and export the model
 module.exports = mongoose.model('Buy_Packagers', BuyPackageSchema);

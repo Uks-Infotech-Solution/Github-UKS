@@ -110,47 +110,47 @@ function Uks_Customer_List() {
     }
   }, [customers]);
 
-  const fetchProfilePicture = async (customerId) => {
-    try {
-      const response = await axios.get(`https://uksinfotechsolution.in:8000/api/profile/view-profile-picture?customerId=${customerId}`, {
-        responseType: 'arraybuffer'
-      });
-      const contentType = response.headers['content-type'];
-      if (contentType && contentType.startsWith('image')) {
-        const base64Image = `data:${contentType};base64,${btoa(
-          String.fromCharCode(...new Uint8Array(response.data))
-        )}`;
-        return base64Image;
-      } else {
-        return null;
-      }
-    } catch (err) {
-      return null;
-    }
-  };
+  // const fetchProfilePicture = async (customerId) => {
+  //   try {
+  //     const response = await axios.get(`https://uksinfotechsolution.in:8000/api/profile/view-profile-picture?customerId=${customerId}`, {
+  //       responseType: 'arraybuffer'
+  //     });
+  //     const contentType = response.headers['content-type'];
+  //     if (contentType && contentType.startsWith('image')) {
+  //       const base64Image = `data:${contentType};base64,${btoa(
+  //         String.fromCharCode(...new Uint8Array(response.data))
+  //       )}`;
+  //       return base64Image;
+  //     } else {
+  //       return null;
+  //     }
+  //   } catch (err) {
+  //     return null;
+  //   }
+  // };
 
-  useEffect(() => {
-    const fetchProfilePictures = async () => {
-      const newProfilePictures = {};
-      for (let customer of customers) {
-        try {
-          const base64Image = await fetchProfilePicture(customer._id);
-          if (base64Image !== null) {
-            newProfilePictures[customer._id] = base64Image;
-          } else {
-            newProfilePictures[customer._id] = null;
-          }
-        } catch (error) {
-          newProfilePictures[customer._id] = null;
-        }
-      }
-      setProfilePictures(newProfilePictures);
-    };
+  // useEffect(() => {
+  //   const fetchProfilePictures = async () => {
+  //     const newProfilePictures = {};
+  //     for (let customer of customers) {
+  //       try {
+  //         const base64Image = await fetchProfilePicture(customer._id);
+  //         if (base64Image !== null) {
+  //           newProfilePictures[customer._id] = base64Image;
+  //         } else {
+  //           newProfilePictures[customer._id] = null;
+  //         }
+  //       } catch (error) {
+  //         newProfilePictures[customer._id] = null;
+  //       }
+  //     }
+  //     setProfilePictures(newProfilePictures);
+  //   };
 
-    if (customers.length > 0) {
-      fetchProfilePictures();
-    }
-  }, [customers]);
+  //   if (customers.length > 0) {
+  //     fetchProfilePictures();
+  //   }
+  // }, [customers]);
 
   // Handle outside click for filter dropdown
   useEffect(() => {
@@ -341,7 +341,7 @@ function Uks_Customer_List() {
                       {customer.customerNo ? `UKS-CU-${customer.customerNo.toString().padStart(3, '0')}` : 'N/A'}
                     </td>
                     <td style={{ display: 'flex', paddingTop: '0px' }}>
-                      {profilePictures[customer._id] ? (
+                      {/* {profilePictures[customer._id] ? (
                         <div style={{
                           backgroundImage: `url(${profilePictures[customer._id]})`,
                           backgroundSize: 'cover',
@@ -354,7 +354,7 @@ function Uks_Customer_List() {
                         }}></div>
                       ) : (
                         <FaUserCircle size={32} className='navbar-profile-icon' style={{ marginRight: '10px' }} />
-                      )}
+                      )} */}
                       <span style={{ textAlign: 'center' }}>{customer.customerFname}</span>
                     </td>
                     <td>{addresses[customer._id]?.aadharDistrict}</td>

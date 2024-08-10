@@ -38,6 +38,7 @@ function Profile_View() {
     const { customerId } = location.state || {};
     // console.log(customerId);
     const [customerDetails, setCustomerDetails] = useState(null);
+    const [error, setError] = useState(null);
 
 
     const homepage = () => {
@@ -579,65 +580,64 @@ function Profile_View() {
 
 
 
-    // PROFILE PICTURE UPLOAD
-    const [imageSrc, setImageSrc] = useState(null);
+    // // PROFILE PICTURE UPLOAD
+    // const [imageSrc, setImageSrc] = useState(null);
 
-    const [error, setError] = useState(null);
-    const [fileName, setFileName] = useState('');
-    const onUpload = async () => {
-        if (!file) {
-            alert('Please select a file first.');
-            return;
-        }
-        const formData = new FormData();
-        formData.append('profilePicture', file);
-        formData.append('customerId', customerId);
-        try {
-            const response = await axios.post('https://uksinfotechsolution.in:8000/api/profile/upload-profile-picture', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            });
-            alert('Profile picture uploaded successfully');
-            fetchProfilePicture(customerId);
-        } catch (error) {
-            console.error('Error uploading file:', error);
-            alert('Failed to upload profile picture');
-        }
-    };
+    // const [fileName, setFileName] = useState('');
+    // const onUpload = async () => {
+    //     if (!file) {
+    //         alert('Please select a file first.');
+    //         return;
+    //     }
+    //     const formData = new FormData();
+    //     formData.append('profilePicture', file);
+    //     formData.append('customerId', customerId);
+    //     try {
+    //         const response = await axios.post('https://uksinfotechsolution.in:8000/api/profile/upload-profile-picture', formData, {
+    //             headers: {
+    //                 'Content-Type': 'multipart/form-data'
+    //             }
+    //         });
+    //         alert('Profile picture uploaded successfully');
+    //         fetchProfilePicture(customerId);
+    //     } catch (error) {
+    //         console.error('Error uploading file:', error);
+    //         alert('Failed to upload profile picture');
+    //     }
+    // };
 
 
-    // FETCH PROFILE PICTURE
+    // // FETCH PROFILE PICTURE
 
-    const fetchProfilePicture = async (customerId) => {
-        try {
-            const response = await axios.get(`https://uksinfotechsolution.in:8000/api/profile/view-profile-picture?customerId=${customerId}`, {
-                responseType: 'arraybuffer'
-            });
-            const contentType = response.headers['content-type'];
+    // const fetchProfilePicture = async (customerId) => {
+    //     try {
+    //         const response = await axios.get(`https://uksinfotechsolution.in:8000/api/profile/view-profile-picture?customerId=${customerId}`, {
+    //             responseType: 'arraybuffer'
+    //         });
+    //         const contentType = response.headers['content-type'];
 
-            if (contentType && contentType.startsWith('image')) {
-                const base64Image = `data:${contentType};base64,${btoa(
-                    String.fromCharCode(...new Uint8Array(response.data))
-                )}`;
-                setImageSrc(base64Image);
-                setError(null);
-            } else {
-                setError('Response is not an image');
-                setImageSrc(null);
-            }
-        } catch (err) {
-            // console.error('Error retrieving profile picture:', err);
-            // setError('Failed to load profile picture');
-            setImageSrc(null);
-        }
-    };
+    //         if (contentType && contentType.startsWith('image')) {
+    //             const base64Image = `data:${contentType};base64,${btoa(
+    //                 String.fromCharCode(...new Uint8Array(response.data))
+    //             )}`;
+    //             setImageSrc(base64Image);
+    //             setError(null);
+    //         } else {
+    //             setError('Response is not an image');
+    //             setImageSrc(null);
+    //         }
+    //     } catch (err) {
+    //         // console.error('Error retrieving profile picture:', err);
+    //         // setError('Failed to load profile picture');
+    //         setImageSrc(null);
+    //     }
+    // };
 
-    useEffect(() => {
-        if (customerId) {
-            fetchProfilePicture(customerId);
-        }
-    }, [customerId]);
+    // useEffect(() => {
+    //     if (customerId) {
+    //         fetchProfilePicture(customerId);
+    //     }
+    // }, [customerId]);
 
 
 
@@ -813,7 +813,7 @@ function Profile_View() {
                         </Col>
                         <hr style={{ margin: "5px" }} />
                     </Row>
-                    <Row className={`Upload-profile-row ${isSidebarExpanded ? 'sidebar-expanded' : ''}`}>
+                    {/* <Row className={`Upload-profile-row ${isSidebarExpanded ? 'sidebar-expanded' : ''}`}>
                         <div className='Upload-profile-div'>
                             <h6 >Upload Profile Picture</h6>
 
@@ -844,7 +844,7 @@ function Profile_View() {
                                 Cibil Score: <span style={{ fontWeight: '400' }}>{loanProcessingDetails.cibilRecord}</span>
                             </div>
                         ) : null}
-                    </Row>
+                    </Row> */}
 
 
                     {/* CUSTOMER BASIC DETAILS */}

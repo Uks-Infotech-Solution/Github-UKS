@@ -66,7 +66,6 @@ const DSA_LoanGridView = () => {
                 if (response.status === 200) {
                     newCustomerDetails[customer._id] = response.data;
                 }
-                console.log(response.data);
             } catch (error) {
                 console.error(`Failed to fetch details for ${customer._id}:`, error);
             }

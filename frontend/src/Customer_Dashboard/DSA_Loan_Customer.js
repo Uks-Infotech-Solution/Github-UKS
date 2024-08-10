@@ -218,7 +218,7 @@ const DSA_Loan_Customer = () => {
                 setShowModal(false);
                 handleShowSuccessModal();
                 setApplication(response.data.data); // Make sure the property name matches what is returned by your backend
-                console.log(response.data); // Ensure this logs the expected response
+                // console.log(response.data); 
             } else {
                 console.error('Failed to submit loan application');
                 alert("Fill All Inputs")

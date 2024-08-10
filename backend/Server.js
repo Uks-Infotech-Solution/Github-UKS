@@ -438,12 +438,21 @@ app.post('/api/dsa/packager/activation', async (req, res) => {
         // Update BuyPackage table for package activation
         const newBuyPackage = await BuyPackage.findById(pkgId);
         if (newBuyPackage) {
+            const currentDate = new Date(); // Get the current date and time
+        
             newBuyPackage.packageStatus = 'Active';
             newBuyPackage.uksId = uksId;
             newBuyPackage.activationToken = undefined;
             newBuyPackage.salespersonname = salesPersonName;
             newBuyPackage.salespersonId = salesPersonId;
             newBuyPackage.transferAmountRefNumber = transferRefNo;
+            newBuyPackage.activationDate = currentDate; // Set the activation date to the current date and time
+        
+            // Calculate the expiry date as one month from the activation date
+            const expiryDate = new Date(currentDate);
+            expiryDate.setMonth(expiryDate.getMonth() + 1);
+            newBuyPackage.expiryDate = expiryDate;
+        
             await newBuyPackage.save();
         } else {
             throw new Error('BuyPackage not found');
@@ -496,6 +505,7 @@ app.post('/buy_packagers', async (req, res) => {
         loanTypes,
         additionalInputs
     } = req.body;
+// console.log(req.body);
 
     const token = crypto.randomBytes(32).toString('hex');
 
@@ -514,7 +524,6 @@ app.post('/buy_packagers', async (req, res) => {
             activationToken: token,
             loanTypes,
             additionalInputs,
-            packageStatus: 'Inactive' // Default to 'Inactive' if not provided in req.body
         });
 
         await newPurchase.save();
@@ -724,9 +733,11 @@ app.get('/api/dsa/loan/status/count/:dsaId', async (req, res) => {
 });
 
 app.post('/api/customer/dsa/updateStatus', async (req, res) => {
-    const { customerId, dsaId, loanId, newStatus, dateTime } = req.body;
+    const { customerId, dsaId, loanId, newStatus, rejectionReason } = req.body;
+    console.log(req.body);
 
     try {
+
         // Update the applyLoanStatus in the LoanApplication collection
         const updatedLoanApplication = await LoanApplication.findOneAndUpdate(
             { _id: loanId, customerId, dsaId },
@@ -737,6 +748,27 @@ app.post('/api/customer/dsa/updateStatus', async (req, res) => {
         if (!updatedLoanApplication) {
             return res.status(404).json({ success: false, message: 'Loan application not found' });
         }
+        const customer = await Customer.findById(customerId);
+
+        if (!customer) {
+            return res.status(404).json({ message: 'Customer Loan Processing not found' });
+        }
+
+        // Update the existing loan processing details, or create a new one if it doesn't exist
+        const updatedLoanProcessing = await LoanProcessing.findOneAndUpdate(
+            { customerId: customerId },
+            { fileStatus: newStatus },
+            { new: true, upsert: true }
+        );
+        if (newStatus === 'Rejected' && rejectionReason) {
+            const newRejected = new Rejected({
+                customerId: customer._id,
+                fileStatus: newStatus,
+                rejectionReason,
+                dsaId
+            });
+            await newRejected.save();
+        }
 
         // Check if the status entry already exists for the same customerId, dsaId, and loanId
         let newStatusEntry;
@@ -745,7 +777,7 @@ app.post('/api/customer/dsa/updateStatus', async (req, res) => {
         if (existingStatusEntry) {
             // Update the existing status entry with newStatus and dateTime
             existingStatusEntry.status = newStatus;
-            existingStatusEntry.dateTime = dateTime;
+            existingStatusEntry.dateTime = Date.now();
             newStatusEntry = await existingStatusEntry.save();
         } else {
             // Create a new status entry in the AppliedLoanStatus collection
@@ -754,7 +786,6 @@ app.post('/api/customer/dsa/updateStatus', async (req, res) => {
                 dsaId,
                 loanId,
                 status: newStatus,
-                dateTime
             });
             await newStatusEntry.save();
         }
@@ -763,6 +794,41 @@ app.post('/api/customer/dsa/updateStatus', async (req, res) => {
     } catch (error) {
         console.error('Error updating loan status:', error);
         res.status(500).json({ success: false, message: 'Failed to update loan status' });
+    }
+});
+app.post('/api/customer_file_status_update', async (req, res) => {
+    try {
+        const { customerId, fileStatus, rejectionReason, dsaId } = req.body;
+
+        // Find the customer by ID
+        const customer = await Customer.findById(customerId);
+
+        if (!customer) {
+            return res.status(404).json({ message: 'Customer not found' });
+        }
+
+        // Update the existing loan processing details, or create a new one if it doesn't exist
+        const updatedLoanProcessing = await LoanProcessing.findOneAndUpdate(
+            { customerId: customer._id },
+            { $set: { fileStatus } },
+            { new: true, upsert: true }
+        );
+
+        // Handle rejection reason if the file status is 'Rejected'
+        if (fileStatus === 'Rejected' && rejectionReason) {
+            const newRejected = new Rejected({
+                customerId: customer._id,
+                fileStatus,
+                rejectionReason,
+                dsaId
+            });
+            await newRejected.save();
+        }
+
+        res.status(201).json({ message: 'Loan processing details saved successfully', loanProcessing: updatedLoanProcessing });
+    } catch (error) {
+        console.error('Error saving loan processing details:', error);
+        res.status(500).json({ message: 'Failed to save loan processing details' });
     }
 });
 
@@ -1584,41 +1650,6 @@ app.post('/dsa/resetpassword/:token', async (req, res) => {
 });
 
 // ANOTHHER API'S
-app.post('/api/customer_file_status_update', async (req, res) => {
-    try {
-        const { customerId, fileStatus, rejectionReason, dsaId } = req.body;
-
-        // Find the customer by ID
-        const customer = await Customer.findById(customerId);
-
-        if (!customer) {
-            return res.status(404).json({ message: 'Customer not found' });
-        }
-
-        // Update the existing loan processing details, or create a new one if it doesn't exist
-        const updatedLoanProcessing = await LoanProcessing.findOneAndUpdate(
-            { customerId: customer._id },
-            { $set: { fileStatus } },
-            { new: true, upsert: true }
-        );
-
-        // Handle rejection reason if the file status is 'Rejected'
-        if (fileStatus === 'Rejected' && rejectionReason) {
-            const newRejected = new Rejected({
-                customerId: customer._id,
-                fileStatus,
-                rejectionReason,
-                dsaId
-            });
-            await newRejected.save();
-        }
-
-        res.status(201).json({ message: 'Loan processing details saved successfully', loanProcessing: updatedLoanProcessing });
-    } catch (error) {
-        console.error('Error saving loan processing details:', error);
-        res.status(500).json({ message: 'Failed to save loan processing details' });
-    }
-});
 
 
 app.post('/api/block_status_update', async (req, res) => {
@@ -1791,6 +1822,7 @@ app.post('/dsa-customer/downloadtable', async (req, res) => {
 app.post('/dsa-customer/table', async (req, res) => {
     try {
         const { dsaId, customerId } = req.body;
+        // console.log(req.body);
 
         // Validate the request body
         if (!dsaId || !customerId) {

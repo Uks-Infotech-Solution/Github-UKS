@@ -66,11 +66,11 @@ function Applied_Customer_List() {
         const response = await axios.get(`https://uksinfotechsolution.in:8000/dsa/customer/applied/loan/${dsaId}`);
         const customersData = response.data;
         setCustomers(customersData);
-        console.log(response.data);
+        // console.log(response.data);
 
         const initialCheckedItems = {};
         const addresses = {};
-        const profilePictures = {};
+        // const profilePictures = {};
         
 
         for (let customer of customers) {
@@ -87,29 +87,29 @@ function Applied_Customer_List() {
           }
           setAddresses(addresses);
           // console.log( addresses);
-          try {
-            const response = await axios.get(`https://uksinfotechsolution.in:8000/api/profile/view-profile-picture?customerId=${customer.customerId}`, {
-              responseType: 'arraybuffer',
-            });
-            const contentType = response.headers['content-type'];
+          // try {
+          //   const response = await axios.get(`https://uksinfotechsolution.in:8000/api/profile/view-profile-picture?customerId=${customer.customerId}`, {
+          //     responseType: 'arraybuffer',
+          //   });
+          //   const contentType = response.headers['content-type'];
 
-            if (contentType && contentType.startsWith('image')) {
-              const base64Image = `data:${contentType};base64,${btoa(
-                String.fromCharCode(...new Uint8Array(response.data))
-              )}`;
-              profilePictures[customer._id] = base64Image; // Update profilePictures state
-            } else {
-              console.error('Response is not an image');
-            }
-          } catch (err) {
-            // console.error('Error retrieving profile picture:', err);
-          }
+          //   if (contentType && contentType.startsWith('image')) {
+          //     const base64Image = `data:${contentType};base64,${btoa(
+          //       String.fromCharCode(...new Uint8Array(response.data))
+          //     )}`;
+          //     profilePictures[customer._id] = base64Image; // Update profilePictures state
+          //   } else {
+          //     console.error('Response is not an image');
+          //   }
+          // } catch (err) {
+          //   // console.error('Error retrieving profile picture:', err);
+          // }
         }
 
         setCheckedItems(initialCheckedItems);
-        console.log(addresses);
+        // console.log(addresses);
         
-        setProfilePictures(profilePictures); // Update profilePictures state
+        // setProfilePictures(profilePictures); // Update profilePictures state
         setLoading(false);
       } catch (err) {
         console.error('Error fetching customers:', err);
@@ -146,8 +146,8 @@ function Applied_Customer_List() {
     }));
   };
 
-  console.log(customers);
-  console.log(addresses);
+  // console.log(customers);
+  // console.log(addresses);
 
   const filteredCustomers = customers.filter((customer) => {
     if (filterOption === 'District') {
@@ -162,13 +162,13 @@ function Applied_Customer_List() {
     }
     return true;
   })
-  console.log(filteredCustomers);
+  // console.log(filteredCustomers);
 
 
   const indexOfLastCustomer = currentPage * rowsPerPage;
   const indexOfFirstCustomer = indexOfLastCustomer - rowsPerPage;
   const currentCustomers = filteredCustomers.slice(indexOfFirstCustomer, indexOfLastCustomer);
-  console.log(currentCustomers);
+  // console.log(currentCustomers);
 
 
 
@@ -291,11 +291,11 @@ function Applied_Customer_List() {
                   <tr key={customer._id}>
                     <td>{indexOfFirstCustomer + index + 1}</td>
                     <td>UKS-Application-00{customer.applicationNumber}</td>
-                    <td style={{ width: '100px' }}>
-                      {customer.customerNo ? `UKS-CU-${customer.customerNo.toString().padStart(3, '0')}` : 'N/A'}
+                    <td style={{ width: '' }}>
+                      {customer.customerNo ? `UKS-CUS-${customer.customerNo.toString().padStart(3, '0')}` : 'N/A'}
                     </td>
-                    <td style={{ display: 'flex', paddingTop: '0px' }}>
-                      {profilePictures[customer._id] ? (
+                    <td style={{ display: '', paddingTop: '' }}>
+                      {/* {profilePictures[customer._id] ? (
                         <div style={{
                           backgroundImage: `url(${profilePictures[customer._id]})`,
                           backgroundSize: 'cover',
@@ -307,7 +307,7 @@ function Applied_Customer_List() {
                         }}></div>
                       ) : (
                         <FaUserCircle size={32} className='navbar-profile-icon' style={{ marginRight: '10px' }} />
-                      )}
+                      )} */}
                       <span style={{ textAlign: 'center' }}>{customer.customerName}</span>
                     </td>
                      {/* {addresses[customer._id] && (

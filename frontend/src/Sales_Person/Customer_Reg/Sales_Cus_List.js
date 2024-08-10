@@ -94,51 +94,51 @@ function Sales_Cus_List() {
     }
   }, [customers]);
 
-  const fetchProfilePicture = async (customerId) => {
-    try {
-      const response = await axios.get(`https://uksinfotechsolution.in:8000/api/profile/view-profile-picture?customerId=${customerId}`, {
-        responseType: 'arraybuffer'
-      });
-      const contentType = response.headers['content-type'];
+  // const fetchProfilePicture = async (customerId) => {
+  //   try {
+  //     const response = await axios.get(`https://uksinfotechsolution.in:8000/api/profile/view-profile-picture?customerId=${customerId}`, {
+  //       responseType: 'arraybuffer'
+  //     });
+  //     const contentType = response.headers['content-type'];
   
-      if (contentType && contentType.startsWith('image')) {
-        const base64Image = `data:${contentType};base64,${btoa(
-          String.fromCharCode(...new Uint8Array(response.data))
-        )}`;
-        return base64Image;
-      } else {
-        return null;
-      }
-    } catch (err) {
-      return null;
-    }
-  };
+  //     if (contentType && contentType.startsWith('image')) {
+  //       const base64Image = `data:${contentType};base64,${btoa(
+  //         String.fromCharCode(...new Uint8Array(response.data))
+  //       )}`;
+  //       return base64Image;
+  //     } else {
+  //       return null;
+  //     }
+  //   } catch (err) {
+  //     return null;
+  //   }
+  // };
   
-  useEffect(() => {
-    const fetchProfilePictures = async () => {
-      const newProfilePictures = {};
+  // useEffect(() => {
+  //   const fetchProfilePictures = async () => {
+  //     const newProfilePictures = {};
 
-      for (let customer of customers) {
-        try {
-          const base64Image = await fetchProfilePicture(customer.customerId);
-          if (base64Image !== null) {
-            newProfilePictures[customer.customerId] = base64Image;
-          } else {
-            newProfilePictures[customer.customerId] = null;
-          }
-        } catch (error) {
-        //   console.error(Error fetching profile picture for ${customer.customerId}:, error);
-          newProfilePictures[customer.customerId] = null;
-        }
-      }
+  //     for (let customer of customers) {
+  //       try {
+  //         const base64Image = await fetchProfilePicture(customer.customerId);
+  //         if (base64Image !== null) {
+  //           newProfilePictures[customer.customerId] = base64Image;
+  //         } else {
+  //           newProfilePictures[customer.customerId] = null;
+  //         }
+  //       } catch (error) {
+  //       //   console.error(Error fetching profile picture for ${customer.customerId}:, error);
+  //         newProfilePictures[customer.customerId] = null;
+  //       }
+  //     }
 
-      setProfilePictures(newProfilePictures);
-    };
+  //     setProfilePictures(newProfilePictures);
+  //   };
 
-    if (customers.length > 0) {
-      fetchProfilePictures();
-    }
-  }, [customers]);
+  //   if (customers.length > 0) {
+  //     fetchProfilePictures();
+  //   }
+  // }, [customers]);
 
   useEffect(() => {
     const handleOutsideClick = (event) => {
@@ -275,7 +275,7 @@ function Sales_Cus_List() {
                   : 'N/A'}
               </td>
                     <td style={{ paddingTop: '0px' }}>
-                      {profilePictures[customer.customerId] ? (
+                      {/* {profilePictures[customer.customerId] ? (
                         <div style={{
                           backgroundImage: `url(${profilePictures[customer.customerId]})`,
                           backgroundSize: 'cover',
@@ -288,7 +288,7 @@ function Sales_Cus_List() {
                         }}></div>
                       ) : (
                         <FaUserCircle size={32} className='navbar-profile-icon' style={{ marginRight: '10px' }} />
-                      )}
+                      )} */}
                       <span style={{ textAlign: 'center' }}>{customerDetails[customer.customerId]?.customerFname}</span>
                     </td>
                     <td>{customerDetails[customer.customerId]?.gender}</td>

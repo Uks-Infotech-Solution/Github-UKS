@@ -109,7 +109,7 @@ function DSA_Login_Dashboard() {
         fetchPackages();
     }, [dsaId]);
 
-   
+
     useEffect(() => {
         const fetchDownloads = async () => {
             try {
@@ -137,9 +137,8 @@ function DSA_Login_Dashboard() {
         return date;
     };
     const calculateDaysLeft = (purchaseDate) => {
-        const expiryDate = calculateExpiryDate(purchaseDate);
         const currentDate = new Date();
-        const timeDifference = expiryDate - currentDate;
+        const timeDifference = latestPackage.expiryDate - currentDate;
         const daysLeft = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
         return daysLeft >= 0 ? daysLeft : 0; // Ensure it doesn't return negative days
     };
@@ -189,23 +188,36 @@ function DSA_Login_Dashboard() {
                                                     <p style={{ color: '#666', fontSize: '12px', margin: '0' }}>{latestPackage.downloadAccess}</p>
                                                 </Col>
                                                 <Col style={{ marginBottom: '20px' }}>
+                                                    <h5 style={{ color: '#333', fontSize: '13px', fontWeight: '600' }}>Total Downloads</h5>
+                                                    <p style={{ color: '#666', fontSize: '12px', margin: '0' }}>{calculateTotalDownloads()}</p>
+                                                </Col>
+                                                <Col style={{ marginBottom: '20px' }}>
                                                     <h5 style={{ color: '#333', fontSize: '13px', fontWeight: '600' }}>Status</h5>
                                                     <p style={{ color: latestPackage.packageStatus === 'Active' ? 'green' : 'red', fontSize: '14px', margin: '0', fontWeight: '600' }}>{latestPackage.packageStatus}</p>
                                                 </Col>
                                             </Row>
 
                                             <Row>
-                                            <Col style={{ marginBottom: '20px' }}>
-                                                    <h5 style={{ color: '#333', fontSize: '13px', fontWeight: '600' }}>Total Downloads</h5>
-                                                    <p style={{ color: '#666', fontSize: '12px', margin: '0' }}>{calculateTotalDownloads()}</p>
-                                                </Col>
+                                                
                                                 <Col style={{ marginBottom: '20px' }}>
                                                     <h5 style={{ color: '#333', fontSize: '13px', fontWeight: '600' }}>Purchase Date</h5>
                                                     <p style={{ color: '#666', fontSize: '12px', margin: '0' }}>{new Date(latestPackage.purchaseDate).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })}</p>
                                                 </Col>
                                                 <Col style={{ marginBottom: '20px' }}>
+                                                    <h5 style={{ color: '#333', fontSize: '13px', fontWeight: '600' }}>Activation Date</h5>
+                                                    <p style={{ color: '#666', fontSize: '12px', margin: '0' }}>
+                                                        {latestPackage.expiryDate
+                                                            ? new Date(latestPackage.activationDate).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })
+                                                            : '-'}
+                                                    </p>
+                                                </Col>
+                                                <Col style={{ marginBottom: '20px' }}>
                                                     <h5 style={{ color: '#333', fontSize: '13px', fontWeight: '600' }}>Expiry Date</h5>
-                                                    <p style={{ color: '#666', fontSize: '12px', margin: '0' }}>{new Date(calculateExpiryDate(latestPackage.purchaseDate)).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })}</p>
+                                                    <p style={{ color: '#666', fontSize: '12px', margin: '0' }}>
+                                                        {latestPackage.expiryDate
+                                                            ? new Date(latestPackage.expiryDate).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })
+                                                            : '-'}
+                                                    </p>
                                                 </Col>
                                                 <Col style={{ marginBottom: '20px' }}>
                                                     <h5 style={{ color: '#333', fontSize: '13px', fontWeight: '600' }}>Days Left</h5>
@@ -213,6 +225,7 @@ function DSA_Login_Dashboard() {
                                                         {calculateDaysLeft(latestPackage.purchaseDate)}
                                                     </p>
                                                 </Col>
+                                                <Col></Col>
                                             </Row>
                                         </Card.Body>
                                     </Card>

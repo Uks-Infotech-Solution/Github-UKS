@@ -129,54 +129,54 @@ function CustomerTable() {
 
 
 
-  const fetchProfilePicture = async (customerId) => {
-    try {
-      const response = await axios.get(`https://uksinfotechsolution.in:8000/api/profile/view-profile-picture?customerId=${customerId}`, {
-        responseType: 'arraybuffer'
-      });
-      const contentType = response.headers['content-type'];
+  // const fetchProfilePicture = async (customerId) => {
+  //   try {
+  //     const response = await axios.get(`https://uksinfotechsolution.in:8000/api/profile/view-profile-picture?customerId=${customerId}`, {
+  //       responseType: 'arraybuffer'
+  //     });
+  //     const contentType = response.headers['content-type'];
 
-      if (contentType && contentType.startsWith('image')) {
-        const base64Image = `data:${contentType};base64,${btoa(
-          String.fromCharCode(...new Uint8Array(response.data))
-        )}`;
-        return base64Image; // Return base64 image data
-      } else {
-        console.error('Response is not an image');
-        return null; // Handle case where response is not an image
-      }
-    } catch (err) {
-      // console.error('Error retrieving profile picture:', err);
-      return null; // Handle error case
-    }
-  };
+  //     if (contentType && contentType.startsWith('image')) {
+  //       const base64Image = `data:${contentType};base64,${btoa(
+  //         String.fromCharCode(...new Uint8Array(response.data))
+  //       )}`;
+  //       return base64Image; // Return base64 image data
+  //     } else {
+  //       console.error('Response is not an image');
+  //       return null; // Handle case where response is not an image
+  //     }
+  //   } catch (err) {
+  //     // console.error('Error retrieving profile picture:', err);
+  //     return null; // Handle error case
+  //   }
+  // };
 
-  useEffect(() => {
-    const fetchProfilePictures = async () => {
-      const newProfilePictures = {};
+  // useEffect(() => {
+  //   const fetchProfilePictures = async () => {
+  //     const newProfilePictures = {};
 
-      for (let customer of customers) {
-        try {
-          const base64Image = await fetchProfilePicture(customer._id);
-          if (base64Image !== null) {
-            newProfilePictures[customer._id] = base64Image;
-          } else {
-            // Handle case where image fetching failed
-            newProfilePictures[customer._id] = null;
-          }
-        } catch (error) {
-          console.error(`Error fetching profile picture for ${customer._id}:`, error);
-          newProfilePictures[customer._id] = null; // Set to null on error
-        }
-      }
+  //     for (let customer of customers) {
+  //       try {
+  //         const base64Image = await fetchProfilePicture(customer._id);
+  //         if (base64Image !== null) {
+  //           newProfilePictures[customer._id] = base64Image;
+  //         } else {
+  //           // Handle case where image fetching failed
+  //           newProfilePictures[customer._id] = null;
+  //         }
+  //       } catch (error) {
+  //         console.error(`Error fetching profile picture for ${customer._id}:`, error);
+  //         newProfilePictures[customer._id] = null; // Set to null on error
+  //       }
+  //     }
 
-      setProfilePictures(newProfilePictures);
-    };
+  //     setProfilePictures(newProfilePictures);
+  //   };
 
-    if (customers.length > 0) {
-      fetchProfilePictures();
-    }
-  }, [customers]);
+  //   if (customers.length > 0) {
+  //     fetchProfilePictures();
+  //   }
+  // }, [customers]);
 
 
   // Handle outside click for filter dropdown
@@ -244,12 +244,12 @@ function CustomerTable() {
 
     try {
       const response = await axios.post('https://uksinfotechsolution.in:8000/dsa-customer/table', {
-        dsaId: dsaData._id,
+        dsaId: dsaId  ,
         customerId: selectedCustomer._id,
       });
 
-      if (response.status === 201) {
-        console.log(response.data.message); // Data stored successfully
+      if (response.status === 201 || response.status === 200) {
+        // console.log(response.data.message); 
       } else {
         console.error('Failed to store data:', response.statusText);
       }
@@ -352,8 +352,8 @@ function CustomerTable() {
                     <td style={{ width: '100px', fontSize: '12px' }}>
                       {customer.customerNo ? `UKS-CU-${customer.customerNo.toString().padStart(3, '0')}` : 'N/A'}
                     </td>
-                    <td style={{ display: 'flex', paddingTop: '0px' }}>
-                      {profilePictures[customer._id] ? (
+                    <td style={{ display: '', paddingTop: '' }}>
+                      {/* {profilePictures[customer._id] ? (
                         <div style={{
                           backgroundImage: `url(${profilePictures[customer._id]})`,
                           backgroundSize: 'cover',
@@ -366,7 +366,7 @@ function CustomerTable() {
                         }}></div>
                       ) : (
                         <FaUserCircle size={32} className='navbar-profile-icon' style={{ marginRight: '10px' }} />
-                      )}
+                      )} */}
                       <span style={{ textAlign: 'center' }}>{customer.customerFname}</span>
                     </td>
                     <td>{addresses[customer._id]?.aadharDistrict}</td>

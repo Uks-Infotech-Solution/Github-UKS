@@ -53,7 +53,6 @@ function Applied_Customer_View() {
             try {
                 const loanResponse = await axios.get(`https://uksinfotechsolution.in:8000/api/dsa/applications/loan/${loanId}`);
                 const loanApplication = loanResponse.data.loanApplication;
-                console.log(loanApplication);
                 setLoanApp(loanApplication);
                 const { dsaId, customerId } = loanApplication;
 
@@ -77,7 +76,6 @@ function Applied_Customer_View() {
                 });
                 const customerDetails = customerResponse.data;
                 setCustomerDetails(customerDetails);
-                console.log(customerDetails);
                 setAddressDetails(customerDetails.address || {});
                 fetchAddressDetails(customerId);
                 fetchTableCount(customerId);
@@ -101,7 +99,6 @@ function Applied_Customer_View() {
             });
             if (response.data) {
                 setAddressDetails(response.data);
-                console.log(response.data);
             }
         } catch (error) {
             console.error('Error fetching address details:', error);
@@ -112,7 +109,6 @@ function Applied_Customer_View() {
         try {
             const response = await axios.get(`https://uksinfotechsolution.in:8000/dsa-customer/table/count?customerId=${customerId}`);
             setTableCount(response.data.count);
-            console.log(response.data.count);
 
         } catch (error) {
             console.error('Error fetching table count:', error.message);
@@ -123,7 +119,6 @@ function Applied_Customer_View() {
         try {
             const response = await axios.get(`https://uksinfotechsolution.in:8000/dsa-customer/downloadtable/count?customerId=${customerId}`);
             setDownloadTableCount(response.data.count);
-            console.log(response.data.count);
         } catch (error) {
             console.error('Error fetching download table count:', error.message);
         }

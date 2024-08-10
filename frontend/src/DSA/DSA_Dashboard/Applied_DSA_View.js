@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Col, Container, Row, Modal,Table } from "react-bootstrap";
+import { Button, Col, Container, Row, Modal, Table,Form  } from "react-bootstrap";
 import axios from "axios";
 import { useNavigate, useLocation } from 'react-router-dom';
 import { HiBadgeCheck } from "react-icons/hi";
@@ -14,6 +14,7 @@ function Applied_DSA_View() {
     const [appliedLoan, setAppliedLoan] = useState([]);
     const [loading, setLoading] = useState(true);
     const [branchDetails, setBranchDetails] = useState([]);
+    const [rejectionReason, setRejectionReason] = useState(''); // New state for rejection reason
 
     const [formData, setFormData] = useState({
         _id: "",
@@ -34,7 +35,6 @@ function Applied_DSA_View() {
     useEffect(() => {
         const fetchApplyLoanDetails = async () => {
             try {
-                console.log("Sending GET request for loanId:", loanId);
                 const response = await axios.get(`https://uksinfotechsolution.in:8000/api/customer/dsa/loans/${loanId}`);
                 if (response.status === 200) {
                     const data = response.data.data;
@@ -52,6 +52,24 @@ function Applied_DSA_View() {
         }
     }, [loanId]);
 
+    const [fileStatuses, setFileStatuses] = useState([]);
+    const [selectedFileStatus, setSelectedFileStatus] = useState('');
+
+    useEffect(() => {
+        const fetchFileStatuses = async () => {
+            try {
+                const response = await axios.get('https://uksinfotechsolution.in:8000/api/file-status');
+                const fileStatusesData = response.data.map(status => status.type); // Assuming the status object has a 'type' field
+                setFileStatuses(fileStatusesData);
+                // console.log('Fetched file statuses:', fileStatusesData); 
+            } catch (error) {
+                console.error('Error fetching file statuses:', error);
+            }
+        };
+
+        fetchFileStatuses();
+    }, []);
+
     useEffect(() => {
         const fetchDSADetails = async () => {
             try {
@@ -59,7 +77,6 @@ function Applied_DSA_View() {
                     params: { dsaId }
                 });
                 const dsaDetails = response.data;
-                console.log(response.data);
 
                 if (dsaDetails) {
                     setFormData({
@@ -120,7 +137,7 @@ function Applied_DSA_View() {
 
             if (response.data.success) {
                 alert("Loan application cancelled successfully");
-                navigate('/customer-dashboard', { state: { loanId, dsaId, customerId } }); // Redirect to the dashboard or any other page
+                navigate('/dsa/dashboard', { state: { loanId, dsaId, customerId } }); // Redirect to the dashboard or any other page
             } else {
                 alert("Failed to cancel loan application");
             }
@@ -145,12 +162,14 @@ function Applied_DSA_View() {
     };
 
     const handleStatusChange = async (loan) => {
+        console.log("Updating loan status with data:", { loanId: loan._id, status: newStatus });
         try {
             const response = await axios.post('https://uksinfotechsolution.in:8000/api/customer/dsa/updateStatus', {
                 customerId: loan.customerId,
                 dsaId: loan.dsaId,
                 loanId: loan._id,
                 newStatus,
+                rejectionReason: newStatus === 'Rejected' ? rejectionReason : '',
                 dateTime: new Date().toISOString()
             });
 
@@ -165,15 +184,17 @@ function Applied_DSA_View() {
             alert("Failed to update loan status");
         }
     };
-
+    const handleRejectionReasonChange = (e) => {
+        setRejectionReason(e.target.value);
+    };
     return (
         <Container fluid className={`apply-loan-view-container `}>
             <Row>
                 <Col>
                     {appliedLoan.map((loan) => (
                         <div key={loan.applicationNumber}>
-                            <div style={{fontSize:'23px', fontWeight:'500'}}>Customer Application No: <span style={{ paddingLeft: '10px', color: 'green' }}>UKS-00{loan.applicationNumber}</span></div>
-                            <div  style={{fontSize:'15px', fontWeight:'500'}}>{loan.dsaCompanyName}</div>
+                            <div style={{ fontSize: '23px', fontWeight: '500' }}>Customer Application No: <span style={{ paddingLeft: '10px', color: 'green' }}>UKS-00{loan.applicationNumber}</span></div>
+                            <div style={{ fontSize: '15px', fontWeight: '500' }}>{loan.dsaCompanyName}</div>
                             <div className="apply-loan-name">{loan.dsaName} <span className="loan-rating">(UKS-DSA-00{loan.dsaNumber})</span></div>
                         </div>
                     ))}
@@ -204,17 +225,29 @@ function Applied_DSA_View() {
                                         borderRadius: '0.3rem',
                                         padding: '4px',  // Adjust padding as needed
                                         fontSize: '14px',  // Adjust font size as needed
-                                        width: '150px',  // Make the select element full width
+                                        width: '150px',  // Adjust the width as needed
                                     }}
                                 >
-                                    <option value="">Select Status</option>
-                                    <option value="Waiting List">Waiting List</option>
-                                    <option value="Cibil Process">Cibil Process</option>
-                                    <option value="Success">Success</option>
-                                    <option value="Approved">Approved</option>
-                                    <option value="Rejected">Rejected</option>
+                                    <option value="" disabled>Select Status</option> {/* Default placeholder option */}
+                                    {fileStatuses.map((status, index) => (
+                                        <option key={index} value={status}>
+                                            {status}
+                                        </option>
+                                    ))}
                                 </select>
-
+                                {newStatus === 'Rejected' && (
+                                    <div style={{ justifyContent: 'end', textAlign: 'end', margin: '5px' }}>
+                                        <Form.Group controlId="rejectionReason">
+                                            <Form.Label>Rejection Reason:</Form.Label>
+                                            <Form.Control
+                                                type="text"
+                                                placeholder="Enter reason for rejection"
+                                                value={rejectionReason}
+                                                onChange={handleRejectionReasonChange}
+                                            />
+                                        </Form.Group>
+                                    </div>
+                                )}
                                 <div>
                                     <Button style={{ margin: '10px' }} variant="primary" onClick={() => handleStatusChange(loan)}>Submit</Button>
                                 </div>
