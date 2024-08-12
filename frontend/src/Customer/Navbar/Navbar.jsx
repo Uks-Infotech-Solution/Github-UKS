@@ -210,6 +210,7 @@ const StickyNavbar = () => {
   const Uks_Customer = () => { if (uksId) { navigate('/uks/customer/list', { state: { uksId } }); } }
   const Uks_Loan_Application = () => { if (uksId) { navigate('/uks/loan/appliation', { state: { uksId } }); } }
   const Uks_DSA = () => { if (uksId) { navigate('/uks/dsa/list', { state: { uksId } }); } }
+  const Uks_DSA_Total_List = () => { if (uksId) { navigate('/uks/dsa/pending/list', { state: { uksId } }); } }
   const Package_Inactive = () => { if (uksId) { navigate('/dsa/package/list', { state: { uksId } }); } }
 
   const Total_Customer_List = () => { if (dsaId) { navigate('/dsa/total/customers', { state: { dsaId } }); } }
@@ -391,6 +392,11 @@ const StickyNavbar = () => {
               </div>
               {showdsaMenu && (
                 <li>
+                  <ul className='side-menu-customer-link'>
+                    <li>
+                    <Nav.Link onClick={Uks_DSA_Total_List}  className='font-size-dropdown'>Total DSA List</Nav.Link>
+                    </li>
+                  </ul>
                   <ul className='side-menu-customer-link'>
                     <li>
                     <Nav.Link onClick={Uks_DSA}  className='font-size-dropdown'>DSA List</Nav.Link>

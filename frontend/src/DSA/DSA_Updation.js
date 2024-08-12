@@ -16,6 +16,7 @@ function DSA_Updation() {
     const navigate = useNavigate();
     const location = useLocation();
     const { dsaId } = location.state || {};
+    const { uksId } = location.state || {};
 
     const homepage = () => {
         navigate('/dsa/dashboard', { state: { dsaId } });
@@ -33,6 +34,7 @@ function DSA_Updation() {
         email: "",
         website: "",
         password: "",
+        isActive: "",
         address: {
             state: "",
             district: "",
@@ -87,11 +89,14 @@ function DSA_Updation() {
                 alternateNumber: formData.alternateNumber,
                 whatsappNumber: formData.whatsappNumber,
                 email: formData.email,
-                website: formData.website
+                website: formData.website,
+                isActive: formData.isActive,
+                dsa_status: formData.dsa_status
             });
 
-           alert("DSA details updated successfully");
-           setEditingMode(false)
+            alert("DSA details updated successfully");
+            setEditingMode(false);
+            window.location.reload();
         } catch (error) {
             console.error('Error updating DSA:', error);
             alert("DSA Update Failed");
@@ -171,41 +176,18 @@ function DSA_Updation() {
         }));
     };
 
-    const [showModal, setShowModal] = useState(false);
-
-    const handleDeactivateClick = () => {
-        setShowModal(true);
-    };
-
-    const handleCloseModal = () => {
-        setShowModal(false);
-    };
-
-    const handleConfirmDeactivate = async () => {
-        try {
-            const response = await axios.delete(`https://uksinfotechsolution.in:8000/api/dsa/deactivate/${dsaId}`);
-            if (response.status === 200) {
-                alert('Account deactivated successfully.');
-                // navigate('/dsa/dashboard');
-            }
-        } catch (error) {
-            console.error('Error deactivating account:', error);
-        }
-        setShowModal(false);
-    };
-
     return (
         <>
             <Container fluid className={`Customer-basic-view-container ${isSidebarExpanded ? 'sidebar-expanded' : ''}`}>
                 <div style={{ paddingBottom: '18px' }}>
-                <PathnameUrlPath location={location} homepage={homepage} />
+                    <PathnameUrlPath location={location} homepage={homepage} />
                 </div>
                 <Row className="Section-1-Row">
                     <Col className="New-Customer-container-second basic-view-col">
                         <Row>
                             <Col lg={9} style={{}}>
-                                <span className="basic-view-head" style={{marginTop:'50px'}}>DSA Profile</span>
-                                {formData.dsa_status === 'inactive' ? (
+                                <span className="basic-view-head" style={{ marginTop: '50px' }}>DSA Profile</span>
+                                {formData.dsa_status === 'Inactive' ? (
                                     <span style={{ margin: '5px', color: 'red', fontWeight: "500" }}><GoDotFill />InActive</span>
                                 ) : (
                                     <span style={{ margin: '5px', color: 'green', fontWeight: "500" }}><GoDotFill />Active</span>
@@ -216,11 +198,36 @@ function DSA_Updation() {
                             </Col>
                             <Col style={{ display: 'flex', justifyContent: "flex-end" }}>
                                 {!editingMode && (
-                                    <Button style={{ width: "80px", marginTop:'-20px'}} onClick={() => setEditingMode(true)}>Edit</Button>
+                                    <Button style={{ width: "80px", marginTop: '-15px' }} onClick={() => setEditingMode(true)}>Edit</Button>
                                 )}
                             </Col>
-                            <hr style={{ margin: "5px", width: "100%" }} />
+                            <hr style={{ margin: "5px", width: "98%" }} />
                         </Row>
+                        {dsaId && uksId && (
+                        <Row className="Row1 view-row-size">
+                            <Col className='basic-col-width' style={{color:'red'}} lg={2}><span className="customer-sentence">Account & Status</span></Col>
+                            <Col>
+                                <select
+                                    id="status-select"
+                                    name="isActive"
+                                    className="box"
+                                    value={formData.isActive}
+                                    onChange={(e) => {
+                                        const newIsActive = e.target.value === "true";
+                                        setFormData({
+                                            ...formData,
+                                            isActive: newIsActive,
+                                            dsa_status: newIsActive ? "Active" : "Inactive",
+                                        });
+                                    }}
+                                    disabled={!editingMode} 
+                                >
+                                    <option value={true}>Activate</option>
+                                    <option value={false}>Deactivate</option>
+                                </select>
+                            </Col>
+                        </Row>
+                        )}
                         <Row className="Row1 view-row-size">
                             <Col className='basic-col-width' lg={2}><span className="customer-sentence">Name</span></Col>
                             <Col>
@@ -330,36 +337,17 @@ function DSA_Updation() {
 
                         <DSA_AddressForm />
                         <hr />
-                        <DSA_Branck_Details/>
-                        <hr/>
+                        <DSA_Branck_Details />
+                        <hr />
                         <DSA_Loan_Details />
                         <hr />
 
-                        {/* <Row>
-                            <div style={{ textAlign: "end" }}>
-                                <a href='' style={{ textDecoration: "none" }} onClick={(e) => {e.preventDefault(); handleDeactivateClick(); }}>
-                                    Are you Delete Your Account ?
-                                </a>
-                            </div>
-                        </Row> */}
+
                     </Col>
                 </Row>
             </Container>
 
-            <Modal show={showModal} onHide={handleCloseModal}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Confirm Account Deletion</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>Are you sure you want to delete your account?</Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleCloseModal}>
-                        No
-                    </Button>
-                    <Button variant="danger" onClick={handleConfirmDeactivate}>
-                        Yes
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+
         </>
     );
 }

@@ -11,54 +11,60 @@ const Navigation = () => {
   };
 
   useEffect(() => {
-    // Highlight the active link based on the URL hash
     const hash = window.location.hash || '#header';
     setActiveKey(hash);
-    
-    // Update active key on hash change
+
     const handleHashChange = () => setActiveKey(window.location.hash || '#header');
     window.addEventListener('hashchange', handleHashChange);
-    
-    return () => window.removeEventListener('hashchange', handleHashChange);
+
+    // Resize event listener to adjust navbar position dynamically
+    const handleResize = () => {
+      const navbar = document.querySelector('nav');
+      if (navbar) {
+        navbar.style.position = window.innerWidth < 992 ? 'static' : 'fixed';
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    // Initial position setting
+    handleResize();
+
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange);
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
   // Inline styles for fixed and non-fixed states
   const navbarStyle = {
     padding: '10px 20px',
-    position: 'fixed',
     top: 0,
     width: '100%',
-    zIndex: 1030, // Ensure it's above other content
+    zIndex: 1030,
     transition: 'top 0.3s',
-  };
-
-  // Responsive handling
-  const responsiveNavbarStyle = {
-    ...navbarStyle,
-    position: window.innerWidth < 992 ? 'static' : 'fixed', // Change position based on screen size
   };
 
   // Style for Nav.Link
   const navLinkStyle = {
     color: '#2492eb',
-    padding: '10px 20px', // Increased padding to increase width
-    display: 'inline-block', // Ensure links respect the padding
-    textDecoration: 'none', // Remove underline
+    padding: '10px 20px',
+    display: 'inline-block',
+    textDecoration: 'none',
     position: 'relative',
   };
 
   // Style for active Nav.Link
   const activeNavLinkStyle = {
     ...navLinkStyle,
-    borderBottom: '1px solid #2492eb', // Blue border bottom
-    
+    borderBottom: '1px solid #2492eb',
   };
 
   return (
     <Navbar 
       bg="light" 
       expand="lg" 
-      style={responsiveNavbarStyle} 
+      style={navbarStyle} 
       className="d-flex"
     >
       <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
@@ -77,7 +83,7 @@ const Navigation = () => {
         </Navbar.Brand>
         <Navbar.Toggle 
           aria-controls="basic-navbar-nav" 
-          style={{ marginLeft: 'auto' }} // Ensure the toggle button is pushed to the right
+          style={{ marginLeft: 'auto' }}
         />
       </div>
       <Navbar.Collapse id="basic-navbar-nav">
@@ -93,10 +99,5 @@ const Navigation = () => {
     </Navbar>
   );
 };
-
-// Add a resize event listener to adjust navbar position dynamically
-window.addEventListener('resize', () => {
-  document.querySelector('nav').style.position = window.innerWidth < 992 ? 'static' : 'fixed';
-});
 
 export default Navigation;

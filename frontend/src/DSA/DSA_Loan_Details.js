@@ -10,9 +10,23 @@ const DSA_Loan_Details = () => {
     const { dsaId } = location.state || {};
 
     const [LoanDetails, setLoanDetails] = useState([]);
-    const [requiredTypes, setRequiredTypes] = useState([]); // State to store required types
+    const [requiredTypes, setRequiredTypes] = useState([]);
     const [successMessage, setSuccessMessage] = useState('');
     const [editingMode, setEditingMode] = useState(false);
+    const [loanTypes, setLoanTypes] = useState([]);
+
+    useEffect(() => {
+        axios.get('https://uksinfotechsolution.in:8000/api/loan-types')
+            .then(response => {
+                setLoanTypes(response.data.map(type => ({
+                    value: type.type,
+                    label: type.type
+                })));
+            })
+            .catch(error => {
+                console.error('Error fetching loan types:', error);
+            });
+    }, []);
 
     useEffect(() => {
         const fetchLoanDetails = async () => {
@@ -30,7 +44,6 @@ const DSA_Loan_Details = () => {
             try {
                 const response = await axios.get('https://uksinfotechsolution.in:8000/api/dsa/required/type');
                 if (response.status === 200) {
-                    // console.log(response.data);
                     const options = response.data.map((type) => ({
                         value: type.requiredType,
                         label: type.requiredType
@@ -53,9 +66,9 @@ const DSA_Loan_Details = () => {
         setLoanDetails(updatedLoanDetails);
     };
 
-    const handleSelectChange = (index, selectedOptions) => {
+    const handleSelectChange = (index, selectedOptions, field) => {
         const updatedLoanDetails = [...LoanDetails];
-        updatedLoanDetails[index] = { ...updatedLoanDetails[index], requiredType: selectedOptions.map(option => option.value).join(', ') };
+        updatedLoanDetails[index] = { ...updatedLoanDetails[index], [field]: selectedOptions.map(option => option.value).join(', ') };
         setLoanDetails(updatedLoanDetails);
     };
 
@@ -93,62 +106,69 @@ const DSA_Loan_Details = () => {
 
     return (
         <>
-        <Row className="dsa-detail-view-header-row" style={{ padding: '10px'}}>
-            <Row style={{ alignItems: 'center' }}>
-                <Col>
-                    <h5>Loan Details:-</h5>
-                </Col>
-                {!editingMode && (
-                    <Col className="d-flex justify-content-end">
-                        <Button style={{ width: "80px"}} onClick={() => setEditingMode(true)}>Edit</Button>
+            <Row className="dsa-detail-view-header-row" style={{ padding: '10px'}}>
+                <Row style={{ alignItems: 'center' }}>
+                    <Col>
+                        <p>Loan Details:</p>
                     </Col>
-                )}
-            </Row>
-            <>
-                <Row className='profile-address-single-row' >
-                    <Col><span className="profile-finance">Type of Loan</span></Col>
-                    <Col><span className="profile-finance">Required Days</span></Col>
-                    <Col><span className="profile-finance">Required Document</span></Col>
-                    <Col><span className="profile-finance">Required type</span></Col>
-                    <Col><span className="profile-finance">Required Cibil Score</span></Col>
-                </Row>
-                {LoanDetails.map((loan, index) => (
-                    <Row key={loan._id || index} className='profile-address-single-row previous-loan-delete'>
-                        <Col><input disabled={!editingMode} className="input-box-address" placeholder='Type of Loan' name="typeOfLoan" type="text" value={loan.typeOfLoan || ''} onChange={(e) => handleLoanChange(index, e)} /></Col>
-                        <Col><input disabled={!editingMode} className="input-box-address" name="requiredDays" placeholder='Required Days' type="number" value={loan.requiredDays || ''} onChange={(e) => handleLoanChange(index, e)} /></Col>
-                        <Col><input disabled={!editingMode} className="input-box-address" name="requiredDocument" placeholder='Required Document' type="text" value={loan.requiredDocument || ''} onChange={(e) => handleLoanChange(index, e)} /></Col>
-                        <Col>
-                        <Select
-                                isMulti
-                                options={requiredTypes}
-                                value={loan.requiredType ? loan.requiredType.split(', ').map(type => ({ value: type, label: type })) : []}
-                                onChange={(selectedOptions) => handleSelectChange(index, selectedOptions)}
-                                isDisabled={!editingMode}
-                            />
+                    {!editingMode && (
+                        <Col className="d-flex justify-content-end">
+                            <Button style={{ width: "80px"}} onClick={() => setEditingMode(true)}>Edit</Button>
                         </Col>
-                        <Col><input disabled={!editingMode} className="input-box-address" name="requiredCibilScore" placeholder='Required Cibil Score' type="text" value={loan.requiredCibilScore || ''} onChange={(e) => handleLoanChange(index, e)} /></Col>
-                        <Col lg={1}>
-                            <IoCloseSharp
-                                style={{ color: 'red', cursor: 'pointer' }}
-                                size={30}
-                                onClick={() => deleteLoanRow(index, loan._id)}
-                            />
-                        </Col>
-                    </Row>
-                ))}
-                <div>
-                <Button disabled={!editingMode} onClick={addLoanRow} style={{ marginBottom: '10px' }}>Add Loan Details</Button>
-                </div>
-            </>
-            <Row>
-                <Col>
-                    {editingMode && (
-                        <>
-                            <Button onClick={handlePreviousLoanSave}>Save Loan Details</Button>
-                        </>
                     )}
-                </Col>
-            </Row>
+                </Row>
+                <>
+                    <Row className='profile-address-single-row'>
+                        <Col><span className="profile-finance">Type of Loan</span></Col>
+                        <Col><span className="profile-finance">Required Days</span></Col>
+                        <Col><span className="profile-finance">Required Document</span></Col>
+                        <Col><span className="profile-finance">Required type</span></Col>
+                        <Col><span className="profile-finance">Required Cibil Score</span></Col>
+                    </Row>
+                    {LoanDetails.map((loan, index) => (
+                        <Row key={loan._id || index} className='profile-address-single-row previous-loan-delete'>
+                            <Col>
+                                <Select
+                                    options={loanTypes}
+                                    value={loan.typeOfLoan ? { value: loan.typeOfLoan, label: loan.typeOfLoan } : null}
+                                    onChange={(selectedOption) => handleSelectChange(index, [selectedOption], 'typeOfLoan')}
+                                    isDisabled={!editingMode}
+                                />
+                            </Col>
+                            <Col><input disabled={!editingMode} className="input-box-address" name="requiredDays" placeholder='Required Days' type="number" value={loan.requiredDays || ''} onChange={(e) => handleLoanChange(index, e)} /></Col>
+                            <Col><input disabled={!editingMode} className="input-box-address" name="requiredDocument" placeholder='Required Document' type="text" value={loan.requiredDocument || ''} onChange={(e) => handleLoanChange(index, e)} /></Col>
+                            <Col>
+                                <Select
+                                    isMulti
+                                    options={requiredTypes}
+                                    value={loan.requiredType ? loan.requiredType.split(', ').map(type => ({ value: type, label: type })) : []}
+                                    onChange={(selectedOptions) => handleSelectChange(index, selectedOptions, 'requiredType')}
+                                    isDisabled={!editingMode}
+                                />
+                            </Col>
+                            <Col><input disabled={!editingMode} className="input-box-address" name="requiredCibilScore" placeholder='Required Cibil Score' type="text" value={loan.requiredCibilScore || ''} onChange={(e) => handleLoanChange(index, e)} /></Col>
+                            <Col lg={1}>
+                                <IoCloseSharp
+                                    style={{ color: 'red', cursor: 'pointer' }}
+                                    size={30}
+                                    onClick={() => deleteLoanRow(index, loan._id)}
+                                />
+                            </Col>
+                        </Row>
+                    ))}
+                    <div>
+                        <Button disabled={!editingMode} onClick={addLoanRow} style={{ marginBottom: '10px' }}>Add Loan Details</Button>
+                    </div>
+                </>
+                <Row>
+                    <Col>
+                        {editingMode && (
+                            <>
+                                <Button onClick={handlePreviousLoanSave}>Save Loan Details</Button>
+                            </>
+                        )}
+                    </Col>
+                </Row>
             </Row>
         </>
     );

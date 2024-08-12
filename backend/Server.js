@@ -196,6 +196,43 @@ app.post('/uks/customer/activation', async (req, res) => {
     }
 });
 
+app.get('/dsa-pending-details', async (req, res) => {
+    const { dsaId } = req.query;
+    // console.log(customerId);
+
+    try {
+        const address = await DSAAddress.findOne({ dsaId });
+        const loanDetails = await LoanDetails.find({ dsaId });
+        const branchdetails = await DSABranchDetails.find({ dsaId });
+
+        const missingTables = [];
+
+        if (!address) {
+            missingTables.push('Address');
+        }
+        if (!loanDetails.length) {
+            missingTables.push('LoanDetails');
+        }
+        if (!branchdetails.length) {
+            missingTables.push('BranchDetails');
+        }
+
+        const dsapendingDetails = {
+            address,
+            loanDetails,
+            branchdetails
+        };
+
+        res.json({ dsapendingDetails, missingTables });
+    } catch (error) {
+        // res.status(500).json({ error: 'Internal server error' });
+        // console.error('Error fetching customer details:', error);
+    }
+});
+
+
+
+
 app.get('/customer-pending-details', async (req, res) => {
     const { customerId } = req.query;
     // console.log(customerId);
@@ -358,10 +395,10 @@ app.get('/api/package/details', async (req, res) => {
 });
 
 
-app.get('/Inactive/packagers', async (req, res) => {
+app.get('/buy/packagers/list', async (req, res) => {
     // console.log("Fetching inactive package details");
     try {
-        const inactive_dsa = await BuyPackage.find({ packageStatus: 'Inactive' });
+        const inactive_dsa = await BuyPackage.find();
         res.status(200).json({ data: inactive_dsa });
     } catch (error) {
         console.error('Error fetching package details:', error);
@@ -1224,6 +1261,7 @@ app.delete('/api/dsa/deactivate/:dsaId', async (req, res) => {
         }
 
         // Update dsa_status to 'inactive'
+        dsa.isActive='false'
         dsa.dsa_status = 'Inactive';
         await dsa.save();
 
@@ -1494,25 +1532,6 @@ app.get('/api/dsa/address', async (req, res) => {
     }
 });
 
-
-// Backend implementation for fetching DSA details by email
-
-// app.get('/api/dsa', async (req, res) => {
-//     try {
-//         const { dsaId } = req.query;
-//         console.log("dsa id" + req.query);
-
-//         const dsa = await DSA.findById(dsaId).populate('address');
-
-//         if (!dsa) {
-//             return res.status(404).json({ error: 'DSA not found' });
-//         }
-//         res.status(200).json(dsa);
-//     } catch (error) {
-//         console.error('Error fetching DSA details:', error);
-//         res.status(500).json({ error: 'Internal server error' });
-//     }
-// });
 
 app.put('/api/dsa/:id', async (req, res) => {
     try {

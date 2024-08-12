@@ -70,6 +70,7 @@ import Customer_Missing_Details from './DashBoard/Customer/Uks_Customer_Pending'
 import Customer_Updation from './Customer-Dashboard/Customer-Profile/Customer_Updation';
 import Uks_Customer_Updation from './DashBoard/Customer/Uks_Customer_Updation';
 import Dsa_Total_Customers from './DSA/DSA_Dashboard/Total_Customers';
+import Dsa_pending_List from './DashBoard/DSA/Uks_DSA_Pendin_Total_List';
 
 function App() {
   return (
@@ -155,6 +156,7 @@ function App() {
             <Route path="/uks/customer/list" element={<Customer_Missing_Details />} />
             <Route path="/uks/customer/detail/view" element={<Uks_Customer_Updation />} />
             <Route path="/uks/loan/appliation" element={<Uks_Loan_Applications />} />
+            <Route path="/uks/dsa/pending/list" element={<Dsa_pending_List />} />
             <Route path="/uks/dsa/list" element={<UKS_DSA_List />} />
             <Route path="/uks/dashboard" element={<UKS_Dashboard />} />
             <Route path="/dsa/package/activate" element={<DSA_Packager_View />} />

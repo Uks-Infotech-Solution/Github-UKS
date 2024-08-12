@@ -86,7 +86,7 @@ const DSA_Branch_Details = () => {
             <Row className="dsa-detail-view-header-row" style={{ padding: '10px' }}>
                 <Row style={{ alignItems: 'center' }}>
                     <Col>
-                        <h5>Branch Details:</h5>
+                        <p>Branch Details:</p>
                     </Col>
                     {!editingMode && (
                         <Col className="d-flex justify-content-end">
