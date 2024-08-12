@@ -1,20 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Container, DropdownButton, Dropdown, Button } from 'react-bootstrap';
+import { Table, Container, DropdownButton, Dropdown, Row, Col } from 'react-bootstrap';
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import { PiCircleFill } from "react-icons/pi";
 import axios from 'axios';
-import { useNavigate, useLocation } from 'react-router-dom'; // Import useNavigate hook
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useSidebar } from '../Customer/Navbar/SidebarContext';
+import { GrView } from "react-icons/gr";
 
 function DSA_Package_List() {
     const location = useLocation();
     const { uksId } = location.state || {};
+    const { isSidebarExpanded } = useSidebar();
 
     const [packagers, setPackagers] = useState([]);
+    const [filteredPackagers, setFilteredPackagers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(5);
-    const navigate = useNavigate(); // Initialize useNavigate hook
+    const [selectedFilter, setSelectedFilter] = useState('Both');
+    const navigate = useNavigate();
 
     const indexOfLastDsa = currentPage * rowsPerPage;
     const indexOfFirstDsa = indexOfLastDsa - rowsPerPage;
@@ -22,8 +27,10 @@ function DSA_Package_List() {
     useEffect(() => {
         const fetchPackages = async () => {
             try {
-                const response = await axios.get('https://uksinfotechsolution.in:8000/buy/packagers/list');
-                setPackagers(response.data.data || []); // Ensure it's an array
+                const response = await axios.get('http://localhost:8000/buy/packagers/list');
+                const fetchedPackagers = response.data.data || [];
+                setPackagers(fetchedPackagers);
+                setFilteredPackagers(fetchedPackagers); // Initially display all packages
                 setLoading(false);
             } catch (error) {
                 console.error('Error fetching package details:', error);
@@ -42,19 +49,47 @@ function DSA_Package_List() {
         setCurrentPage(1);
     };
 
+    const handleFilterChange = (filter) => {
+        setSelectedFilter(filter);
+
+        if (filter === 'Active') {
+            setFilteredPackagers(packagers.filter(pkg => pkg.packageStatus === 'Active'));
+        } else if (filter === 'Inactive') {
+            setFilteredPackagers(packagers.filter(pkg => pkg.packageStatus === 'Inactive'));
+        } else {
+            setFilteredPackagers(packagers); // Show all packages
+        }
+
+        setCurrentPage(1); // Reset page to 1 on filter change
+    };
+
     const handleActivate = (pkgId, dsaId) => {
-        // Navigate to /dsa/package/activate with state containing dsaId and pkgId
         navigate(`/dsa/package/activate`, { state: { uksId, pkgId } });
     };
 
     return (
         <Container>
-            <div className='dsa-table-container-second'>
+            <div className={`Customer-basic-view-container ${isSidebarExpanded ? 'sidebar-expanded' : ''}`}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '10px' }}>
                     <span className='dsa-table-container-second-head'>DSA's Package Activation List</span>
                 </div>
+
                 <div className="table-responsive">
-                    <Table striped bordered hover className='dsa-table-line'>
+                    <Row style={{ alignItems: 'center', justifyContent: 'end' }}>
+                        <Col lg={1}>
+                            <DropdownButton
+                                id="dropdown-basic-button"
+                                title={`Filter`}
+                                onSelect={handleFilterChange}
+                                style={{ marginRight: '10px' }}
+                            >
+                                <Dropdown.Item eventKey="Both">Both</Dropdown.Item>
+                                <Dropdown.Item eventKey="Active">Active</Dropdown.Item>
+                                <Dropdown.Item eventKey="Inactive">Inactive</Dropdown.Item>
+                            </DropdownButton>
+                        </Col>
+                    </Row>
+                    <Table striped bordered hover className=''>
                         <thead>
                             <tr>
                                 <th className='dsa-table-head'>DSA Number</th>
@@ -69,12 +104,12 @@ function DSA_Package_List() {
                             </tr>
                         </thead>
                         <tbody>
-                            {packagers.length === 0 ? (
+                            {filteredPackagers.length === 0 ? (
                                 <tr>
                                     <td colSpan="9" className="text-center">No Record Found</td>
                                 </tr>
                             ) : (
-                                packagers.map((pkg) => (
+                                filteredPackagers.slice(indexOfFirstDsa, indexOfLastDsa).map((pkg) => (
                                     <tr key={pkg._id}>
                                         <td>UKS-DSA-0{pkg.dsaNumber}</td>
                                         <td>{pkg.dsaName}</td>
@@ -89,7 +124,7 @@ function DSA_Package_List() {
                                                 {pkg.packageStatus}
                                             </span>
                                         </td>
-                                        <td><Button onClick={() => handleActivate(pkg._id, pkg.dsaId)}>Activate</Button></td>
+                                        <td><GrView style={{ color: 'blue' }} onClick={() => handleActivate(pkg._id, pkg.dsaId)} /></td>
                                     </tr>
                                 ))
                             )}
@@ -118,7 +153,7 @@ function DSA_Package_List() {
                         <MdKeyboardArrowRight
                             size={25}
                             onClick={() => paginate(currentPage + 1)}
-                            disabled={indexOfLastDsa >= packagers.length}
+                            disabled={indexOfLastDsa >= filteredPackagers.length}
                         />
                     </div>
                 </div>
