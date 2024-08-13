@@ -27,7 +27,7 @@ function DSA_Package_List() {
     useEffect(() => {
         const fetchPackages = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/buy/packagers/list');
+                const response = await axios.get('https://uksinfotechsolution.in:8000/buy/packagers/list');
                 const fetchedPackagers = response.data.data || [];
                 setPackagers(fetchedPackagers);
                 setFilteredPackagers(fetchedPackagers); // Initially display all packages

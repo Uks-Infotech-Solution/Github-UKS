@@ -71,6 +71,8 @@ import Customer_Updation from './Customer-Dashboard/Customer-Profile/Customer_Up
 import Uks_Customer_Updation from './DashBoard/Customer/Uks_Customer_Updation';
 import Dsa_Total_Customers from './DSA/DSA_Dashboard/Total_Customers';
 import Dsa_pending_List from './DashBoard/DSA/Uks_DSA_Pendin_Total_List';
+import Enquiry from './Enquiry_Details/Enquiry_Form';
+import EnquiryList from './Enquiry_Details/Enquiry_List';
 
 function App() {
   return (
@@ -90,7 +92,7 @@ function App() {
           <Route path="/customer/register" element={<IndexWithNavbar element={<Section_1 />} />} />
           <Route path="/customer/activate/:token" element={<IndexWithNavbar element={<Customer_Activate />} />} />
           <Route path="/customer/forget/password" element={<Customer_ForgotPassword />} />
-          <Route path="/customer/reset/password/:token" element={<Customer_ResetPassword />} /> 
+          <Route path="/customer/reset/password/:token" element={<Customer_ResetPassword />} />
 
           <Route path="/dsa/login" element={<IndexWithNavbar element={<DsaLogin />} />} />
           <Route path="/dsa/register" element={<IndexWithNavbar element={<DSA_Register />} />} />
@@ -181,7 +183,11 @@ function App() {
             <Route path="/dsa/requiredtype" element={<Required_Type />} />
             <Route path="/employee/type" element={<Employee_Type />} />
 
- 
+
+            {/* ENQUIRY_DETAILS */}
+            <Route path="/enquiry/form" element={<Enquiry />} />
+            <Route path="/enquiry/list" element={<EnquiryList />} />
+
           </Routes>
         </AuthenticatedLayout>
         <Routes>

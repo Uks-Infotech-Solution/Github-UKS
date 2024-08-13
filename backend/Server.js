@@ -45,6 +45,9 @@ const SalesPerson = require('./UKS/Sales_person_cus_reg');
 const SalesPersonDSA = require('./UKS/Sales_person_dsa_reg');
 const Uks_Customer_Activation = require('./UKS/Customer_Activation');
 const Uks_Customer_Deactivation = require('./UKS/Customer_Deactivation');
+const Enquiry = require('./models/Enquiry_Details');
+const dsaregister = require('./DSA/dsa-register')
+const DSA = require('./DSA/models/dsa')
 
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
@@ -58,9 +61,7 @@ const connectDB = require('../backend/db');
 require('dotenv').config();
 
 // DSA
-const dsaregister = require('./DSA/dsa-register')
 
-const DSA = require('./DSA/models/dsa')
 
 const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -132,6 +133,125 @@ const upload = multer({ storage: storage });
 connectDB();
 // Loan Application
 app.use('/api', loanApplicationRoutes);
+
+
+app.get('/api/enquiries/counts', async (req, res) => {
+    try {
+      const counts = await Enquiry.aggregate([
+        {
+          $group: {
+            _id: "$enquiry_convert_status",
+            count: { $sum: 1 }
+          }
+        }
+      ]);
+  
+      const countsMap = counts.reduce((acc, item) => {
+        acc[item._id] = item.count;
+        return acc;
+      }, {});
+  
+      res.json(countsMap);
+    } catch (error) {
+      res.status(500).json({ message: 'Error fetching counts', error });
+    }
+  });
+
+// Route to add a new enquiry
+app.post('/api/enquiry/form', async (req, res) => {
+    try {
+        const { contactNumber } = req.body;
+
+        // Check if an enquiry with the same contact number already exists
+        const existingEnquiry = await Enquiry.findOne({ contactNumber });
+
+        if (existingEnquiry) {
+            // If an enquiry with the contact number exists, send an error response
+            return res.status(400).json({ error: 'Contact number already exists' });
+        }
+
+        // If the contact number does not exist, create a new enquiry
+        const newEnquiry = new Enquiry(req.body);
+        await newEnquiry.save();
+
+        // Respond with the newly created enquiry
+        res.json(newEnquiry);
+
+    } catch (err) {
+        // Handle any errors that occurred during the process
+        res.status(400).json({ error: 'Error: ' + err.message });
+    }
+});
+
+  
+  // Route to get all enquiries
+ // Updated GET route to handle status filtering
+app.get('/api/enquiries', (req, res) => {
+    const status = req.query.status;
+    const query = {};
+  
+    if (status) {
+      query.enquiry_convert_status = status;
+    }
+  
+    Enquiry.find(query)
+      .then(enquiries => res.json(enquiries))
+      .catch(err => res.status(400).json('Error: ' + err));
+  });
+  
+//   Update enquiry by ID
+app.put('/api/enquiry/:id', (req, res) => {
+    const updateData = {
+      ...req.body,
+      updatedAt: new Date(), // Update timestamp
+    };
+  
+    Enquiry.findByIdAndUpdate(req.params.id, updateData, { new: true })
+      .then(enquiry => {
+        if (!enquiry) {
+          return res.status(404).json('Enquiry not found');
+        }
+        res.json(enquiry);
+      })
+      .catch(err => res.status(400).json('Error: ' + err));
+  });
+  // Convert an enquiry
+  app.put('/api/enquiries/convert/:id', (req, res) => {
+    const { id } = req.params;
+    const convertedDate = new Date(); // Get the current date for conversion
+
+    Enquiry.findByIdAndUpdate(
+        id,
+        {
+            enquiry_convert_status: 'Converted',
+            convertedDate: convertedDate // Set the date when it was converted
+        },
+        { new: true } // Return the updated document
+    )
+    .then(enquiry => {
+        if (!enquiry) {
+            return res.status(404).json('Enquiry not found.');
+        }
+        res.json(enquiry);
+    })
+    .catch(err => res.status(400).json('Error: ' + err));
+});
+  
+  
+  // Delete enquiry by ID
+  app.delete('/api/enquiries/:id', (req, res) => {
+    const updateData = {
+      uksId: req.body.uksId,
+      enquiry_convert_status: 'Deleted',
+      deletedAt: new Date()   // Set the deleted date
+    };
+  
+    Enquiry.findByIdAndUpdate(req.params.id, updateData, { new: true })
+      .then(enquiry => res.json('Enquiry marked as deleted.'))
+      .catch(err => res.status(400).json('Error: ' + err));
+  });
+  
+
 
 
 app.post('/uks/customer/deactivation', async (req, res) => {

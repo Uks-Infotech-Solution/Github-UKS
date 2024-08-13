@@ -178,9 +178,21 @@ function DSA_Packager_View() {
                                     <h6>Selected Package Details</h6>
                                 </div>
                                 <Row>
-                                    <Col><span style={{ fontSize: '12px', fontWeight: '700', paddingRight: '8px' }}>DSA Name:</span><span>{pkg.dsaName}</span>
+                                    <Col>
+                                        <div>
+                                            <span style={{ fontSize: '12px', fontWeight: '700', paddingRight: '8px' }}>
+                                                Package Status:
+                                            </span>
+                                            <span style={{ color: pkg.packageStatus === 'Active' ? 'green' : 'red' , fontSize:'16px'}}>
+                                                {pkg.packageStatus}
+                                            </span>
+                                        </div>
+
+                                        <span style={{ fontSize: '12px', fontWeight: '700', paddingRight: '8px' }}>DSA Name:</span><span>{pkg.dsaName}</span>
+
                                         <div><span style={{ fontSize: '12px', fontWeight: '700', paddingRight: '8px' }}>Package Name:</span><span>{pkg.packageName}</span></div>
                                         <div><span style={{ fontSize: '12px', fontWeight: '700', paddingRight: '8px' }}>Package Amount:</span><span>{pkg.packageAmount}</span></div>
+
                                     </Col>
                                     <Col>
                                         <div>

@@ -1,5 +1,5 @@
 import { Button, Col, Container, Row, Modal } from "react-bootstrap";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useLocation  } from 'react-router-dom';
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import './Customer_reg.css'
@@ -9,14 +9,15 @@ import Loan_process from "./Loan_Processing";
 
 function Customer_reg({ onSuccess }) {
     const navigate = useNavigate();
+    const location = useLocation();
     const homepage = () => {
         navigate('/customer');
     }
     const { isSidebarExpanded } = useSidebar();
-
+    const { contactNumber } = location.state || {}; // Extract contactNumber from location state
     const [customerFname, setCustomerFname] = useState('');
     const [customerLname, setCustomerLname] = useState('');
-    const [customercontact, setCustomerContact] = useState('');
+    const [customercontact, setCustomerContact] = useState(contactNumber || ''); // Set default value if contactNumber is available
     const [customeralterno, setCustomerAlterNo] = useState('');
     const [customerwhatsapp, setCustomerWhatsapp] = useState('');
     const [customermailid, setCustomerMailId] = useState('');
