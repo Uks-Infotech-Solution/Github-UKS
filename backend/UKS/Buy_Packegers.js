@@ -9,6 +9,9 @@ const BuyPackageSchema = new mongoose.Schema({
   primaryNumber: { type: String, required: true },
   packageName: { type: String, required: true },
   downloadAccess: { type: String, required: true },
+  validity:Number,
+  amount:Number,
+  comparison: String,
   packageAmount: { type: Number, required: true },
   loanTypes: [{ type: String }], // Array of loan types
   additionalInputs: [{

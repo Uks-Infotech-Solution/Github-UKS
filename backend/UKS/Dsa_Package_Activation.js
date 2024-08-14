@@ -13,6 +13,9 @@ const activationSchema = new Schema({
     packageName: String,
     packageAmount: Number,
     downloadAccess: String,
+    validity:Number,
+    amount:Number,
+    comparison:String,
     loanTypes: [String],
     
     salesPersonName: String,

@@ -180,6 +180,7 @@ const StickyNavbar = () => {
   const CustomersideProfile = () => { if (customerId) { navigate('/customer/profile/view', { state: { customerId } }); } }
   const CustomersideDashboard = () => { if (customerId) { navigate('/customer-dashboard', { state: { customerId } }); } }
   const Pricing = () => { if (uksId) { navigate('/add/pricing', { state: { uksId } }); } }
+  const Package_View = () => { if (uksId) { navigate('/pricing', { state: { uksId } }); } }
   const Uks_Dashboard = () => { if (uksId) { navigate('/uks/dashboard', { state: { uksId } }); } }
   const toggleCustomerMenu = () => { setShowCustomerMenu(!showCustomerMenu); };
   const toggleMasterMenu = () => { setShowMasterMenu(!showMasterMenu); };
@@ -378,7 +379,11 @@ const StickyNavbar = () => {
                       <Nav.Link className='font-size-dropdown' onClick={Pricing}><HiViewGridAdd className='Customer-icon' />Package Input</Nav.Link>
                     </li>
                   </ul>
-
+                  <ul className='side-menu-customer-link'>
+                    <li>
+                      <Nav.Link className='font-size-dropdown' onClick={Package_View}><HiViewGridAdd className='Customer-icon' />Package View</Nav.Link>
+                    </li>
+                  </ul>
 
                 </li>
               )}

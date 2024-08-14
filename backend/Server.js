@@ -38,7 +38,7 @@ const DSA_LoginSession = require('./Login_Session/DSA_Login_Session');
 const ApplyViewCount = require('./DSA/Loan_Applications/Customer_Applied_Loan_View_Count');
 
 const DSABranchDetails = require('../backend/DSA/models/DSA_Branch');
-const PackageDetail = require('./UKS/Package');
+const PackageDetail = require('./UKS/Package_Schema');
 const BuyPackage = require('./UKS/Buy_Packegers');
 const Package_Activation = require('../backend/UKS/Dsa_Package_Activation');
 const SalesPerson = require('./UKS/Sales_person_cus_reg');
@@ -137,25 +137,25 @@ app.use('/api', loanApplicationRoutes);
 
 app.get('/api/enquiries/counts', async (req, res) => {
     try {
-      const counts = await Enquiry.aggregate([
-        {
-          $group: {
-            _id: "$enquiry_convert_status",
-            count: { $sum: 1 }
-          }
-        }
-      ]);
-  
-      const countsMap = counts.reduce((acc, item) => {
-        acc[item._id] = item.count;
-        return acc;
-      }, {});
-  
-      res.json(countsMap);
+        const counts = await Enquiry.aggregate([
+            {
+                $group: {
+                    _id: "$enquiry_convert_status",
+                    count: { $sum: 1 }
+                }
+            }
+        ]);
+
+        const countsMap = counts.reduce((acc, item) => {
+            acc[item._id] = item.count;
+            return acc;
+        }, {});
+
+        res.json(countsMap);
     } catch (error) {
-      res.status(500).json({ message: 'Error fetching counts', error });
+        res.status(500).json({ message: 'Error fetching counts', error });
     }
-  });
+});
 
 // Route to add a new enquiry
 app.post('/api/enquiry/form', async (req, res) => {
@@ -183,40 +183,40 @@ app.post('/api/enquiry/form', async (req, res) => {
     }
 });
 
-  
-  // Route to get all enquiries
- // Updated GET route to handle status filtering
+
+// Route to get all enquiries
+// Updated GET route to handle status filtering
 app.get('/api/enquiries', (req, res) => {
     const status = req.query.status;
     const query = {};
-  
+
     if (status) {
-      query.enquiry_convert_status = status;
+        query.enquiry_convert_status = status;
     }
-  
+
     Enquiry.find(query)
-      .then(enquiries => res.json(enquiries))
-      .catch(err => res.status(400).json('Error: ' + err));
-  });
-  
+        .then(enquiries => res.json(enquiries))
+        .catch(err => res.status(400).json('Error: ' + err));
+});
+
 //   Update enquiry by ID
 app.put('/api/enquiry/:id', (req, res) => {
     const updateData = {
-      ...req.body,
-      updatedAt: new Date(), // Update timestamp
+        ...req.body,
+        updatedAt: new Date(), // Update timestamp
     };
-  
+
     Enquiry.findByIdAndUpdate(req.params.id, updateData, { new: true })
-      .then(enquiry => {
-        if (!enquiry) {
-          return res.status(404).json('Enquiry not found');
-        }
-        res.json(enquiry);
-      })
-      .catch(err => res.status(400).json('Error: ' + err));
-  });
-  // Convert an enquiry
-  app.put('/api/enquiries/convert/:id', (req, res) => {
+        .then(enquiry => {
+            if (!enquiry) {
+                return res.status(404).json('Enquiry not found');
+            }
+            res.json(enquiry);
+        })
+        .catch(err => res.status(400).json('Error: ' + err));
+});
+// Convert an enquiry
+app.put('/api/enquiries/convert/:id', (req, res) => {
     const { id } = req.params;
     const convertedDate = new Date(); // Get the current date for conversion
 
@@ -228,29 +228,29 @@ app.put('/api/enquiry/:id', (req, res) => {
         },
         { new: true } // Return the updated document
     )
-    .then(enquiry => {
-        if (!enquiry) {
-            return res.status(404).json('Enquiry not found.');
-        }
-        res.json(enquiry);
-    })
-    .catch(err => res.status(400).json('Error: ' + err));
+        .then(enquiry => {
+            if (!enquiry) {
+                return res.status(404).json('Enquiry not found.');
+            }
+            res.json(enquiry);
+        })
+        .catch(err => res.status(400).json('Error: ' + err));
 });
-  
-  
-  // Delete enquiry by ID
-  app.delete('/api/enquiries/:id', (req, res) => {
+
+
+// Delete enquiry by ID
+app.delete('/api/enquiries/:id', (req, res) => {
     const updateData = {
-      uksId: req.body.uksId,
-      enquiry_convert_status: 'Deleted',
-      deletedAt: new Date()   // Set the deleted date
+        uksId: req.body.uksId,
+        enquiry_convert_status: 'Deleted',
+        deletedAt: new Date()   // Set the deleted date
     };
-  
+
     Enquiry.findByIdAndUpdate(req.params.id, updateData, { new: true })
-      .then(enquiry => res.json('Enquiry marked as deleted.'))
-      .catch(err => res.status(400).json('Error: ' + err));
-  });
-  
+        .then(enquiry => res.json('Enquiry marked as deleted.'))
+        .catch(err => res.status(400).json('Error: ' + err));
+});
+
 
 
 
@@ -564,6 +564,9 @@ app.post('/api/dsa/packager/activation', async (req, res) => {
             packageName,
             packageAmount,
             downloadAccess,
+            validity,
+            amount,
+            comparison,
             loanTypes,
             salesPersonName,
             salesPersonId,
@@ -582,6 +585,9 @@ app.post('/api/dsa/packager/activation', async (req, res) => {
             packageName,
             packageAmount,
             downloadAccess,
+            validity,
+            amount,
+            comparison,
             loanTypes,
             status_activation: "Active",
             salesPersonName,
@@ -596,7 +602,7 @@ app.post('/api/dsa/packager/activation', async (req, res) => {
         const newBuyPackage = await BuyPackage.findById(pkgId);
         if (newBuyPackage) {
             const currentDate = new Date(); // Get the current date and time
-        
+
             newBuyPackage.packageStatus = 'Active';
             newBuyPackage.uksId = uksId;
             newBuyPackage.activationToken = undefined;
@@ -604,12 +610,12 @@ app.post('/api/dsa/packager/activation', async (req, res) => {
             newBuyPackage.salespersonId = salesPersonId;
             newBuyPackage.transferAmountRefNumber = transferRefNo;
             newBuyPackage.activationDate = currentDate; // Set the activation date to the current date and time
-        
+
             // Calculate the expiry date as one month from the activation date
             const expiryDate = new Date(currentDate);
             expiryDate.setMonth(expiryDate.getMonth() + 1);
             newBuyPackage.expiryDate = expiryDate;
-        
+
             await newBuyPackage.save();
         } else {
             throw new Error('BuyPackage not found');
@@ -657,12 +663,15 @@ app.post('/buy_packagers', async (req, res) => {
         primaryNumber,
         packageName,
         downloadAccess,
+        validity,
+        amount,
+        comparison,
         packageAmount,
         transferAmountRefNumber,
         loanTypes,
         additionalInputs
     } = req.body;
-// console.log(req.body);
+    // console.log(req.body);
 
     const token = crypto.randomBytes(32).toString('hex');
 
@@ -676,6 +685,9 @@ app.post('/buy_packagers', async (req, res) => {
             primaryNumber,
             packageName,
             downloadAccess,
+            validity,
+            amount,
+            comparison,
             packageAmount,
             transferAmountRefNumber,
             activationToken: token,
@@ -1381,7 +1393,7 @@ app.delete('/api/dsa/deactivate/:dsaId', async (req, res) => {
         }
 
         // Update dsa_status to 'inactive'
-        dsa.isActive='false'
+        dsa.isActive = 'false'
         dsa.dsa_status = 'Inactive';
         await dsa.save();
 

@@ -38,6 +38,7 @@ function CustomerTable() {
   const { isSidebarExpanded } = useSidebar();
 
   const { dsaId } = location.state || {};
+  const [packages, setPackages] = useState({ });
 
   // Fetch DSA details
   const fetchDSADetails = async (dsaId) => {
@@ -53,6 +54,21 @@ function CustomerTable() {
     if (dsaId) {
       fetchDSADetails(dsaId);
     }
+  }, [dsaId]);
+
+
+  useEffect(() => {
+    const fetchPackages = async () => {
+      try {
+        const response = await axios.get(`https://uksinfotechsolution.in:8000/buy_packages/dsa/${dsaId}`);
+        setPackages(response.data);
+        console.log(response.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    fetchPackages();
   }, [dsaId]);
 
   // Fetch customers and initialize checked items
@@ -127,58 +143,6 @@ function CustomerTable() {
     }
   }, [customers]);
 
-
-
-  // const fetchProfilePicture = async (customerId) => {
-  //   try {
-  //     const response = await axios.get(`https://uksinfotechsolution.in:8000/api/profile/view-profile-picture?customerId=${customerId}`, {
-  //       responseType: 'arraybuffer'
-  //     });
-  //     const contentType = response.headers['content-type'];
-
-  //     if (contentType && contentType.startsWith('image')) {
-  //       const base64Image = `data:${contentType};base64,${btoa(
-  //         String.fromCharCode(...new Uint8Array(response.data))
-  //       )}`;
-  //       return base64Image; // Return base64 image data
-  //     } else {
-  //       console.error('Response is not an image');
-  //       return null; // Handle case where response is not an image
-  //     }
-  //   } catch (err) {
-  //     // console.error('Error retrieving profile picture:', err);
-  //     return null; // Handle error case
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   const fetchProfilePictures = async () => {
-  //     const newProfilePictures = {};
-
-  //     for (let customer of customers) {
-  //       try {
-  //         const base64Image = await fetchProfilePicture(customer._id);
-  //         if (base64Image !== null) {
-  //           newProfilePictures[customer._id] = base64Image;
-  //         } else {
-  //           // Handle case where image fetching failed
-  //           newProfilePictures[customer._id] = null;
-  //         }
-  //       } catch (error) {
-  //         console.error(`Error fetching profile picture for ${customer._id}:`, error);
-  //         newProfilePictures[customer._id] = null; // Set to null on error
-  //       }
-  //     }
-
-  //     setProfilePictures(newProfilePictures);
-  //   };
-
-  //   if (customers.length > 0) {
-  //     fetchProfilePictures();
-  //   }
-  // }, [customers]);
-
-
   // Handle outside click for filter dropdown
   useEffect(() => {
     const handleOutsideClick = (event) => {
@@ -205,15 +169,29 @@ function CustomerTable() {
   };
   // Handle filtering
   const filteredCustomers = customers.filter((customer) => {
+    const packageAmount = packages.amount; // assume packages is an object with the package details
+    const comparison = packages.comparison;
+  
+    let showCustomer = true;
+  
+    if (comparison === 'greater') {
+      showCustomer = customer.loanRequired >= packageAmount * 100000; // convert package amount to lakhs
+    } else if (comparison === 'less') {
+      showCustomer = customer.loanRequired < packageAmount * 100000;
+    } else if (comparison === 'equal') {
+      showCustomer = customer.loanRequired === packageAmount * 100000;
+    }
+  
     if (filterOption === 'District') {
       const customerAddress = addresses[customer._id];
-      return customerAddress && customerAddress.aadharDistrict.toLowerCase().includes(filterValue.toLowerCase());
+      showCustomer = showCustomer && customerAddress && customerAddress.aadharDistrict.toLowerCase().includes(filterValue.toLowerCase());
     }
     if (filterOption === 'Area') {
       const customerAddress = addresses[customer._id];
-      return customerAddress && customerAddress.aadharCity.toLowerCase().includes(filterValue.toLowerCase());
+      showCustomer = showCustomer && customerAddress && customerAddress.aadharCity.toLowerCase().includes(filterValue.toLowerCase());
     }
-    return true;
+  
+    return showCustomer;
   });
 
   // Pagination
@@ -335,6 +313,7 @@ function CustomerTable() {
                   <th className='Customer-Table-head'>SI.No</th>
                   <th className='Customer-Table-head'>Customer No</th>
                   <th className='Customer-Table-head'>Name</th>
+                  <th className='Customer-Table-head'>Loan Amount</th>
                   <th className='Customer-Table-head'>District</th>
                   <th className='Customer-Table-head'>Area</th>
                   <th className='Customer-Table-head'>Cibil Score</th>
@@ -353,22 +332,10 @@ function CustomerTable() {
                       {customer.customerNo ? `UKS-CU-${customer.customerNo.toString().padStart(3, '0')}` : 'N/A'}
                     </td>
                     <td style={{ display: '', paddingTop: '' }}>
-                      {/* {profilePictures[customer._id] ? (
-                        <div style={{
-                          backgroundImage: `url(${profilePictures[customer._id]})`,
-                          backgroundSize: 'cover',
-                          borderRadius: '50%',
-                          height: '30px',
-                          width: '30px',
-                          // borderStyle:'solid',
-                          marginRight: '10px',
-                          marginLeft: '3px'
-                        }}></div>
-                      ) : (
-                        <FaUserCircle size={32} className='navbar-profile-icon' style={{ marginRight: '10px' }} />
-                      )} */}
+                    
                       <span style={{ textAlign: 'center' }}>{customer.customerFname}</span>
                     </td>
+                    <td>{customer.loanRequired}</td>
                     <td>{addresses[customer._id]?.aadharDistrict}</td>
                     <td>{addresses[customer._id]?.aadharCity}</td>
                     <td>

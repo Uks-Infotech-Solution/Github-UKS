@@ -1,6 +1,7 @@
 import DashbordUserLogin from "../DashBoard/Dashbordlogin/Employee_Login";
 import DashboardUserRegister from "../DashBoard/Dashbordlogin/Employee_Register";
 import Index_Navbar from "./Navbar/Index-Navbar";
+import Index_Packages from "./Section-1/Index_Packages";
 import Section_1 from "./Section-1/Section-1";
 
 function Heropage(){
