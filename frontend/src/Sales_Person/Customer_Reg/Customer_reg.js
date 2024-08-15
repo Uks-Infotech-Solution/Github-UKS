@@ -1,5 +1,5 @@
 import { Button, Col, Container, Row, Modal } from "react-bootstrap";
-import { useNavigate,useLocation  } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import './Customer_reg.css'
@@ -37,6 +37,9 @@ function Customer_reg({ onSuccess }) {
     const [level, setLevel] = useState('');
     const [Loanlevel, setLoanlevel] = useState('');
     const [customerId, setCustomerId] = useState('');
+    const { contactId } = location.state || {};
+  
+
 
     const handleChange = (setValue) => (e) => {
         let { value } = e.target;
@@ -88,6 +91,9 @@ function Customer_reg({ onSuccess }) {
         } else if (!emailPattern.test(customermailid)) {
             newErrors.customermailid = "Enter valid email address";
         }
+        if (!typeofloan) newErrors.typeofloan = "Loan Type is required";
+        if (!loanRequired) newErrors.loanRequired = "Loan Amount is required";
+        if (!customerType) newErrors.customerType = "Customer Type is required";
 
         if (!userpassword) {
             newErrors.userpassword = "Password is required";
@@ -160,6 +166,12 @@ function Customer_reg({ onSuccess }) {
 
                 // Close modal after successful submission
                 onSuccess(customerId, customerType, customerNo); // Call onSuccess to switch to the next tab
+                if (location.state && location.state.contactId) {
+                    handleConvert({
+                        contactId: location.state.contactId,
+                        contactNumber: customercontact
+                    });
+                }
                 alert(`Customer Basic Details Registered. \n Customer No: UKS-CUS-${customerNo}`);
             } catch (error) {
                 if (error.response && error.response.status === 400) {
@@ -169,6 +181,35 @@ function Customer_reg({ onSuccess }) {
                 }
             }
         }
+    };
+console.log(location.state.contactId);
+
+  const handleConvert = () => {
+        if (!contactId) {
+            console.error('Contact ID is undefined');
+            return;
+        }
+
+        axios.put(`https://uksinfotechsolution.in:8000/api/enquiries/convert/${contactId}`)
+            .then(response => {
+                // console.log('Contact converted successfully!', response.data);
+                alert('Contact converted successfully!')
+                // Add any additional logic here, such as redirecting or updating the UI
+            })
+            .catch(error => {
+                if (error.response) {
+                    console.error('Error response data:', error.response.data);
+                    console.error('Error response status:', error.response.status);
+                    console.error('Error response headers:', error.response.headers);
+                    alert(`Error converting contact: ${error.response.data.error}`);
+                } else if (error.request) {
+                    console.error('Error request data:', error.request);
+                    alert('No response received from the server.');
+                } else {
+                    console.error('Error message:', error.message);
+                    alert('Error converting contact');
+                }
+            });
     };
 
     const handleClosePopup = () => {
@@ -379,7 +420,7 @@ function Customer_reg({ onSuccess }) {
                                         value={ReferedBy}
                                         onChange={handleChange(setReferedby)}
                                     />
-                                    
+
                                 </Col>
                             </Row>
                             <Row className="Row1">

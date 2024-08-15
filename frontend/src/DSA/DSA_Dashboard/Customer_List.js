@@ -173,7 +173,9 @@ function CustomerTable() {
     const comparison = packages.comparison;
   
     let showCustomer = true;
-  
+//   if (customer.isActive === true){
+// showCustomer = customer.isActive
+  }
     if (comparison === 'greater') {
       showCustomer = customer.loanRequired >= packageAmount * 100000; // convert package amount to lakhs
     } else if (comparison === 'less') {
@@ -198,15 +200,6 @@ function CustomerTable() {
   const indexOfLastCustomer = currentPage * rowsPerPage;
   const indexOfFirstCustomer = indexOfLastCustomer - rowsPerPage;
   const currentCustomers = filteredCustomers.slice(indexOfFirstCustomer, indexOfLastCustomer);
-
-  // Handle checkbox change
-  const handleCheckboxChange = (event, id) => {
-    const isChecked = event.target.checked;
-    setCheckedItems((prevState) => ({
-      ...prevState,
-      [id]: isChecked,
-    }));
-  };
 
   // Handle edit button click
   const handleEditClick = async (id) => {
@@ -248,17 +241,7 @@ function CustomerTable() {
     setFilterOption(option);
     setShowFilterDropdown(true);
   };
-  const [allChecked, setAllChecked] = useState(false);
 
-  const handleAllChecked = (event) => {
-    const isChecked = event.target.checked;
-    const newCheckedItems = {};
-    customers.forEach((customer) => {
-      newCheckedItems[customer._id] = isChecked;
-    });
-    setCheckedItems(newCheckedItems);
-    setAllChecked(isChecked);
-  };
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
   };

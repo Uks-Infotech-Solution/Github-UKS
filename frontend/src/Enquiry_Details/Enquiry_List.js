@@ -60,28 +60,10 @@ const EnquiryList = () => {
     }
   };
 
-  const handleConvert = (contact) => {
-    if (!contact._id) {
-      console.error('Contact ID is undefined');
-      return;
-    }
+  const handleConvert = (contact) => { 
+    navigate('/customer/reg', { state: { uksId, contactNumber: contact.contactNumber, contactId: contact._id } });
+};
 
-    const convertedDate = new Date();
-
-    axios.put(`https://uksinfotechsolution.in:8000/api/enquiries/convert/${contact._id}`, {
-      enquiry_convert_status: 'Converted',
-    })
-    .then(response => {
-      setContacts(contacts.map(c =>
-        c._id === contact._id ? { ...c, enquiry_convert_status: 'Converted', convertedDate } : c
-      ));
-      navigate('/customer/reg', { state: { uksId, contactNumber: contact.contactNumber } });
-    })
-    .catch(error => {
-      console.error('There was an error converting the contact!', error);
-      alert('Error converting contact');
-    });
-  };
 
   const handleChange = (e) => {
     setCurrentContact({ ...currentContact, [e.target.name]: e.target.value });

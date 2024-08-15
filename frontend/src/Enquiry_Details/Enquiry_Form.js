@@ -3,9 +3,8 @@ import axios from 'axios';
 import { useSidebar } from '../Customer/Navbar/SidebarContext';
 
 const Enquiry = () => {
-
   const { isSidebarExpanded } = useSidebar();
-  const [errorMessage, setErrorMessage] = useState(''); 
+  const [errorMessage, setErrorMessage] = useState('');
   const [formData, setFormData] = useState({
     name: '',
     contactNumber: '',
@@ -18,17 +17,26 @@ const Enquiry = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const mobileNumberPattern = /^[0-9]{10}$/;
+    if (!formData.contactNumber || !mobileNumberPattern.test(formData.contactNumber)) {
+      setErrorMessage('Please enter a valid 10-digit contact number.');
+      alert('Please enter a valid 10-digit contact number.');
+      return;
+    }
+
     axios.post('https://uksinfotechsolution.in:8000/api/enquiry/form', formData)
       .then(response => {
         alert('Enquiry Successful');
         setFormData({ name: '', contactNumber: '', email: '' }); // Clear the form
+        setErrorMessage(''); // Clear error message
       })
       .catch(error => {
         if (error.response && error.response.data.error) {
-          // setErrorMessage(error.response.data.error); // Set error message from response
+          setErrorMessage(error.response.data.error); // Set error message from response
         } else {
           console.error('There was an error!', error);
-          // setErrorMessage('Error submitting enquiry'); // Generic error message
+          setErrorMessage('Error submitting enquiry'); // Generic error message
         }
         alert(errorMessage); // Show error message
       });
@@ -68,15 +76,18 @@ const Enquiry = () => {
     cursor: 'pointer',
     width: '100%',
     fontSize: '16px',
-    transition: 'background-color 0.3s ease'
-  };
-
-  const buttonHoverStyle = {
-    backgroundColor: '#45a049'
+    transition: 'background-color 0.3s ease',
+    ':hover': {
+      backgroundColor: '#45a049'
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit} style={formContainerStyle} className={`Customer-basic-view-container ${isSidebarExpanded ? 'sidebar-expanded' : ''}`}>
+    <form
+      onSubmit={handleSubmit}
+      style={formContainerStyle}
+      className={`Customer-basic-view-container ${isSidebarExpanded ? 'sidebar-expanded' : ''}`}
+    >
       <div style={formGroupStyle}>
         <input
           type="text"
@@ -87,7 +98,7 @@ const Enquiry = () => {
           style={inputStyle}
         />
       </div>
-      <div style={formGroupStyle}  >
+      <div style={formGroupStyle}>
         <input
           type="text"
           name="name"
@@ -97,7 +108,6 @@ const Enquiry = () => {
           style={inputStyle}
         />
       </div>
-      
       <div style={formGroupStyle}>
         <input
           type="email"
@@ -110,7 +120,7 @@ const Enquiry = () => {
       </div>
       <button
         type="submit"
-        style={{ ...buttonStyle, ':hover': buttonHoverStyle }}
+        style={buttonStyle}
       >
         Submit
       </button>

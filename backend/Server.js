@@ -160,17 +160,26 @@ app.get('/api/enquiries/counts', async (req, res) => {
 // Route to add a new enquiry
 app.post('/api/enquiry/form', async (req, res) => {
     try {
-        const { contactNumber } = req.body;
+        const { contactNumber, email } = req.body;
 
         // Check if an enquiry with the same contact number already exists
         const existingEnquiry = await Enquiry.findOne({ contactNumber });
+        const existingCustomerEnquiry = await Customer.findOne({ customercontact: contactNumber });
 
-        if (existingEnquiry) {
+        if (existingEnquiry || existingCustomerEnquiry) {
             // If an enquiry with the contact number exists, send an error response
             return res.status(400).json({ error: 'Contact number already exists' });
         }
 
-        // If the contact number does not exist, create a new enquiry
+        if (email) {
+            // If email is provided, check if it already exists in the enquiries collection
+            const existingEmailEnquiry = await Enquiry.findOne({ email });
+            if (existingEmailEnquiry) {
+                return res.status(400).json({ error: 'Email-id already exists' });
+            }
+        }
+
+        // If the contact number and email (if provided) do not exist, create a new enquiry
         const newEnquiry = new Enquiry(req.body);
         await newEnquiry.save();
 
@@ -182,6 +191,7 @@ app.post('/api/enquiry/form', async (req, res) => {
         res.status(400).json({ error: 'Error: ' + err.message });
     }
 });
+
 
 
 // Route to get all enquiries
@@ -216,26 +226,36 @@ app.put('/api/enquiry/:id', (req, res) => {
         .catch(err => res.status(400).json('Error: ' + err));
 });
 // Convert an enquiry
-app.put('/api/enquiries/convert/:id', (req, res) => {
-    const { id } = req.params;
-    const convertedDate = new Date(); // Get the current date for conversion
 
-    Enquiry.findByIdAndUpdate(
-        id,
-        {
-            enquiry_convert_status: 'Converted',
-            convertedDate: convertedDate // Set the date when it was converted
-        },
-        { new: true } // Return the updated document
-    )
-        .then(enquiry => {
-            if (!enquiry) {
-                return res.status(404).json('Enquiry not found.');
-            }
-            res.json(enquiry);
-        })
-        .catch(err => res.status(400).json('Error: ' + err));
+
+app.put('/api/enquiries/convert/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const convertedDate = new Date(); // Get the current date for conversion
+
+        const enquiry = await Enquiry.findByIdAndUpdate(
+            id,
+            {
+                enquiry_convert_status: 'Converted',
+                convertedDate: convertedDate // Set the date when it was converted
+            },
+            { new: true } // Return the updated document
+        );
+
+        if (!enquiry) {
+            return res.status(404).json({ error: 'Enquiry not found.' });
+        }
+
+        res.json(enquiry);
+
+    } catch (err) {
+        console.error('Server error:', err);
+        res.status(400).json({ error: 'Error: ' + err.message });
+    }
 });
+
+
 
 
 // Delete enquiry by ID
@@ -2544,8 +2564,12 @@ app.post('/register', async (req, res) => {
         const token = crypto.randomBytes(32).toString('hex');
 
         const existingCustomer = await Customer.findOne({ customermailid });
-        if (existingCustomer) {
+        const existingContact = await Customer.findOne({ customercontact });
+        if (existingCustomer ) {
             return res.status(400).json({ error: 'Email already exists' });
+        }
+        if (existingContact ) {
+            return res.status(400).json({ error: 'Contact Number already exists' });
         }
         const hashedPassword = await bcrypt.hash(userpassword, 10);
 

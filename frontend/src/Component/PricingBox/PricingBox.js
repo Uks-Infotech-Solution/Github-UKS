@@ -133,6 +133,9 @@ const PricingBox = () => {
                       <div className="mt-3">
                         <FcRight size={18} color="green" style={{ marginRight: '0.5rem' }} />
                         <span className=" mt-3">Download Access : {pkg.downloadAccess}</span>
+                        <div>
+                        <FcRight size={18} color="green" style={{ marginRight: '0.5rem' }} />
+                        <span className=" mt-3">Validity : {pkg.validity} Days</span></div>
                         {pkg.additionalInputs.map((item, index) => (
                           item.InputStatus === 'Active' && (
                             <div key={index} className="">
