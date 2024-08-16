@@ -175,7 +175,7 @@ function CustomerTable() {
     let showCustomer = true;
 //   if (customer.isActive === true){
 // showCustomer = customer.isActive
-  }
+  // }
     if (comparison === 'greater') {
       showCustomer = customer.loanRequired >= packageAmount * 100000; // convert package amount to lakhs
     } else if (comparison === 'less') {
