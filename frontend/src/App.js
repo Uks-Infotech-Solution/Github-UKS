@@ -71,8 +71,10 @@ import Customer_Updation from './Customer-Dashboard/Customer-Profile/Customer_Up
 import Uks_Customer_Updation from './DashBoard/Customer/Uks_Customer_Updation';
 import Dsa_Total_Customers from './DSA/DSA_Dashboard/Total_Customers';
 import Dsa_pending_List from './DashBoard/DSA/Uks_DSA_Pendin_Total_List';
-import Enquiry from './Enquiry_Details/Enquiry_Form';
-import EnquiryList from './Enquiry_Details/Enquiry_List';
+import Enquiry from './Enquiry_Details_Customer/Enquiry_Form';
+import EnquiryList from './Enquiry_Details_Customer/Enquiry_List';
+import DSA_Enquiry from './Enquiry_Details_DSA/DSA_Enquiry_Form';
+import DSA_EnquiryList from './Enquiry_Details_DSA/DSA_Enquiry_List';
 
 function App() {
   return (
@@ -186,6 +188,8 @@ function App() {
 
             {/* ENQUIRY_DETAILS */}
             <Route path="/enquiry/form" element={<Enquiry />} />
+            <Route path="/dsa/enquiry/form" element={<DSA_Enquiry />} />
+            <Route path="/dsa/enquiry/list" element={<DSA_EnquiryList />}/>
             <Route path="/enquiry/list" element={<EnquiryList />} />
 
           </Routes>

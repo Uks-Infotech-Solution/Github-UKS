@@ -24,7 +24,7 @@ const Index_Packages = () => {
   }, []);
 
   const handlePurchaseClick = async (pkg) => {
-        navigate('/dsa/updation');
+        navigate('/dsa/login');
   };
   return (
     <Container fluid style={{padding:'20px'}}>

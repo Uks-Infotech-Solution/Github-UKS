@@ -165,6 +165,7 @@ const CustomerDetails = () => {
             <th style={thStyle}>Refered By</th>
             <th style={thStyle}>Type of Loan</th>
             <th style={thStyle}>Loan Amount</th>
+            <th style={thStyle}>Block Status</th>
             <th style={thStyle}>Updation Pending</th>
             <th style={thStyle}>Activation</th>
             <th style={thStyle}>View</th>
@@ -183,6 +184,9 @@ const CustomerDetails = () => {
               <td style={tdStyle}>{customer.ReferedBy}</td>
               <td style={tdStyle}>{customer.typeofloan}</td>
               <td style={tdStyle}>{formatLoanAmount(customer.loanRequired)}</td>
+              <td style={{ ...tdStyle, color: customer.block_status ? 'green' : 'red' }}>
+                {customer.block_status ? 'Blocked' : 'Non-Blocked'}
+              </td>
               <td style={tdStyle}>
                 {missingData[customer._id] && missingData[customer._id].length > 0
                   ? missingData[customer._id].join(', ')
@@ -190,7 +194,7 @@ const CustomerDetails = () => {
               </td>
               <td style={{ ...tdStyle, color: customer.isActive ? 'green' : 'red' }}>
                 {customer.isActive ? 'Activated' : 'Pending'}
-              </td>
+              </td>              
               <td style={tdStyle}>
                 <GrView onClick={() => handleEditClick(customer._id)} style={{ cursor: 'pointer', color: '#2492eb' }} />
               </td>

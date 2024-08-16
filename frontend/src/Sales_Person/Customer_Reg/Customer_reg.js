@@ -182,7 +182,7 @@ function Customer_reg({ onSuccess }) {
             }
         }
     };
-console.log(location.state.contactId);
+// console.log(location.state.contactId);
 
   const handleConvert = () => {
         if (!contactId) {

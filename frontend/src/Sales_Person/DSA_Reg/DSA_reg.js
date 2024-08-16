@@ -1,18 +1,32 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import axios from "axios";
+import { useLocation } from 'react-router-dom';
 
 function DSA_reg({ onSuccess }) {
+    const location = useLocation();
+    const { contactId, contactNumber } = location.state || {};
+
     const [formData, setFormData] = useState({
         dsaName: "",
         dsaCompanyName: "",
-        primaryNumber: "",
+        primaryNumber: contactNumber || '',
         alternateNumber: "",
         whatsappNumber: "",
         email: "",
         website: "",
         password: ""
     });
+// console.log(formData.primaryNumber);
+ // Set the primaryNumber if contactNumber is available
+ useEffect(() => {
+    if (contactNumber) {
+        setFormData(prevFormData => ({
+            ...prevFormData,
+            primaryNumber: contactNumber
+        }));
+    }
+}, [contactNumber]);
     const [showPopup, setShowPopup] = useState(false); // State to manage popup visibility
     const [errors, setErrors] = useState({}); // State to manage form errors
     const handleChange = (e) => {
@@ -51,11 +65,47 @@ function DSA_reg({ onSuccess }) {
            alert(`DSA Registeration Successfully.\nDSA No: UKS-DSA-0${dsaDetails.dsaNumber}`);
 
             onSuccess(dsaDetails.id, dsaDetails.dsaNumber); // Pass the correct values to onSuccess
+            if (location.state && location.state.contactId) {
+                handleConvert({
+                    contactId: location.state.contactId,
+                    contactNumber: contactNumber
+                });
+            }
         } catch (error) {
             console.error('Error registering DSA:', error);
             alert("DSA Register Failed");
         }
     };
+    
+  const handleConvert = () => {
+    if (!contactId) {
+        console.error('Contact ID is undefined');
+        return;
+    }
+
+    axios.put(`https://uksinfotechsolution.in:8000/api/dsa/enquiries/convert/${contactId}`)
+        .then(response => {
+            // console.log('Contact converted successfully!', response.data);
+            alert('DSA Contact converted successfully!')
+            // Add any additional logic here, such as redirecting or updating the UI
+        })
+        .catch(error => {
+            if (error.response) {
+                console.error('Error response data:', error.response.data);
+                console.error('Error response status:', error.response.status);
+                console.error('Error response headers:', error.response.headers);
+                alert(`Error converting contact: ${error.response.data.error}`);
+            } else if (error.request) {
+                console.error('Error request data:', error.request);
+                alert('No response received from the server.');
+            } else {
+                console.error('Error message:', error.message);
+                alert('Error converting contact');
+            }
+        });
+};
+
+
     return (
         <>
             <Container fluid className=" ">

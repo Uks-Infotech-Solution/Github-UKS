@@ -38,8 +38,9 @@ const Dsa_Total_Customers = () => {
       try {
         const response = await axios.get('https://uksinfotechsolution.in:8000/');
         const customersData = response.data;
+        const activeCustomers = customersData.filter(customer => customer.isActive && !customer.block_status);
         setCustomers(customersData);
-        setFilteredCustomers(customersData); // Initially show all customers
+        setFilteredCustomers(activeCustomers); // Initially show all customers
         setLoading(false);
 
         const missingDataTemp = {};
@@ -61,6 +62,7 @@ const Dsa_Total_Customers = () => {
   }, []);
 
   const handleFilterChange = (filter) => {
+    
     setSelectedFilter(filter);
     if (filter === 'Active') {
       setFilteredCustomers(customers.filter(customer => customer.isActive));
@@ -138,7 +140,7 @@ const Dsa_Total_Customers = () => {
           </div>
         </Col>
       </Row>
-      <Row style={{ alignItems: 'center', justifyContent: 'end' }}>
+      {/* <Row style={{ alignItems: 'center', justifyContent: 'end' }}>
         <Col lg={1}>
           <DropdownButton
             id="dropdown-basic-button"
@@ -151,7 +153,7 @@ const Dsa_Total_Customers = () => {
             <Dropdown.Item eventKey="Inactive">Inactive</Dropdown.Item>
           </DropdownButton>
         </Col>
-      </Row>
+      </Row> */}
       <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '20px' }}>
         <thead>
           <tr>

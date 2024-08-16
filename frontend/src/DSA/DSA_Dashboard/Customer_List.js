@@ -62,9 +62,9 @@ function CustomerTable() {
       try {
         const response = await axios.get(`https://uksinfotechsolution.in:8000/buy_packages/dsa/${dsaId}`);
         setPackages(response.data);
-        console.log(response.data);
+        // console.log(response.data);
       } catch (err) {
-        console.log(err);
+        // console.log(err);
       }
     };
 
@@ -77,7 +77,8 @@ function CustomerTable() {
       try {
         const response = await axios.get('https://uksinfotechsolution.in:8000/');
         const customersData = response.data;
-        setCustomers(customersData);
+        const activeCustomers = customersData.filter(customer => customer.isActive && !customer.block_status);
+        setCustomers(activeCustomers);
         // console.log(response.data);
         setLoading(false);
         const initialCheckedItems = {};
@@ -168,14 +169,13 @@ function CustomerTable() {
     }));
   };
   // Handle filtering
-  const filteredCustomers = customers.filter((customer) => {
+  const filteredCustomers = filterValue
+    ? customers.filter((customer) => {
     const packageAmount = packages.amount; // assume packages is an object with the package details
     const comparison = packages.comparison;
   
     let showCustomer = true;
-//   if (customer.isActive === true){
-// showCustomer = customer.isActive
-  // }
+
     if (comparison === 'greater') {
       showCustomer = customer.loanRequired >= packageAmount * 100000; // convert package amount to lakhs
     } else if (comparison === 'less') {
@@ -194,7 +194,7 @@ function CustomerTable() {
     }
   
     return showCustomer;
-  });
+  }): customers;
 
   // Pagination
   const indexOfLastCustomer = currentPage * rowsPerPage;
@@ -319,8 +319,8 @@ function CustomerTable() {
                       <span style={{ textAlign: 'center' }}>{customer.customerFname}</span>
                     </td>
                     <td>{customer.loanRequired}</td>
-                    <td>{addresses[customer._id]?.aadharDistrict}</td>
-                    <td>{addresses[customer._id]?.aadharCity}</td>
+                    <td>{addresses ? addresses.aadharDistrict : '-'}</td>
+                    <td>{addresses ? addresses.aadharCity : '-'}</td>
                     <td>
                       {loanProcessingDetails[customer._id] && loanProcessingDetails[customer._id].cibilRecord ? (
                         loanProcessingDetails[customer._id].cibilRecord

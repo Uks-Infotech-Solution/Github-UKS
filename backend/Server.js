@@ -45,7 +45,9 @@ const SalesPerson = require('./UKS/Sales_person_cus_reg');
 const SalesPersonDSA = require('./UKS/Sales_person_dsa_reg');
 const Uks_Customer_Activation = require('./UKS/Customer_Activation');
 const Uks_Customer_Deactivation = require('./UKS/Customer_Deactivation');
-const Enquiry = require('./models/Enquiry_Details');
+const Enquiry = require('./Enquiry/Customer_Enquiry_Details');
+const DSA_Enquiry = require('./Enquiry/DSA_Enquiry_Details');
+
 const dsaregister = require('./DSA/dsa-register')
 const DSA = require('./DSA/models/dsa')
 
@@ -107,6 +109,10 @@ const customerSchema = new Schema({
         type: Boolean,
         default: false,
     },
+    block_status: {
+        type: Boolean,
+        default: false,
+    },
     activationToken: {
         type: String,
     },
@@ -156,6 +162,63 @@ app.get('/api/enquiries/counts', async (req, res) => {
         res.status(500).json({ message: 'Error fetching counts', error });
     }
 });
+app.get('/api/dsa/enquiries/counts', async (req, res) => {
+    try {
+        const counts = await DSA_Enquiry.aggregate([
+            {
+                $group: {
+                    _id: "$enquiry_convert_status",
+                    count: { $sum: 1 }
+                }
+            }
+        ]);
+
+        const countsMap = counts.reduce((acc, item) => {
+            acc[item._id] = item.count;
+            return acc;
+        }, {});
+
+        res.json(countsMap);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching counts', error });
+    }
+});
+app.post('/api/dsa/enquiry/form', async (req, res) => {
+    try {
+        const { contactNumber, email } = req.body;
+// console.log(req.body);
+
+        // Check if an enquiry with the same contact number already exists
+        const existingEnquiry = await DSA_Enquiry.findOne({ contactNumber });
+        const existingCustomerEnquiry = await DSA.findOne({ primaryNumber: contactNumber });
+
+        if (existingEnquiry || existingCustomerEnquiry) {
+            // If an enquiry with the contact number exists, send an error response
+            return res.status(400).json({ error: 'Contact number already exists' });
+        }
+
+        if (email) {
+            // If email is provided, check if it already exists in the enquiries collection
+            const existingEmailEnquiry = await DSA_Enquiry.findOne({ email });
+            const existingDSAEmail = await DSA.findOne({ email });
+
+            if (existingEmailEnquiry || existingDSAEmail) {
+                return res.status(400).json({ error: 'Email-id already exists' });
+            }
+        }
+
+        // If the contact number and email (if provided) do not exist, create a new enquiry
+        const newEnquiry = new DSA_Enquiry(req.body);
+        await newEnquiry.save();
+
+        // Respond with the newly created enquiry
+        res.json(newEnquiry);
+
+    } catch (err) {
+        // Handle any errors that occurred during the process
+        res.status(400).json({ error: 'Error: ' + err.message });
+    }
+});
 
 // Route to add a new enquiry
 app.post('/api/enquiry/form', async (req, res) => {
@@ -174,7 +237,9 @@ app.post('/api/enquiry/form', async (req, res) => {
         if (email) {
             // If email is provided, check if it already exists in the enquiries collection
             const existingEmailEnquiry = await Enquiry.findOne({ email });
-            if (existingEmailEnquiry) {
+            const existingCustomerEmail= await Customer.findOne({ customermailid:email });
+
+            if (existingEmailEnquiry || existingCustomerEmail) {
                 return res.status(400).json({ error: 'Email-id already exists' });
             }
         }
@@ -192,10 +257,7 @@ app.post('/api/enquiry/form', async (req, res) => {
     }
 });
 
-
-
 // Route to get all enquiries
-// Updated GET route to handle status filtering
 app.get('/api/enquiries', (req, res) => {
     const status = req.query.status;
     const query = {};
@@ -205,6 +267,17 @@ app.get('/api/enquiries', (req, res) => {
     }
 
     Enquiry.find(query)
+        .then(enquiries => res.json(enquiries))
+        .catch(err => res.status(400).json('Error: ' + err));
+});
+
+app.get('/api/dsa/enquiries', (req, res) => {
+    const status = req.query.status;
+    const query = {};
+    if (status) {
+        query.enquiry_convert_status = status;
+    }
+    DSA_Enquiry.find(query)
         .then(enquiries => res.json(enquiries))
         .catch(err => res.status(400).json('Error: ' + err));
 });
@@ -225,9 +298,51 @@ app.put('/api/enquiry/:id', (req, res) => {
         })
         .catch(err => res.status(400).json('Error: ' + err));
 });
+
+app.put('/api/dsa/enquiry/:id', (req, res) => {
+    const updateData = {
+        ...req.body,
+        updatedAt: new Date(), // Update timestamp
+    };
+
+    DSA_Enquiry.findByIdAndUpdate(req.params.id, updateData, { new: true })
+        .then(enquiry => {
+            if (!enquiry) {
+                return res.status(404).json('Enquiry not found');
+            }
+            res.json(enquiry);
+        })
+        .catch(err => res.status(400).json('Error: ' + err));
+});
 // Convert an enquiry
 
 
+app.put('/api/dsa/enquiries/convert/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const convertedDate = new Date(); // Get the current date for conversion
+
+        const enquiry = await DSA_Enquiry.findByIdAndUpdate(
+            id,
+            {
+                enquiry_convert_status: 'Converted',
+                convertedDate: convertedDate // Set the date when it was converted
+            },
+            { new: true } // Return the updated document
+        );
+
+        if (!enquiry) {
+            return res.status(404).json({ error: 'Enquiry not found.' });
+        }
+
+        res.json(enquiry);
+
+    } catch (err) {
+        console.error('Server error:', err);
+        res.status(400).json({ error: 'Error: ' + err.message });
+    }
+});
 app.put('/api/enquiries/convert/:id', async (req, res) => {
     try {
         const { id } = req.params;
@@ -271,7 +386,17 @@ app.delete('/api/enquiries/:id', (req, res) => {
         .catch(err => res.status(400).json('Error: ' + err));
 });
 
+app.delete('/api/dsa/enquiries/:id', (req, res) => {
+    const updateData = {
+        uksId: req.body.uksId,
+        enquiry_convert_status: 'Deleted',
+        deletedAt: new Date()   // Set the deleted date
+    };
 
+    DSA_Enquiry.findByIdAndUpdate(req.params.id, updateData, { new: true })
+        .then(enquiry => res.json('Enquiry marked as deleted.'))
+        .catch(err => res.status(400).json('Error: ' + err));
+});
 
 
 app.post('/uks/customer/deactivation', async (req, res) => {
@@ -541,7 +666,7 @@ app.get('/buy/packagers/list', async (req, res) => {
         const inactive_dsa = await BuyPackage.find();
         res.status(200).json({ data: inactive_dsa });
     } catch (error) {
-        console.error('Error fetching package details:', error);
+        // console.error('Error fetching package details:', error);
         // res.status(500).json({ message: 'Error fetching package details.', error });
     }
 });
@@ -555,13 +680,13 @@ app.get('/buy_packages/dsa/:dsaId', async (req, res) => {
             .limit(1); // Limit to the most recent one
 
         if (!packages || packages.length === 0) {
-            return res.status(404).json({ message: 'No active packages found for this DSA ID' });
+            // return res.status(404).json({ message: 'No active packages found for this DSA ID' });
         }
         // console.log(packages);
 
         res.status(200).json(packages[0]); // Respond with the most recent active package
     } catch (error) {
-        res.status(500).json({ message: 'Error fetching packages', error });
+        // res.status(500).json({ message: 'Error fetching packages', error });
     }
 });
 
@@ -3094,7 +3219,7 @@ app.get('/api/check-pdf', async (req, res) => {
 
         if (!pdf) {
             // No PDF found, return a 404 status with a message
-            return res.status(404).json({ message: 'No PDF found for this customer' });
+            // return res.status(404).json({ message: 'No PDF found for this customer' });
         }
 
         // PDF found, return details with a 200 status
@@ -3103,8 +3228,8 @@ app.get('/api/check-pdf', async (req, res) => {
             pdfName: pdf.filename // Adjust based on your PDF model's schema
         });
     } catch (error) {
-        console.error('Error checking PDF:', error);
-        res.status(500).json({ error: 'Failed to check PDF' });
+        // console.error('Error checking PDF:', error);
+        // res.status(500).json({ error: 'Failed to check PDF' });
     }
 });
 

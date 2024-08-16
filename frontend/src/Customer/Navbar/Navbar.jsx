@@ -194,8 +194,12 @@ const StickyNavbar = () => {
   const toggleProfileUpdationMenu = () => { setShowProfileUpdationMenu(!showProfileUpdationMenu); };
 
   const toggleProfileDropdown = () => { setShowDropdown(!showDropdown); };
+  
   const Enquiry_Form = () => { if (uksId) { navigate('/enquiry/form', { state: { uksId } }); } }
+  const DSA_Enquiry_Form = () => { if (uksId) { navigate('/dsa/enquiry/form', { state: { uksId } }); } }
+
   const Enquiry_List = () => { if (uksId) { navigate('/enquiry/list', { state: { uksId } }); } }
+  const DSA_Enquiry_List = () => { if (uksId) { navigate('/dsa/enquiry/list', { state: { uksId } }); } }
 
   const DocumentType = () => { if (uksId) { navigate('/documentType', { state: { uksId } }); } }
   const EmployeeType = () => { if (uksId) { navigate('/employee/type', { state: { uksId } }); } }
@@ -329,7 +333,17 @@ const StickyNavbar = () => {
                   </ul>
                   <ul className='side-menu-customer-link'>
                     <li>
-                      <Nav.Link onClick={Enquiry_List} className='font-size-dropdown'><HiViewGridAdd className='Customer-icon' />Enquiry List</Nav.Link>
+                      <Nav.Link onClick={Enquiry_List} className='font-size-dropdown'><HiViewGridAdd className='Customer-icon' />Customer Enquiry List</Nav.Link>
+                    </li>
+                  </ul>
+                  <ul className='side-menu-customer-link'>
+                    <li>
+                      <Nav.Link onClick={DSA_Enquiry_Form} className='font-size-dropdown'><HiViewGridAdd className='Customer-icon' />DSA Enquiry Form</Nav.Link>
+                    </li>
+                  </ul>
+                  <ul className='side-menu-customer-link'>
+                    <li>
+                      <Nav.Link onClick={DSA_Enquiry_List} className='font-size-dropdown'><HiViewGridAdd className='Customer-icon' />DSA Enquiry List</Nav.Link>
                     </li>
                   </ul>
                 </li>

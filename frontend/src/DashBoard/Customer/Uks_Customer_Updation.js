@@ -141,47 +141,47 @@ function Uks_Customer_Updation() {
                 alert('PDF is not available.');
             }
         } catch (error) {
-            console.error('Error downloading PDF:', error);
+            // console.error('Error downloading PDF:', error);
             alert('An error occurred while trying to download the PDF.');
         }
     };
     const handleActivate = async () => {
         try {
-          const activationData = {
-            uksId: uksId,
-            customerId: customerId,
-            customerFname: customerDetails.customerFname,
-            customermailid: customerDetails.customermailid,
-          };
-          
-      
-          await axios.post('https://uksinfotechsolution.in:8000/uks/customer/activation', activationData);    
-          alert("Customer Account Activated");
-          window.location.reload();
-      
+            const activationData = {
+                uksId: uksId,
+                customerId: customerId,
+                customerFname: customerDetails.customerFname,
+                customermailid: customerDetails.customermailid,
+            };
+
+
+            await axios.post('https://uksinfotechsolution.in:8000/uks/customer/activation', activationData);
+            alert("Customer Account Activated");
+            window.location.reload();
+
         } catch (error) {
-          console.error('Error activating customer:', error);
-          alert('Error Account Activation');
+            console.error('Error activating customer:', error);
+            alert('Error Account Activation');
         }
-      };
-      const handleDeActivate = async () => {
+    };
+    const handleDeActivate = async () => {
         try {
-          const DeactivationData = {
-            uksId: uksId,
-            customerId: customerId,
-            customerFname: customerDetails.customerFname,
-            customermailid: customerDetails.customermailid,
-          };
-                
-          await axios.post('https://uksinfotechsolution.in:8000/uks/customer/deactivation', DeactivationData);    
-          alert("Customer Account Deactivated");
-          window.location.reload();
-      
+            const DeactivationData = {
+                uksId: uksId,
+                customerId: customerId,
+                customerFname: customerDetails.customerFname,
+                customermailid: customerDetails.customermailid,
+            };
+
+            await axios.post('https://uksinfotechsolution.in:8000/uks/customer/deactivation', DeactivationData);
+            alert("Customer Account Deactivated");
+            window.location.reload();
+
         } catch (error) {
-          console.error('Error Deactivating customer:', error);
-          alert('Error Account Deactivation');
+            console.error('Error Deactivating customer:', error);
+            alert('Error Account Deactivation');
         }
-      };
+    };
     if (!customerDetails) {
         return <div>Loading...</div>;
     }
@@ -200,17 +200,17 @@ function Uks_Customer_Updation() {
                                 {formData.isActive === false ? (
                                     <span style={{ margin: '5px', color: 'red', fontWeight: "500" }}>
                                         <GoDotFill /> InActive
-                                        <Button style={{marginLeft:'10px', backgroundColor:'green', border:'green'}} onClick={handleActivate}> Activate Account  </Button>
+                                        <Button style={{ marginLeft: '10px', backgroundColor: 'green', border: 'green' }} onClick={handleActivate}> Activate Account  </Button>
                                     </span>
                                 ) : (
                                     <span style={{ margin: '5px', color: 'green', fontWeight: "500" }}>
                                         <GoDotFill /> Active
-                                        <Button style={{marginLeft:'10px', backgroundColor:'red', border:'green'}} onClick={handleDeActivate}> Deactivate Account  </Button>
+                                        <Button style={{ marginLeft: '10px', backgroundColor: 'red', border: 'green' }} onClick={handleDeActivate}> Deactivate Account  </Button>
 
                                     </span>
                                 )}
                                 <div>
-                                    
+
                                 </div>
                             </Col>
                             <Col lg={3} className='customer-prf-download' >
@@ -231,6 +231,25 @@ function Uks_Customer_Updation() {
                                 )}
                             </Col>
                             <hr style={{ margin: "5px", width: "98%" }} />
+                        </Row>
+                        <Row className="Row1 view-row-size">
+                            <Col className='basic-col-width' lg={2}>
+                                <span className="customer-sentence" style={{ color: 'red' }}>Block Status</span>
+                            </Col>
+                            <Col>
+                                <select
+                                    name="block_status"
+                                    className="dropdown box"
+                                    style={{ minWidth: '200px' }}
+                                    value={formData.block_status !== undefined ? String(formData.block_status) : ''}  // Convert to string
+                                    onChange={handleChange}
+                                    disabled={!editingMode}
+                                >
+                                    <option value="">Select Status</option>
+                                    <option value="true">Blocked</option>
+                                    <option value="false">Unblocked</option>
+                                </select>
+                            </Col>
                         </Row>
 
                         <Row className="Row1 view-row-size">
