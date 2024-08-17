@@ -428,7 +428,7 @@ function Customer_reg({ onSuccess }) {
                                 <Col lg={4}>
                                     <input
                                         type="password"
-                                        placeholder="Password"
+                                        placeholder="Example: Abc@1234"
                                         value={userpassword}
                                         onChange={handleChange(setUserPassword)}
                                     />

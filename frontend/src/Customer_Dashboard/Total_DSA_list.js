@@ -6,7 +6,7 @@ import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import { GrView } from "react-icons/gr";
 import { useNavigate, useLocation } from 'react-router-dom';
 
-const Dsa_pending_List = () => {
+const Total_DSA_List = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [dsas, setDsas] = useState([]);
@@ -14,7 +14,7 @@ const Dsa_pending_List = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [missingData, setMissingData] = useState({});
-  const [selectedFilter, setSelectedFilter] = useState('Active');
+  const [selectedFilter, setSelectedFilter] = useState('Both');
   const { isSidebarExpanded } = useSidebar();
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5); // Default rows per page
@@ -40,8 +40,7 @@ const Dsa_pending_List = () => {
         // console.log(dsaData);
         
         setDsas(dsaData);
-        const activeCustomers = dsaData.filter(dsa => dsa.isActive );
-        setFilteredDsas(activeCustomers); // Initially show all DSAs
+        setFilteredDsas(dsaData); // Initially show all DSAs
         setLoading(false);
 
         const missingDataTemp = {};
@@ -69,7 +68,7 @@ const Dsa_pending_List = () => {
     } else if (filter === 'Inactive') {
       setFilteredDsas(dsas.filter(dsa => !dsa.isActive));
     } else {
-      setFilteredDsas(dsas); // Show all DSAs (Both Active and Inactive)
+      setFilteredDsas(dsas); // Show all DSAs
     }
     setCurrentPage(1); // Reset page to 1 on filter change
   };
@@ -92,15 +91,6 @@ const Dsa_pending_List = () => {
     setCurrentPage(1); // Reset page to 1 on rows per page change
   };
 
-  const handleEditClick = async (id) => {
-    const selectedDsa = dsas.find((dsa) => dsa._id === id);
-    if (!selectedDsa) {
-      console.error("Selected DSA not found");
-      return;
-    }
-    navigate('/dsa/updation', { state: { dsaId: selectedDsa._id, uksId } });
-  };
-
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
@@ -119,20 +109,20 @@ const Dsa_pending_List = () => {
         </Col>
       </Row>
 
-      <Row style={{ alignItems: 'center', justifyContent: 'end' }}>
+      {/* <Row style={{ alignItems: 'center', justifyContent: 'end' }}>
         <Col lg={1}>
           <DropdownButton
             id="dropdown-basic-button"
-            title={`${selectedFilter}`}
+            title={`Filter`}
             onSelect={handleFilterChange}
             style={{ marginRight: '10px' }}
           >
+            <Dropdown.Item eventKey="Both">Both</Dropdown.Item>
             <Dropdown.Item eventKey="Active">Active</Dropdown.Item>
             <Dropdown.Item eventKey="Inactive">Inactive</Dropdown.Item>
-            <Dropdown.Item eventKey="Both">Both</Dropdown.Item>
           </DropdownButton>
         </Col>
-      </Row>
+      </Row> */}
 
       <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '20px' }}>
         <thead>
@@ -141,13 +131,9 @@ const Dsa_pending_List = () => {
             <th style={thStyle}>Dsa No</th>
             <th style={thStyle}>Name</th>
             <th style={thStyle}>Company Name</th>
-            <th style={thStyle}>Contact</th>
-            <th style={thStyle}>Whatsapp</th>
-            <th style={thStyle}>Email</th>
             <th style={thStyle}>Web Site</th>
             <th style={thStyle}>Updation Pending</th>
-            <th style={thStyle}>Email Activation</th>
-            <th style={thStyle}>View</th>
+            <th style={thStyle}>Activation</th>
           </tr>
         </thead>
         <tbody>
@@ -157,9 +143,6 @@ const Dsa_pending_List = () => {
               <td style={tdStyle}>UKS-DSA-0{dsa.dsaNumber}</td>
               <td style={tdStyle}>{dsa.dsaName}</td>
               <td style={tdStyle}>{dsa.dsaCompanyName}</td>
-              <td style={tdStyle}>{dsa.primaryNumber}</td>
-              <td style={tdStyle}>{dsa.whatsappNumber}</td>
-              <td style={tdStyle}>{dsa.email}</td>
               <td style={tdStyle}>{dsa.website}</td>
               <td style={tdStyle}>
                 {missingData[dsa._id] && missingData[dsa._id].length > 0
@@ -168,9 +151,6 @@ const Dsa_pending_List = () => {
               </td>
               <td style={{ ...tdStyle, color: dsa.isActive ? 'green' : 'red' }}>
                 {dsa.isActive ? 'Activated' : 'Pending'}
-              </td>
-              <td style={tdStyle}>
-                <GrView onClick={() => handleEditClick(dsa._id)} style={{ cursor: 'pointer', color: '#024F9D', fontSize: '22px' }} />
               </td>
             </tr>
           ))}
@@ -224,4 +204,4 @@ const tdStyle = {
   textOverflow: 'ellipsis',
 };
 
-export default Dsa_pending_List;
+export default Total_DSA_List;

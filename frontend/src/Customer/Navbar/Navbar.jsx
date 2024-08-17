@@ -462,12 +462,7 @@ const StickyNavbar = () => {
                   </ul>
                   <ul className='side-menu-customer-link'>
                     <li>
-                      <Nav.Link onClick={Package_Inactive} className='font-size-dropdown'>Package Inactive List</Nav.Link>
-                    </li>
-                  </ul>
-                  <ul className='side-menu-customer-link'>
-                    <li>
-                      <Nav.Link onClick={Loan_Type} className='font-size-dropdown'>Package Active List</Nav.Link>
+                      <Nav.Link onClick={Package_Inactive} className='font-size-dropdown'>Buy Packagers List</Nav.Link>
                     </li>
                   </ul>
                 </li>

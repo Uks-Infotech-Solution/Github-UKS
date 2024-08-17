@@ -19,7 +19,7 @@ const DSA_EnquiryList = () => {
   });
   const [showModal, setShowModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1); // Current page state
-  const [rowsPerPage, setRowsPerPage] = useState(10); // Rows per page state
+  const [rowsPerPage, setRowsPerPage] = useState(5); // Rows per page state
 
   const location = useLocation();
   const { uksId } = location.state || {};
@@ -146,7 +146,7 @@ const DSA_EnquiryList = () => {
             <tr key={contact._id}>
               <td>{indexOfFirstContact + index + 1}</td>
               <td>{new Date(contact.createdAt).toLocaleDateString('en-GB')}</td>
-              <td>{contact.name}</td>
+              <td>{contact.dsaname}</td>
               <td>{contact.companyname}</td>
               <td>{contact.contactNumber}</td>
               <td>{contact.email}</td>

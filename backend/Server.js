@@ -186,7 +186,7 @@ app.get('/api/dsa/enquiries/counts', async (req, res) => {
 app.post('/api/dsa/enquiry/form', async (req, res) => {
     try {
         const { contactNumber, email } = req.body;
-// console.log(req.body);
+console.log(req.body);
 
         // Check if an enquiry with the same contact number already exists
         const existingEnquiry = await DSA_Enquiry.findOne({ contactNumber });
@@ -2325,7 +2325,7 @@ app.get('/salariedperson', async (req, res) => {
 // CUSTOMER ADDRESS
 app.post('/add-address', async (req, res) => {
     const { customerId, address } = req.body;
-    console.log(req.body);
+    // console.log(req.body);
 
     try {
         const customer = await Customer.findById(customerId);
@@ -2405,6 +2405,8 @@ app.get('/view-address', async (req, res) => {
 // Endpoint to add/update previous loans
 app.post('/add-previous-loans', async (req, res) => {
     const { customerId, previousLoans } = req.body;
+    // console.log(req.body);
+    
     try {
         const customer = await Customer.findById(customerId);
         if (!customer) {
@@ -2414,10 +2416,10 @@ app.post('/add-previous-loans', async (req, res) => {
         await PreviousLoan.deleteMany({ customerId: customer._id });
         await PreviousLoan.insertMany(previousLoans.map(loan => ({
             customerId: customer._id,
-            financeName: loan.financeName,
-            yearOfLoan: loan.yearOfLoan || undefined, // Handle null values
-            loanAmount: loan.loanAmount,
-            outstandingAmount: loan.outstandingAmount
+            financeName: loan.financeName || null,
+            yearOfLoan: loan.yearOfLoan || null,
+            loanAmount: loan.loanAmount || null,
+            outstandingAmount: loan.outstandingAmount || null,
         })));
 
         res.json({ message: 'Previous loans updated successfully' });

@@ -16,7 +16,7 @@ function Loan_process({ onSuccess, customerId, customerNo }) {
         try {
             const loansToSave = hasPreviousLoan
                 ? previousLoanDetails
-                : [{ financeName: 'No previous loan', yearOfLoan: null, loanAmount: 0, outstandingAmount: 0 }];
+                : [{ financeName: 'null', yearOfLoan: null, loanAmount: null, outstandingAmount: null }];
 
             await axios.post('https://uksinfotechsolution.in:8000/add-previous-loans', {
                 previousLoans: loansToSave,

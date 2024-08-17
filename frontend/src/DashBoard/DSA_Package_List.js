@@ -18,7 +18,7 @@ function DSA_Package_List() {
     const [error, setError] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(5);
-    const [selectedFilter, setSelectedFilter] = useState('Both');
+    const [selectedFilter, setSelectedFilter] = useState('Inactive'); // Default to Inactive
     const navigate = useNavigate();
 
     const indexOfLastDsa = currentPage * rowsPerPage;
@@ -30,7 +30,11 @@ function DSA_Package_List() {
                 const response = await axios.get('https://uksinfotechsolution.in:8000/buy/packagers/list');
                 const fetchedPackagers = response.data.data || [];
                 setPackagers(fetchedPackagers);
-                setFilteredPackagers(fetchedPackagers); // Initially display all packages
+
+                // Filter packages to show only inactive ones by default
+                const initialFiltered = fetchedPackagers.filter(pkg => pkg.packageStatus === 'Inactive');
+                setFilteredPackagers(initialFiltered);
+
                 setLoading(false);
             } catch (error) {
                 console.error('Error fetching package details:', error);
@@ -79,9 +83,8 @@ function DSA_Package_List() {
                         <Col lg={1}>
                             <DropdownButton
                                 id="dropdown-basic-button"
-                                title={`Filter`}
+                                title={`${selectedFilter}`}
                                 onSelect={handleFilterChange}
-                                style={{ marginRight: '10px' }}
                             >
                                 <Dropdown.Item eventKey="Both">Both</Dropdown.Item>
                                 <Dropdown.Item eventKey="Active">Active</Dropdown.Item>

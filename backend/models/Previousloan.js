@@ -7,11 +7,11 @@ const previousLoanSchema = new Schema({
   customerId: {
     type: Schema.Types.ObjectId,
     ref: 'Customer',
-    required: true
+    required: false
   },
   financeName: {
     type: String,
-    required: true
+    required: false
   },
   yearOfLoan: {
     type: Number,
@@ -19,11 +19,11 @@ const previousLoanSchema = new Schema({
   },
   loanAmount: {
     type: Number,
-    required: true
+    required: false
   },
   outstandingAmount: {
     type: Number,
-    required: true
+    required: false
   }
 });
 

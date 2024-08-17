@@ -64,7 +64,7 @@ function Location({ onSuccess, customerId, customerNo }) {
                 <Modal.Body>
                     <p className="modal-message">
                         Customer Registration Completed.
-                        {customerDetails && <p>Customer Code {customerDetails.customerNo}</p>}
+                        {customerDetails && <p>Customer Code : UKS-CUS-0{customerDetails.customerNo}</p>}
                     </p>
                 </Modal.Body>
                 <Modal.Footer>

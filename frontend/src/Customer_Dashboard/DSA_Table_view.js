@@ -28,9 +28,6 @@ function DsaTable() {
 
   const fetchedIdsRef = useRef(new Set());
   const fetchedAddressIdsRef = useRef(new Set());
-
-  const [checkedItems, setCheckedItems] = useState({});
-  const [allChecked, setAllChecked] = useState(false);
   const [dsaLoanDetails, setDsaLoanDetails] = useState({});
   const [loadingLoanDetails, setLoadingLoanDetails] = useState({});
   const [dsaAddress, setDsaAddress] = useState({}); // State to hold address details
@@ -153,14 +150,15 @@ function DsaTable() {
   // Filter appliedLoan based on filterOption and filterValue
   // Filter appliedLoan based on filterOption and filterValue
   const filteredDsas = dsaData.filter((dsa) => {
-    if (filterOption === 'District') {
-      return dsaAddress[dsa._id]?.district;
-    }
-    if (filterOption === 'Area') {
-      return dsaAddress[dsa._id]?.area;
-    }
-    return true;
-  });
+  if (filterOption === 'District') {
+    return dsaAddress[dsa._id]?.district;
+  }
+  if (filterOption === 'Area') {
+    return dsaAddress[dsa._id]?.area;
+  }
+  return true;
+}).filter(dsa => dsa.isActive);
+
 
   return (
     <>
@@ -170,17 +168,17 @@ function DsaTable() {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '10px' }}>
             <span className='dsa-table-container-second-head'>DSA's List</span>
             <span style={{ display: 'flex', alignItems: 'center', position: 'relative' }}>
-              <IoFilterSharp
+              {/* <IoFilterSharp
                 size={30}
                 style={{ paddingRight: "10px", cursor: 'pointer' }}
                 onClick={() => setShowFilterDropdown(!showFilterDropdown)}
-              />
+              /> */}
               <LiaSortAlphaDownSolid
                 size={30}
                 style={{ paddingRight: "10px", cursor: 'pointer' }}
                 onClick={handleSort}
               />
-              {showFilterDropdown && (
+              {/* {showFilterDropdown && (
                 <div ref={filterDropdownRef} className="filter-dropdown" style={{ width: "400px", display: 'flex', alignItems: 'center', right: 0, top: '100%', zIndex: 1, marginRight: "0px" }}>
                   <FormControl
                     type="text"
@@ -199,7 +197,7 @@ function DsaTable() {
                     <Dropdown.Item eventKey="Area">Area</Dropdown.Item>
                   </DropdownButton>
                 </div>
-              )}
+              )} */}
             </span>
           </div>
           <div className="table-responsive">

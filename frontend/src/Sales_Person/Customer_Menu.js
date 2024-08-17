@@ -15,9 +15,9 @@ function Customer() {
     const [customerId, setCustomerId] = useState('');
     const [customerType, setCustomerType] = useState('');
     const [customerNo, setCustomerNo] = useState('');
-console.log(customerNo);
-console.log(customerId);
-console.log(customerType);
+// console.log(customerNo);
+// console.log(customerId);
+// console.log(customerType);
 
     const tabStyle = (isActive) => ({
         cursor: 'pointer',

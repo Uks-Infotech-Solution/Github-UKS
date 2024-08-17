@@ -406,7 +406,7 @@ function Section_1() {
                                 <Col lg={4}>
                                     <input
                                         type="password"
-                                        placeholder="New Password"
+                                        placeholder="Example : Abc@1234"
                                         value={userpassword}
                                         onChange={handleChange(setUserPassword)}
                                     />

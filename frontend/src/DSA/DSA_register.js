@@ -190,7 +190,7 @@ function DSA_Register() {
                                 <Col lg={4}>
                                     <input
                                         type="password"
-                                        placeholder="New Password"
+                                        placeholder=" Abc@1234"
                                         name="password"
                                         value={formData.password}
                                         onChange={handleChange}

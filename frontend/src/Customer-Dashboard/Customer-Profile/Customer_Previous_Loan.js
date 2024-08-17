@@ -11,18 +11,35 @@ const Customer_Previous_Loan_Details = () => {
     const [loanDetails, setLoanDetails] = useState([]);
     const [successMessage, setSuccessMessage] = useState('');
     const [editingMode, setEditingMode] = useState(false);
-    const [hasPreviousLoans, setHasPreviousLoans] = useState(null); // New state for previous loan status
+    const [hasPreviousLoans, setHasPreviousLoans] = useState('no'); // Default to 'No'
+
+    const checkAllFieldsNull = (loans) => {
+        return loans.every(loan =>
+            !loan.financeName && !loan.yearOfLoan && !loan.loanAmount && !loan.outstandingAmount
+        );
+    };
 
     const fetchLoanDetails = async () => {
         try {
             const response = await axios.get('https://uksinfotechsolution.in:8000/get-previous-loans', {
                 params: { customerId: customerId }
             });
-            if (response.status === 200) {
-                setLoanDetails(response.data || []);
-                setHasPreviousLoans(response.data.length > 0 ? 'yes' : 'no');
-            }
+            if (response.status === 200 && response.data.length > 0) {
+                const loans = response.data;
 
+                // Check if all fields are null
+                if (checkAllFieldsNull(loans)) {
+                    setHasPreviousLoans('no');
+                } else {
+                    setHasPreviousLoans('yes');
+                }
+
+                setLoanDetails(loans);
+            } else {
+                // If no previous loans, set to 'No' by default
+                setHasPreviousLoans('no');
+                setLoanDetails([{ financeName: null, yearOfLoan: null, loanAmount: null, outstandingAmount: null }]);
+            }
         } catch (error) {
             console.error('Error fetching loan details:', error);
             setLoanDetails([]);
@@ -61,18 +78,23 @@ const Customer_Previous_Loan_Details = () => {
     const handlePreviousLoanSave = async () => {
         try {
             const payload = {
-                previousLoans: hasPreviousLoans === 'yes' ? loanDetails : [],
+                previousLoans: hasPreviousLoans === 'yes' ? loanDetails : [{
+                    financeName: null,
+                    yearOfLoan: null,
+                    loanAmount: null,
+                    outstandingAmount: null
+                }],
                 customerId: customerId,
                 hasPreviousLoans: hasPreviousLoans,
             };
+
             const response = await axios.post('https://uksinfotechsolution.in:8000/add-previous-loans', payload);
             if (response.status === 200) {
                 setSuccessMessage('Previous Loan details saved successfully.');
                 alert('Previous Loan details saved successfully.');
                 setEditingMode(false);
-                await fetchLoanDetails(); // Fetch the latest loan details from the backend
+                await fetchLoanDetails();
                 window.location.reload();
-
             }
         } catch (error) {
             console.error('Error saving loan details:', error);
@@ -83,18 +105,10 @@ const Customer_Previous_Loan_Details = () => {
         <>
             <Row className="dsa-detail-view-header-row" style={{ padding: '10px' }}>
                 <Row style={{ alignItems: 'center' }}>
-                    <Col>
+                    <Col lg={2}>
                         <div>Previous Loan Details:</div>
                     </Col>
-                    {!editingMode && (
-                        <Col className="d-flex justify-content-end">
-                            <Button style={{ width: "80px" }} onClick={() => setEditingMode(true)}>Edit</Button>
-                        </Col>
-                    )}
-                </Row>
-
-                <Row style={{ marginBottom: '10px' }}>
-                    <Col>
+                    <Col >
                         <label>
                             <input
                                 type="radio"
@@ -104,7 +118,7 @@ const Customer_Previous_Loan_Details = () => {
                                 onChange={() => setHasPreviousLoans('yes')}
                                 disabled={!editingMode}
                             />
-                            Yes
+                            <span style={{ marginLeft: '7px' }}>Yes</span> 
                         </label>
                         <label style={{ marginLeft: '10px' }}>
                             <input
@@ -112,12 +126,21 @@ const Customer_Previous_Loan_Details = () => {
                                 name="hasPreviousLoans"
                                 value="no"
                                 checked={hasPreviousLoans === 'no'}
-                                onChange={() => setHasPreviousLoans('no')}
+                                onChange={() => {
+                                    setHasPreviousLoans('no');
+                                    setLoanDetails([{ financeName: null, yearOfLoan: null, loanAmount: null, outstandingAmount: null }]);
+                                }}
                                 disabled={!editingMode}
                             />
-                            No
+                            <span style={{ marginLeft: '7px' }}>No</span> 
+                            
                         </label>
                     </Col>
+                    {!editingMode && (
+                        <Col className="d-flex justify-content-end">
+                            <Button style={{ width: "80px" }} onClick={() => setEditingMode(true)}>Edit</Button>
+                        </Col>
+                    )}
                 </Row>
 
                 {hasPreviousLoans === 'yes' && (
