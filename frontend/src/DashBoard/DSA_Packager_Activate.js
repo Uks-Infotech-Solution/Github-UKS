@@ -54,7 +54,7 @@ function DSA_Packager_View() {
                     }
                 });
                 const uks = response.data;
-                console.log(uks);
+                // console.log(uks);
                 setuksDetails(uks);
             } catch (error) {
                 console.error('Error fetching uks details:', error);
@@ -149,6 +149,9 @@ function DSA_Packager_View() {
             pkgId: pkgId,
             packageName: pkg.packageName,
             packageAmount: pkg.packageAmount,
+            amount:pkg.amount,
+            validity:pkg.validity,
+            comparison:pkg.comparison,
             downloadAccess: pkg.downloadAccess,
             loanTypes: pkg.loanTypes,
             salesPersonName: salesPersonName,
@@ -159,6 +162,7 @@ function DSA_Packager_View() {
         try {
             const response = await axios.post('https://uksinfotechsolution.in:8000/api/dsa/packager/activation', data);
             console.log('Activation successful:', response.data);
+            alert("Package Activation is Successful")
             navigate('/uks/dashboard', { state: { uksId } });
             // Handle success, e.g., show a success message or navigate to another page
         } catch (error) {
@@ -169,7 +173,9 @@ function DSA_Packager_View() {
     return (
         <>
             <Container fluid className={`apply-loan-view-container ${isSidebarExpanded ? 'sidebar-expanded' : ''}`}>
+
                 {/* <PathnameUrlPath location={location} homepage={homepage} /> */}
+                
                 <Row className="apply-loan-view-header-row">
                     <Col className="apply-loan-view-header-col">
                         <Row>

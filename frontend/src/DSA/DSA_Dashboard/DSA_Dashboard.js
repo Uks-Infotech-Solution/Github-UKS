@@ -131,21 +131,21 @@ function DSA_Login_Dashboard() {
     const homepage = () => {
         navigate('/dsa/dashboard');
     };
-    const calculateExpiryDate = (purchaseDate) => {
-        const date = new Date(purchaseDate);
-        date.setMonth(date.getMonth() + 1);
-        return date;
-    };
-    const calculateDaysLeft = (purchaseDate) => {
+   
+    const calculateDaysLeft = (expiryDate) => {
         const currentDate = new Date();
-        const timeDifference = latestPackage.expiryDate - currentDate;
+        const expiry = new Date(latestPackage.expiryDate);
+        const timeDifference = expiry - currentDate;
+    
+        // Calculate the difference in days
         const daysLeft = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
-        return daysLeft >= 0 ? daysLeft : 0; // Ensure it doesn't return negative days
+    
+        // Return days left ensuring it doesn't return negative days
+        return daysLeft >= 0 ? daysLeft : 0;
     };
-
     const calculateTotalDownloads = () => {
         if (!latestPackage) return 0;
-        const purchaseDate = new Date(latestPackage.purchaseDate);
+        const purchaseDate = new Date(latestPackage.activationDate);
         return downloads.filter(download => new Date(download.createdAt) >= purchaseDate).length;
     };
     return (

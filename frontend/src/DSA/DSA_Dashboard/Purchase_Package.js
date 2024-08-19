@@ -33,18 +33,18 @@ function Purchased_Package() {
         navigate('/dsa/dashboard', { state: { dsaId } });
     };
 
-    const calculateExpiryDate = (purchaseDate) => {
-        const date = new Date(purchaseDate);
-        date.setMonth(date.getMonth() + 1);
-        return date;
-    };
-
-    const calculateDaysLeft = (purchaseDate) => {
+    const calculateDaysLeft = (expiryDate) => {
         const currentDate = new Date();
-        const timeDifference = latestPackage.expiryDate - currentDate;
+        const expiry = new Date(latestPackage.expiryDate);
+        const timeDifference = expiry - currentDate;
+    
+        // Calculate the difference in days
         const daysLeft = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
-        return daysLeft >= 0 ? daysLeft : 0; // Ensure it doesn't return negative days
+    
+        // Return days left ensuring it doesn't return negative days
+        return daysLeft >= 0 ? daysLeft : 0;
     };
+    
 
     return (
         <>
@@ -72,6 +72,10 @@ function Purchased_Package() {
                                         <Col style={{ marginBottom: '20px' }}>
                                             <h5 style={{ color: '#333', fontSize: '13px', fontWeight: '600' }}>Amount</h5>
                                             <p style={{ color: '#666', fontSize: '12px', margin: '0' }}>Rs. {latestPackage.packageAmount}/-</p>
+                                        </Col>
+                                        <Col style={{ marginBottom: '20px' }}>
+                                            <h5 style={{ color: '#333', fontSize: '13px', fontWeight: '600' }}>Validity</h5>
+                                            <p style={{ color: '#666', fontSize: '12px', margin: '0' }}>{latestPackage.validity} Days</p>
                                         </Col>
                                         <Col style={{ marginBottom: '20px' }}>
                                             <h5 style={{ color: '#333', fontSize: '13px', fontWeight: '600' }}>Download Access</h5>

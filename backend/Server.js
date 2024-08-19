@@ -758,7 +758,7 @@ app.post('/api/dsa/packager/activation', async (req, res) => {
 
             // Calculate the expiry date as one month from the activation date
             const expiryDate = new Date(currentDate);
-            expiryDate.setMonth(expiryDate.getMonth() + 1);
+            expiryDate.setDate(expiryDate.getDate() + validity); // Add validity days to the current date
             newBuyPackage.expiryDate = expiryDate;
 
             await newBuyPackage.save();

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Table, Container, FormControl, DropdownButton, Dropdown } from 'react-bootstrap';
+import { Table, Container, FormControl, DropdownButton, Dropdown, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { MdHome, MdArrowForwardIos, MdEdit } from 'react-icons/md';
@@ -62,9 +62,9 @@ function CustomerTable() {
       try {
         const response = await axios.get(`https://uksinfotechsolution.in:8000/buy_packages/dsa/${dsaId}`);
         setPackages(response.data);
-        // console.log(response.data);
+        console.log(response.data);
       } catch (err) {
-        // console.log(err);
+        console.log(err);
       }
     };
 
@@ -77,8 +77,7 @@ function CustomerTable() {
       try {
         const response = await axios.get('https://uksinfotechsolution.in:8000/');
         const customersData = response.data;
-        const activeCustomers = customersData.filter(customer => customer.isActive && !customer.block_status);
-        setCustomers(activeCustomers);
+        setCustomers(customersData);
         // console.log(response.data);
         setLoading(false);
         const initialCheckedItems = {};
@@ -169,13 +168,19 @@ function CustomerTable() {
     }));
   };
   // Handle filtering
-  const filteredCustomers = filterValue
-    ? customers.filter((customer) => {
+  const filteredCustomers = customers.filter((customer) => {
     const packageAmount = packages.amount; // assume packages is an object with the package details
     const comparison = packages.comparison;
   
-    let showCustomer = true;
+  const loantypes = packages.loanTypes || []; // Ensure loanTypes is an array
+  console.log(loantypes);
 
+  let showCustomer = true;
+  
+  if (loantypes.length > 0) {
+      // Check if the customer's loan type is included in the package's loan types
+      showCustomer = loantypes.some(loanType => loanType === customer.typeofloan);
+  }
     if (comparison === 'greater') {
       showCustomer = customer.loanRequired >= packageAmount * 100000; // convert package amount to lakhs
     } else if (comparison === 'less') {
@@ -183,7 +188,7 @@ function CustomerTable() {
     } else if (comparison === 'equal') {
       showCustomer = customer.loanRequired === packageAmount * 100000;
     }
-  
+    
     if (filterOption === 'District') {
       const customerAddress = addresses[customer._id];
       showCustomer = showCustomer && customerAddress && customerAddress.aadharDistrict.toLowerCase().includes(filterValue.toLowerCase());
@@ -194,7 +199,7 @@ function CustomerTable() {
     }
   
     return showCustomer;
-  }): customers;
+  });
 
   // Pagination
   const indexOfLastCustomer = currentPage * rowsPerPage;
@@ -241,18 +246,57 @@ function CustomerTable() {
     setFilterOption(option);
     setShowFilterDropdown(true);
   };
+  const [allChecked, setAllChecked] = useState(false);
 
+  const handleAllChecked = (event) => {
+    const isChecked = event.target.checked;
+    const newCheckedItems = {};
+    customers.forEach((customer) => {
+      newCheckedItems[customer._id] = isChecked;
+    });
+    setCheckedItems(newCheckedItems);
+    setAllChecked(isChecked);
+  };
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
-
+  const formatLoanAmount = (amount) => {
+    if (amount >= 10000000) { // 1 Crore or more
+      return `${(amount / 10000000).toFixed(2)} Cr`;
+    } else if (amount >= 100000) { // 1 Lakh or more
+      return `${(amount / 100000).toFixed(2)} Lakh`;
+    } else if (amount >= 1000) { // 1 Thousand or more
+      return `${(amount / 1000).toFixed(2)} K`;
+    }
+    return amount.toString();
+  };
+    
   if (loading) {
     return <div>-</div>;
   }
   return (
     <>
       <Container fluid className={`Customer-basic-view-container ${isSidebarExpanded ? 'sidebar-expanded' : ''}`}>
+      <Row style={{ justifyContent: 'center' }}>
+        <Col lg={4} xs={12} sm={6} md={3} className='mt-2'>
+          <div className='count-box Customer-table-container-second' style={{ height: '170px' }}>
+            <div className=''>
+              <p>Total Customers Count
+                <span style={{ fontSize: '23px', fontWeight: '600', paddingLeft: '5px' }}>  {filteredCustomers.length}</span></p>
+            </div>
+          </div>
+        </Col>
+        <Col lg={4} xs={12} sm={6} md={3} className='mt-2'>
+          <div className='count-box Customer-table-container-second' style={{ height: '170px' }}>
+            <div className=''>
+              <p>Total Loan Amount Value
+                <span style={{ fontSize: '23px', fontWeight: '600', paddingLeft: '5px' }}>  {formatLoanAmount(filteredCustomers.reduce((total, customer) => total + customer.loanRequired, 0))}</span></p>
+            </div>
+          </div>
+        </Col>
+      </Row>
         <Container className='Customer-table-container-second'>
+        
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <span className='Customer-table-container-second-head'>Customers List</span>
             <span style={{ display: 'flex', alignItems: 'center', position: 'relative' }}>
@@ -296,6 +340,7 @@ function CustomerTable() {
                   <th className='Customer-Table-head'>SI.No</th>
                   <th className='Customer-Table-head'>Customer No</th>
                   <th className='Customer-Table-head'>Name</th>
+                  <th className='Customer-Table-head'>Loan Type</th>
                   <th className='Customer-Table-head'>Loan Amount</th>
                   <th className='Customer-Table-head'>District</th>
                   <th className='Customer-Table-head'>Area</th>
@@ -312,15 +357,16 @@ function CustomerTable() {
                
                     <td>{indexOfFirstCustomer + index + 1}</td>
                     <td style={{ width: '100px', fontSize: '12px' }}>
-                      {customer.customerNo ? `UKS-CU-${customer.customerNo.toString().padStart(3, '0')}` : 'N/A'}
+                      {customer.customerNo ? `UKS-CUS-${customer.customerNo.toString().padStart(3, '0')}` : 'N/A'}
                     </td>
                     <td style={{ display: '', paddingTop: '' }}>
                     
                       <span style={{ textAlign: 'center' }}>{customer.customerFname}</span>
                     </td>
-                    <td>{customer.loanRequired}</td>
-                    <td>{addresses ? addresses.aadharDistrict : '-'}</td>
-                    <td>{addresses ? addresses.aadharCity : '-'}</td>
+                    <td >{customer.typeofloan}</td>
+                    <td >{formatLoanAmount(customer.loanRequired)}</td>
+                    <td>{addresses[customer._id]?.aadharDistrict}</td>
+                    <td>{addresses[customer._id]?.aadharCity}</td>
                     <td>
                       {loanProcessingDetails[customer._id] && loanProcessingDetails[customer._id].cibilRecord ? (
                         loanProcessingDetails[customer._id].cibilRecord
@@ -357,7 +403,7 @@ function CustomerTable() {
               </DropdownButton>
               <MdKeyboardArrowLeft size={25} onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1} />
 
-              <span>Page {currentPage}</span>
+              <span>Page {currentPage}  of {Math.ceil(filteredCustomers.length / rowsPerPage)}</span>
               <MdKeyboardArrowRight size={25} onClick={() => paginate(currentPage + 1)} disabled={indexOfLastCustomer >= filteredCustomers.length} />
 
 

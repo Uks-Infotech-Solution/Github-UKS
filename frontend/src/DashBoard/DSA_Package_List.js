@@ -101,6 +101,7 @@ function DSA_Package_List() {
                                 <th className='dsa-table-head'>Contact Number</th>
                                 <th className='dsa-table-head'>Package Name</th>
                                 <th className='dsa-table-head'>Download Access</th>
+                                <th className='dsa-table-head'>Validity</th>
                                 <th className='dsa-table-head'>Package Amount</th>
                                 <th className='dsa-table-head'>Package Status</th>
                                 <th className='dsa-table-head'>Activate</th>
@@ -120,6 +121,7 @@ function DSA_Package_List() {
                                         <td>{pkg.primaryNumber}</td>
                                         <td>{pkg.packageName}</td>
                                         <td>{pkg.downloadAccess}</td>
+                                        <td>{pkg.validity}</td>
                                         <td>{pkg.packageAmount}</td>
                                         <td>
                                             <span style={{ color: pkg.packageStatus === 'Active' ? 'green' : 'red', fontWeight: '600' }}>
