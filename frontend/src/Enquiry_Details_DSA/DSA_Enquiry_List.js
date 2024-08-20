@@ -138,6 +138,7 @@ const DSA_EnquiryList = () => {
             <th>Contact Number</th>
             <th>Email</th>
             <th>Status</th>
+            <th>Remarks</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -151,6 +152,7 @@ const DSA_EnquiryList = () => {
               <td>{contact.contactNumber}</td>
               <td>{contact.email}</td>
               <td>{contact.enquiry_convert_status}</td>
+              <td>{contact.Remarks }</td>
               <td className="enquiry-actions">
                 <button onClick={() => handleEdit(contact)} className="enquiry-button enquiry-button-edit">Edit</button>
                 <button onClick={() => handleDelete(contact._id)} className="enquiry-button enquiry-button-delete">Delete</button>
@@ -177,7 +179,7 @@ const DSA_EnquiryList = () => {
             <Dropdown.Item eventKey="20">20</Dropdown.Item>
           </DropdownButton>
           <MdKeyboardArrowLeft size={25} onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1} />
-          <span>Page {currentPage}</span>
+          <span>Page {currentPage} of {Math.ceil(contacts.length / rowsPerPage)}</span>
           <MdKeyboardArrowRight size={25} onClick={() => paginate(currentPage + 1)} disabled={indexOfLastContact >= contacts.length} />
         </div>
       </div>
@@ -228,6 +230,16 @@ const DSA_EnquiryList = () => {
                 value={currentContact.email}
                 onChange={handleChange}
                 placeholder="Email"
+              />
+            </Form.Group>
+            <Form.Group controlId="formRemarks">
+              <Form.Label>Remarks</Form.Label>
+              <Form.Control
+                type="text"
+                name="Remarks"
+                value={currentContact.Remarks}
+                onChange={handleChange}
+                placeholder="Remarks"
               />
             </Form.Group>
             <div className="d-flex justify-content-end mt-3">

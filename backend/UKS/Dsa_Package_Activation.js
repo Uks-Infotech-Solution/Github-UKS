@@ -15,9 +15,15 @@ const activationSchema = new Schema({
     downloadAccess: String,
     validity:Number,
     amount:Number,
+    amountUnit:String,
     comparison:String,
+    freeze: {
+        type: Boolean,
+        default: false,
+      },
+    cibil:Number,
+    cibilcomparison:String,
     loanTypes: [String],
-    
     salesPersonName: String,
     salesPersonId: String,
     transferRefNo: String,

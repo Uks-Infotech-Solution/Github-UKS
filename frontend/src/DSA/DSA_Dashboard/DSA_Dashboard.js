@@ -189,7 +189,7 @@ function DSA_Login_Dashboard() {
                                                 </Col>
                                                 <Col style={{ marginBottom: '20px' }}>
                                                     <h5 style={{ color: '#333', fontSize: '13px', fontWeight: '600' }}>Total Downloads</h5>
-                                                    <p style={{ color: '#666', fontSize: '12px', margin: '0' }}>{calculateTotalDownloads()}</p>
+                                                    <p style={{ color: '#666', fontSize: '12px', margin: '0' }}>{latestPackage.downloadedCount }</p>
                                                 </Col>
                                                 <Col style={{ marginBottom: '20px' }}>
                                                     <h5 style={{ color: '#333', fontSize: '13px', fontWeight: '600' }}>Status</h5>

@@ -32,6 +32,9 @@ const enquirySchema = new mongoose.Schema({
       enum: ['Pending', 'Converted', 'Deleted'],
       default: 'Pending'
     },
+    Remarks:{
+      type:String,
+    },
     uksId: String,
   });
   

@@ -118,6 +118,7 @@ const customerSchema = new Schema({
     },
     resetToken: String,
     resetTokenExpiration: Date,
+    lockedByDSA: { type: String, default: null }
 });
 
 // Add auto-increment plugin for customerNo
@@ -186,7 +187,7 @@ app.get('/api/dsa/enquiries/counts', async (req, res) => {
 app.post('/api/dsa/enquiry/form', async (req, res) => {
     try {
         const { contactNumber, email } = req.body;
-console.log(req.body);
+        // console.log(req.body);
 
         // Check if an enquiry with the same contact number already exists
         const existingEnquiry = await DSA_Enquiry.findOne({ contactNumber });
@@ -237,7 +238,7 @@ app.post('/api/enquiry/form', async (req, res) => {
         if (email) {
             // If email is provided, check if it already exists in the enquiries collection
             const existingEmailEnquiry = await Enquiry.findOne({ email });
-            const existingCustomerEmail= await Customer.findOne({ customermailid:email });
+            const existingCustomerEmail = await Customer.findOne({ customermailid: email });
 
             if (existingEmailEnquiry || existingCustomerEmail) {
                 return res.status(400).json({ error: 'Email-id already exists' });
@@ -711,7 +712,11 @@ app.post('/api/dsa/packager/activation', async (req, res) => {
             downloadAccess,
             validity,
             amount,
+            amountUnit,
             comparison,
+            cibil,
+            cibilcomparison,
+            freeze,
             loanTypes,
             salesPersonName,
             salesPersonId,
@@ -732,7 +737,11 @@ app.post('/api/dsa/packager/activation', async (req, res) => {
             downloadAccess,
             validity,
             amount,
+            amountUnit,
             comparison,
+            cibil,
+            cibilcomparison,
+            freeze,
             loanTypes,
             status_activation: "Active",
             salesPersonName,
@@ -810,7 +819,11 @@ app.post('/buy_packagers', async (req, res) => {
         downloadAccess,
         validity,
         amount,
+        amountUnit,
         comparison,
+        cibil,
+        cibilcomparison,
+        freeze,
         packageAmount,
         transferAmountRefNumber,
         loanTypes,
@@ -832,7 +845,11 @@ app.post('/buy_packagers', async (req, res) => {
             downloadAccess,
             validity,
             amount,
+            amountUnit,
             comparison,
+            cibil,
+            cibilcomparison,
+            freeze,
             packageAmount,
             transferAmountRefNumber,
             activationToken: token,
@@ -2080,17 +2097,28 @@ app.get('/dsa-customer/table/count', async (req, res) => {
         // res.status(500).json({ message: 'Internal server error' });
     }
 });
+
 app.post('/dsa-customer/downloadtable', async (req, res) => {
     try {
-        const { dsaId, customerId } = req.body;
+        const { dsaId, customerId, packageId } = req.body; // Assuming packageId is passed
 
         // Validate the request body
-        if (!dsaId || !customerId) {
-            return res.status(400).json({ message: 'DSA ID and Customer ID are required' });
+        if (!dsaId || !customerId || !packageId) {
+            return res.status(400).json({ message: 'DSA ID, Customer ID, and Package ID are required' });
         }
 
-        // Check if an entry with the same dsaId and customerId already exists
-        const existingEntry = await DSA.findOne({ dsaId, customerId });
+        // Find the BuyPackage entry by packageId and increment the downloadedCount
+        const buyPackage = await BuyPackage.findById(packageId);
+        if (!buyPackage) {
+            return res.status(404).json({ message: 'Package not found' });
+        }
+
+        // Increment the downloadedCount and save
+        buyPackage.downloadedCount += 1;
+        await buyPackage.save();
+
+        // Check if an entry with the same dsaId and customerId already exists in the download table
+        const existingEntry = await DSA_Customer_downloadTable.findOne({ dsaId, customerId });
 
         if (existingEntry) {
             // Update the createdAt date of the existing entry
@@ -2102,7 +2130,8 @@ app.post('/dsa-customer/downloadtable', async (req, res) => {
         // Create a new entry if no existing entry is found
         const newData = new DSA_Customer_downloadTable({
             dsaId,
-            customerId
+            customerId,
+            packageId // Save the packageId for reference if needed
         });
 
         // Save the new entry to the database
@@ -2114,7 +2143,6 @@ app.post('/dsa-customer/downloadtable', async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 });
-
 app.post('/dsa-customer/table', async (req, res) => {
     try {
         const { dsaId, customerId } = req.body;
@@ -2406,7 +2434,7 @@ app.get('/view-address', async (req, res) => {
 app.post('/add-previous-loans', async (req, res) => {
     const { customerId, previousLoans } = req.body;
     // console.log(req.body);
-    
+
     try {
         const customer = await Customer.findById(customerId);
         if (!customer) {
@@ -2692,10 +2720,10 @@ app.post('/register', async (req, res) => {
 
         const existingCustomer = await Customer.findOne({ customermailid });
         const existingContact = await Customer.findOne({ customercontact });
-        if (existingCustomer ) {
+        if (existingCustomer) {
             return res.status(400).json({ error: 'Email already exists' });
         }
-        if (existingContact ) {
+        if (existingContact) {
             return res.status(400).json({ error: 'Contact Number already exists' });
         }
         const hashedPassword = await bcrypt.hash(userpassword, 10);
@@ -2782,6 +2810,33 @@ app.put('/update-customer-details', async (req, res) => {
 });
 
 // Get all customers endpoint
+app.get('/customers', async (req, res) => {
+    const { dsaId } = req.query;
+    console.log(dsaId);
+    
+    try {
+      const customers = await Customer.find({
+        $or: [
+          { lockedByDSA: null },
+          { lockedByDSA: dsaId }
+        ]
+      });
+      res.status(200).json(customers);
+    } catch (error) {
+      res.status(500).json({ message: 'Error fetching customers', error });
+    }
+  });
+  app.post('/customer/lock', async (req, res) => {
+    const { customerId, dsaId } = req.body;
+    
+    try {
+      const customer = await Customer.findByIdAndUpdate(customerId, { lockedByDSA: dsaId });
+      res.status(200).json({ message: 'Customer locked successfully', customer });
+    } catch (error) {
+      res.status(500).json({ message: 'Error locking customer', error });
+    }
+  });
+  
 app.get('/', async (req, res) => {
     const customers = await Customer.find();
     res.json(customers);

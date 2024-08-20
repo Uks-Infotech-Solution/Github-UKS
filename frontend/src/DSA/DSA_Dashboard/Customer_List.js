@@ -38,7 +38,7 @@ function CustomerTable() {
   const { isSidebarExpanded } = useSidebar();
 
   const { dsaId } = location.state || {};
-  const [packages, setPackages] = useState({ });
+  const [packages, setPackages] = useState({});
 
   // Fetch DSA details
   const fetchDSADetails = async (dsaId) => {
@@ -62,7 +62,6 @@ function CustomerTable() {
       try {
         const response = await axios.get(`https://uksinfotechsolution.in:8000/buy_packages/dsa/${dsaId}`);
         setPackages(response.data);
-        console.log(response.data);
       } catch (err) {
         console.log(err);
       }
@@ -75,9 +74,10 @@ function CustomerTable() {
   useEffect(() => {
     const fetchCustomers = async () => {
       try {
-        const response = await axios.get('https://uksinfotechsolution.in:8000/');
+        const response = await axios.get(`https://uksinfotechsolution.in:8000/customers?dsaId=${dsaId}`);
         const customersData = response.data;
-        setCustomers(customersData);
+        const activeCustomers = customersData.filter(customer => customer.isActive && !customer.block_status);
+        setCustomers(activeCustomers);
         // console.log(response.data);
         setLoading(false);
         const initialCheckedItems = {};
@@ -169,34 +169,63 @@ function CustomerTable() {
   };
   // Handle filtering
   const filteredCustomers = customers.filter((customer) => {
-    const packageAmount = packages.amount; // assume packages is an object with the package details
+    const packageAmount = packages.amount;
     const comparison = packages.comparison;
+    const amountUnit = packages.amountUnit;
+    const loantypes = packages.loanTypes || [];
+    const cibil = packages.cibil;
+    const cibilcomparison = packages.cibilcomparison;
+    let showCustomer = true;
   
-  const loantypes = packages.loanTypes || []; // Ensure loanTypes is an array
-  console.log(loantypes);
+    if (cibilcomparison) {
+      if (loanProcessingDetails[customer._id] && loanProcessingDetails[customer._id].cibilRecord) {
+        const customerCibil = loanProcessingDetails[customer._id].cibilRecord;
+        if (cibilcomparison === 'greater') {
+          if(customerCibil){
+            showCustomer = showCustomer && customerCibil >= cibil;
 
-  let showCustomer = true;
+          }
+        } else if (cibilcomparison === 'less') {
+          if(customerCibil){
+          showCustomer = showCustomer && customerCibil <= cibil;
+          }
+          console.log("cibl less");
   
-  if (loantypes.length > 0) {
-      // Check if the customer's loan type is included in the package's loan types
-      showCustomer = loantypes.some(loanType => loanType === customer.typeofloan);
-  }
-    if (comparison === 'greater') {
-      showCustomer = customer.loanRequired >= packageAmount * 100000; // convert package amount to lakhs
-    } else if (comparison === 'less') {
-      showCustomer = customer.loanRequired < packageAmount * 100000;
-    } else if (comparison === 'equal') {
-      showCustomer = customer.loanRequired === packageAmount * 100000;
+        } 
+      }
     }
-    
+  
+    if (loantypes.length > 0) {
+      showCustomer = showCustomer && loantypes.some(loanType => loanType === customer.typeofloan);
+    }
+  
+    if (amountUnit === 'Lakh') {
+      if (comparison === 'greater') {
+        showCustomer = showCustomer && customer.loanRequired >= packageAmount * 100000;
+      } else if (comparison === 'less') {
+        showCustomer = showCustomer && customer.loanRequired <= packageAmount * 100000;
+      } 
+    } else if (amountUnit === 'Crore') {
+      if (comparison === 'greater') {
+        showCustomer = showCustomer && customer.loanRequired >= packageAmount * 10000000;
+      } else if (comparison === 'less') {
+        showCustomer = showCustomer && customer.loanRequired <= packageAmount * 10000000;
+      } 
+    }
+  
     if (filterOption === 'District') {
       const customerAddress = addresses[customer._id];
-      showCustomer = showCustomer && customerAddress && customerAddress.aadharDistrict.toLowerCase().includes(filterValue.toLowerCase());
+      if(customerAddress){
+        showCustomer = showCustomer && customerAddress && customerAddress.aadharDistrict.toLowerCase().includes(filterValue.toLowerCase());
+
+      }
     }
+  
     if (filterOption === 'Area') {
       const customerAddress = addresses[customer._id];
+      if(customerAddress){
       showCustomer = showCustomer && customerAddress && customerAddress.aadharCity.toLowerCase().includes(filterValue.toLowerCase());
-    }
+    }}
   
     return showCustomer;
   });
@@ -220,7 +249,7 @@ function CustomerTable() {
 
     try {
       const response = await axios.post('https://uksinfotechsolution.in:8000/dsa-customer/table', {
-        dsaId: dsaId  ,
+        dsaId: dsaId,
         customerId: selectedCustomer._id,
       });
 
@@ -246,17 +275,7 @@ function CustomerTable() {
     setFilterOption(option);
     setShowFilterDropdown(true);
   };
-  const [allChecked, setAllChecked] = useState(false);
 
-  const handleAllChecked = (event) => {
-    const isChecked = event.target.checked;
-    const newCheckedItems = {};
-    customers.forEach((customer) => {
-      newCheckedItems[customer._id] = isChecked;
-    });
-    setCheckedItems(newCheckedItems);
-    setAllChecked(isChecked);
-  };
   const paginate = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
@@ -270,33 +289,33 @@ function CustomerTable() {
     }
     return amount.toString();
   };
-    
+
   if (loading) {
     return <div>-</div>;
   }
   return (
     <>
       <Container fluid className={`Customer-basic-view-container ${isSidebarExpanded ? 'sidebar-expanded' : ''}`}>
-      <Row style={{ justifyContent: 'center' }}>
-        <Col lg={4} xs={12} sm={6} md={3} className='mt-2'>
-          <div className='count-box Customer-table-container-second' style={{ height: '170px' }}>
-            <div className=''>
-              <p>Total Customers Count
-                <span style={{ fontSize: '23px', fontWeight: '600', paddingLeft: '5px' }}>  {filteredCustomers.length}</span></p>
+        <Row style={{ justifyContent: 'center' }}>
+          <Col lg={4} xs={12} sm={6} md={3} className='mt-2'>
+            <div className='count-box Customer-table-container-second' style={{ height: '170px' }}>
+              <div className=''>
+                <p>Total Customers Count
+                  <span style={{ fontSize: '23px', fontWeight: '600', paddingLeft: '5px' }}>  {filteredCustomers.length}</span></p>
+              </div>
             </div>
-          </div>
-        </Col>
-        <Col lg={4} xs={12} sm={6} md={3} className='mt-2'>
-          <div className='count-box Customer-table-container-second' style={{ height: '170px' }}>
-            <div className=''>
-              <p>Total Loan Amount Value
-                <span style={{ fontSize: '23px', fontWeight: '600', paddingLeft: '5px' }}>  {formatLoanAmount(filteredCustomers.reduce((total, customer) => total + customer.loanRequired, 0))}</span></p>
+          </Col>
+          <Col lg={4} xs={12} sm={6} md={3} className='mt-2'>
+            <div className='count-box Customer-table-container-second' style={{ height: '170px' }}>
+              <div className=''>
+                <p>Total Loan Amount Value
+                  <span style={{ fontSize: '23px', fontWeight: '600', paddingLeft: '5px' }}>  {formatLoanAmount(filteredCustomers.reduce((total, customer) => total + customer.loanRequired, 0))}</span></p>
+              </div>
             </div>
-          </div>
-        </Col>
-      </Row>
+          </Col>
+        </Row>
         <Container className='Customer-table-container-second'>
-        
+
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <span className='Customer-table-container-second-head'>Customers List</span>
             <span style={{ display: 'flex', alignItems: 'center', position: 'relative' }}>
@@ -354,26 +373,26 @@ function CustomerTable() {
                 {filteredCustomers.slice(indexOfFirstCustomer, indexOfLastCustomer).map((customer, index) => (
 
                   <tr key={customer._id}>
-               
+
                     <td>{indexOfFirstCustomer + index + 1}</td>
                     <td style={{ width: '100px', fontSize: '12px' }}>
                       {customer.customerNo ? `UKS-CUS-${customer.customerNo.toString().padStart(3, '0')}` : 'N/A'}
                     </td>
                     <td style={{ display: '', paddingTop: '' }}>
-                    
+
                       <span style={{ textAlign: 'center' }}>{customer.customerFname}</span>
                     </td>
                     <td >{customer.typeofloan}</td>
                     <td >{formatLoanAmount(customer.loanRequired)}</td>
-                    <td>{addresses[customer._id]?.aadharDistrict}</td>
-                    <td>{addresses[customer._id]?.aadharCity}</td>
-                    <td>
-                      {loanProcessingDetails[customer._id] && loanProcessingDetails[customer._id].cibilRecord ? (
-                        loanProcessingDetails[customer._id].cibilRecord
-                      ) : (
-                        '-'
-                      )}
-                    </td>
+                    <td>{addresses[customer._id]?.aadharDistrict ?? '-'}</td>
+                    <td>{addresses[customer._id]?.aadharCity ?? '-'}</td>
+                      <td>
+                        {loanProcessingDetails[customer._id] && loanProcessingDetails[customer._id].cibilRecord ? (
+                          loanProcessingDetails[customer._id].cibilRecord
+                        ) : (
+                          '-'
+                        )}
+                      </td>
                     <td style={{ color: customer.isActive ? 'green' : 'red' }}>
                       {customer.isActive ? 'Active' : 'Inactive'}
                     </td>

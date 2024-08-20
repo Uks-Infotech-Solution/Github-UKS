@@ -39,7 +39,7 @@ const Dsa_Total_Customers = () => {
         const response = await axios.get('https://uksinfotechsolution.in:8000/');
         const customersData = response.data;
         const activeCustomers = customersData.filter(customer => customer.isActive && !customer.block_status);
-        setCustomers(customersData);
+        setCustomers(activeCustomers);
         setFilteredCustomers(activeCustomers); // Initially show all customers
         setLoading(false);
 

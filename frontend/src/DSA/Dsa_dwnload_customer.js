@@ -327,7 +327,6 @@ function Dsa_Profile_View() {
                 const response = await axios.get(`https://uksinfotechsolution.in:8000/buy_packages/dsa/${dsaId}`);
                 setPackages(response.data);
             // console.log(response.data);
-
             }
              catch (err) {
                 console.log(err);
@@ -503,7 +502,7 @@ function Dsa_Profile_View() {
         const packageData = packagesArray.find(pkg => pkg.dsaId === dsaId);
         const downloadAccess = packageData?.downloadAccess || 0;
         // console.log(downloadTableCount,packageData.downloadAccess);
-        if (downloadTableCount > packageData.downloadAccess) { // Assuming 5 is your download limit, adjust as needed
+        if (packageData.downloadedCount > packageData.downloadAccess) { // Assuming 5 is your download limit, adjust as needed
             alert('Your Download Limit is Exceeded');
             return;
         }
@@ -550,15 +549,15 @@ function Dsa_Profile_View() {
                                 <Text style={styles.label}>E-Mail</Text>
                                 <Text style={styles.value}>:    {customerDetails.customermailid}</Text>
                             </View>
-                            {/* <View style={styles.row}>
+                            <View style={styles.row}>
                                 <Text style={styles.label}>Type Of Loan</Text>
                                 <Text style={styles.value}>:    {customerDetails.typeofloan}</Text>
-                            </View> */}
-                            {/* <View style={styles.row}>
+                            </View>
+                            <View style={styles.row}>
                                 <Text style={styles.label}>Loan Required</Text>
                                 <Text style={styles.value}>:    {formatAmountWithCommas(customerDetails.loanRequired)}</Text>
                             </View>
-                            <View style={styles.row}>
+                            {/* <View style={styles.row}>
                                 <Text style={styles.label}>Loan Level</Text>
                                 <Text style={styles.value}>:    {formatAmountWithCommas(customerDetails.level)}</Text>
                             </View> */}
@@ -727,7 +726,7 @@ function Dsa_Profile_View() {
         );
 
         const pdfBlob = await pdf(doc).toBlob();
-        saveAs(pdfBlob, 'CustomerProfile.pdf');
+        saveAs(pdfBlob, 'UKS-Customer-Profile.pdf');
         try {
             // First, update the block and file status
             // console.log('Sending block status update request...');
@@ -737,6 +736,14 @@ function Dsa_Profile_View() {
                 fileStatus: 'Open'
             });
             await fetchDownloadTableCount();
+            if(packages && packages.freeze){
+                try {
+                     await axios.post('https://uksinfotechsolution.in:8000/customer/lock', { customerId, dsaId });
+                    alert("Customer Locked Successfully");
+                  } catch (error) {
+                    console.error('Error locking customer', error);
+                  }
+            }
             // console.log('Block status update response:', updateStatusResponse.data);
             if (updateStatusResponse.status === 201) {
                 // console.log('Block and file status updated successfully');
@@ -745,7 +752,8 @@ function Dsa_Profile_View() {
                 // console.log('Sending store data request...');
                 const storeDataResponse = await axios.post('https://uksinfotechsolution.in:8000/dsa-customer/downloadtable', {
                     dsaId: dsaId,
-                    customerId: customerDetails._id
+                    customerId: customerDetails._id,
+                    packageId: packages._id
                 });
                 // console.log('Store data response:', storeDataResponse.data);
 

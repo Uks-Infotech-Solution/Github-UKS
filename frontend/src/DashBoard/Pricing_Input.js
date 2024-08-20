@@ -138,7 +138,15 @@ const Pricing_Details = () => {
         updatedPackageDetails[packageIndex].additionalInputs.splice(inputIndex, 1);
         setPackageDetails(updatedPackageDetails);
     };
-
+    const handleAmountDropdownChange = (selectedOption, index) => {
+        const updatedPackages = [...PackageDetails];
+        updatedPackages[index].amountUnit = selectedOption.value;
+        setPackageDetails(updatedPackages);
+    };
+    const amountOptions = [
+        { value: 'Lakh', label: 'Lakh' },
+        { value: 'Crore', label: 'Crore' }
+    ];
     return (
         <>
             <Container fluid className={`apply-loan-view-container ${isSidebarExpanded ? 'sidebar-expanded' : ''}`}>
@@ -161,8 +169,12 @@ const Pricing_Details = () => {
                             <Col lg={2}><span className="profile-finance">Select Loan Types</span></Col>
                             <Col><span className="profile-finance">Download Access</span></Col>
                             <Col><span className="profile-finance">Validity</span></Col>
+                            <Col><span className="profile-finance">Freeze option</span></Col>
                             <Col><span className="profile-finance">View Loan Amount </span></Col>
+                            <Col><span className="profile-finance">Loan Amount Unit </span></Col>
                             <Col><span className="profile-finance">Comparison </span></Col>
+                            <Col><span className="profile-finance">Cibil </span></Col>
+                            <Col><span className="profile-finance">Cibil Comparison </span></Col>
                             <Col><span className="profile-finance">Package Status</span></Col>
                             {editingMode && (
                                 <>
@@ -198,6 +210,30 @@ const Pricing_Details = () => {
                                 <Col><input disabled={!editingMode} className="input-box-address" placeholder='Download Access' name="downloadAccess" type="number" value={packageDetail.downloadAccess || ''} onChange={(e) => handlePackageChange(index, 'downloadAccess', e.target.value)} /></Col>
                                 <Col><input disabled={!editingMode} className="input-box-address" placeholder='Days' name="validity" type="number" value={packageDetail.validity || ''} onChange={(e) => handlePackageChange(index, 'validity', e.target.value)} /></Col>
                                 <Col>
+                                    <Row><Form.Check
+                                        type="radio"
+                                        label="Yes"
+                                        name={`freeze-${index}`}
+                                        value={true}
+                                        checked={packageDetail.freeze === true}
+                                        disabled={!editingMode}
+                                        onChange={() => handlePackageChange(index, 'freeze', true)}
+                                    /></Row>
+                                    <Row>
+                                        <Form.Check
+                                            type="radio"
+                                            label="No"
+                                            name={`freeze-${index}`}
+                                            value={false}
+                                            checked={packageDetail.freeze === false}
+                                            disabled={!editingMode}
+                                            onChange={() => handlePackageChange(index, 'freeze', false)}
+                                        />
+                                    </Row>
+
+                                </Col>
+
+                                <Col>
                                     <input
                                         disabled={!editingMode}
                                         className="input-box-address"
@@ -208,12 +244,44 @@ const Pricing_Details = () => {
                                         onChange={(e) => handleAmountChange(e, index)}
                                     />
                                 </Col>
+                                <Col >
+                                    <Select
+                                        value={amountOptions.find(option => option.value === packageDetail.amountUnit)}
+                                        onChange={(selectedOption) => handleAmountDropdownChange(selectedOption, index)}
+                                        options={amountOptions}
+                                        disabled={!editingMode}
+                                    />
+
+                                </Col>
                                 <Col>
                                     <Form.Select
                                         className="input-box-compare"
                                         name="comparison"
                                         onChange={(e) => handlePackageChange(index, 'comparison', e.target.value)}
                                         value={packageDetail.comparison || ''}
+                                    >
+                                        <option value="greater">Greater than</option>
+                                        <option value="less">Less than</option>
+                                        <option value="both">Both</option>
+                                    </Form.Select>
+                                </Col>
+                                <Col>
+                                    <input
+                                        disabled={!editingMode}
+                                        className="input-box-address"
+                                        placeholder='Cibil'
+                                        name="cibil"
+                                        type="number"
+                                        value={packageDetail.cibil || ''}
+                                        onChange={(e) => handlePackageChange(index, 'cibil', e.target.value)}
+                                    />
+                                </Col>
+                                <Col>
+                                    <Form.Select
+                                        className="input-box-compare"
+                                        name="comparison"
+                                        onChange={(e) => handlePackageChange(index, 'cibilcomparison', e.target.value)}
+                                        value={packageDetail.cibilcomparison || ''}
                                     >
                                         <option value="greater">Greater than</option>
                                         <option value="less">Less than</option>
