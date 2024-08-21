@@ -40,8 +40,8 @@ const Dsa_pending_List = () => {
         // console.log(dsaData);
         
         setDsas(dsaData);
-        const activeCustomers = dsaData.filter(dsa => dsa.isActive );
-        setFilteredDsas(activeCustomers); // Initially show all DSAs
+        // const activeCustomers = dsaData.filter(dsa => dsa.isActive );
+        setFilteredDsas(dsaData); // Initially show all DSAs
         setLoading(false);
 
         const missingDataTemp = {};

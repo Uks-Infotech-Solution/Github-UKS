@@ -1,0 +1,81 @@
+/* CSS for the outerlist classes */
+.outerlist-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 10px;
+    transition: box-shadow 0.3s ease;
+    margin-bottom: 20px;
+    justify-content: center;
+    max-width: 600px;
+}
+
+.outerlist-card:hover {
+    box-shadow: 0px 4px 15px rgba(0, 0, 255, 0.2);
+}
+
+
+.outerlist-header {
+    position: relative; /* This makes the header a positioning context */
+    padding-right: 50px; /* Adjust based on your design */
+}
+.outerlist-more-link {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.outerlist-more-link a {
+    color: #007bff; /* Bootstrap default link color */
+    text-decoration: none;
+}
+
+.outerlist-more-link a:hover {
+    text-decoration: underline;
+}
+.outerlist-name {
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.outerlist-customerNo {
+    font-size: 14px;
+    color: #666;
+    font-weight: 400;
+}
+
+.outerlist-loanStatus {
+    font-size: 14px;
+    color: #008000; /* green color */
+}
+
+.outerlist-details {
+    font-size: 14px;
+    color: #666;
+    margin-top: 5px;
+}
+
+.outerlist-separator {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.outerlist-views,
+.outerlist-downloads {
+    font-weight: 400;
+}
+
+.outerlist-address {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.outerlist-icon {
+    margin-right: 5px;
+}
+
+.outerlist-addressText {
+    font-size: 14px;
+    color: #333;
+}

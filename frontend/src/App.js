@@ -75,6 +75,7 @@ import Enquiry from './Enquiry_Details_Customer/Enquiry_Form';
 import EnquiryList from './Enquiry_Details_Customer/Enquiry_List';
 import DSA_Enquiry from './Enquiry_Details_DSA/DSA_Enquiry_Form';
 import DSA_EnquiryList from './Enquiry_Details_DSA/DSA_Enquiry_List';
+import Grid_Customer_List from './Outer_Customer_List/Grid_Customer';
 
 function App() {
   return (
@@ -132,8 +133,6 @@ function App() {
 
 
             <Route path="/:loginType/login" element={<Login_Authenticate />} />
-
-
 
             <Route path="/customer/dashboard" element={<Customer_Dashboard />} />
             <Route path="/dashboard" element={<MainDashbord />} />
@@ -196,7 +195,7 @@ function App() {
         </AuthenticatedLayout>
         <Routes>
           <Route path="/uks/login" element={<DashbordUserLogin />} />
-
+          <Route path="/listof/customers" element={<Grid_Customer_List />} />
 
         </Routes>
       </>
@@ -205,7 +204,7 @@ function App() {
 
   function IndexWithNavbar({ element }) {
     const location = useLocation();
-    const showNavbar = ['/ldp/finserv', '/dsa/login', '/package/activate/:token', '/customer/login', '/uks/register', '/uks/login', '/dsa/register', '/customer/register'].includes(location.pathname);
+    const showNavbar = ['/ldp/finserv','/listOfCustomers','/dsa/login', '/package/activate/:token', '/customer/login', '/uks/register', '/uks/login', '/dsa/register', '/customer/register'].includes(location.pathname);
     return (
       <>
         {showNavbar && <Index_Navbar />}
