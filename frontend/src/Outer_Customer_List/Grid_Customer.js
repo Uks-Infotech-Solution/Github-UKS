@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import axios from "axios";
-import { FaRegAddressCard } from "react-icons/fa";
+import { FaRegAddressCard } from "react-icons/fa6";
 import './Grid_Customer_List.css';
 import { FcDebt } from "react-icons/fc";
 import { RiMoneyRupeeCircleLine } from "react-icons/ri";
@@ -13,7 +13,6 @@ function Grid_Customer_List() {
     const [filteredCustomers, setFilteredCustomers] = useState([]);
     const [loanRangeCounts, setLoanRangeCounts] = useState({});
     const [addressDetails, setAddressDetails] = useState({});
-    const [districts, setDistricts] = useState([]);
 
     const loanRanges = [
         { label: "0-3 Lakhs", min: 0, max: 300000 },
@@ -27,22 +26,18 @@ function Grid_Customer_List() {
         { label: "1-5 Cr", min: 10000000, max: 50000000 },
         { label: "5-15 Cr", min: 50000000, max: 150000000 },
         { label: "15-50 Cr", min: 150000000, max: 5000000000 }
+
     ];
 
     useEffect(() => {
         const fetchCustomers = async () => {
             try {
-                const response = await axios.get('https://uksinfotechsolution.in:8000/customers');
+                const response = await axios.get('http://localhost:8000/customers');
                 const customers = response.data;
                 setCustomers(customers);
                 setFilteredCustomers(customers);
-                setLoanRangeCounts(calculateLoanRangeCounts(customers, loanRanges));
- 
-                // Extract and set unique districts
-                const uniqueDistricts = [...new Set(customers.map(c => c.addressDetails?.permanentDistrict).filter(d => d))];
-                setDistricts(uniqueDistricts);
-
-                // Fetch address details for each customer
+                const counts = calculateLoanRangeCounts(customers, loanRanges);
+                setLoanRangeCounts(counts);
                 customers.forEach(customer => {
                     fetchAddressDetails(customer._id);
                 });
@@ -60,37 +55,27 @@ function Grid_Customer_List() {
         ranges.forEach(range => {
             counts[range.label] = customers.filter(customer => customer.loanRequired >= range.min && customer.loanRequired < range.max).length;
         });
-
-        // Track counts for districts
-        customers.forEach(customer => {
-            const district = customer.addressDetails?.permanentDistrict;
-            if (district) {
-                counts[district] = (counts[district] || 0) + 1;
-            }
-        });
-
         return counts;
     };
 
     const handleFilter = (filters) => {
-        const { location, selectedRanges, typeOfLoan, selectedDistricts } = filters;
+        const { location, selectedRanges, typeOfLoan } = filters;
         const filtered = customers.filter(customer => {
             const matchesLocation = location ? customer.addressDetails?.permanentCity?.toLowerCase().includes(location.toLowerCase()) : true;
             const matchesTypeOfLoan = typeOfLoan ? customer.typeofloan.toLowerCase() === typeOfLoan.toLowerCase() : true;
-            const matchesDistrict = selectedDistricts.length === 0 || selectedDistricts.includes(customer.addressDetails?.permanentDistrict);
+
             const matchesLoanRange = selectedRanges.length === 0 || selectedRanges.some(range =>
                 customer.loanRequired >= range.min && customer.loanRequired < range.max
             );
 
-            return matchesLocation && matchesTypeOfLoan && matchesDistrict && matchesLoanRange;
+            return matchesLocation && matchesTypeOfLoan && matchesLoanRange;
         });
-
         setFilteredCustomers(filtered);
     };
 
     const fetchAddressDetails = async (customerId) => {
         try {
-            const response = await axios.get(`https://uksinfotechsolution.in:8000/view-address`, {
+            const response = await axios.get(`http://localhost:8000/view-address`, {
                 params: { customerId: customerId }
             });
             if (response.data) {
@@ -105,14 +90,10 @@ function Grid_Customer_List() {
     };
 
     return (
-        <Container >
+        <Container fluid>
             <Row>
                 <Col md={3}>
-                    <CustomerFilter 
-                        onFilter={handleFilter} 
-                        loanRangeCounts={loanRangeCounts} 
-                        districts={districts} 
-                    />
+                    <CustomerFilter onFilter={handleFilter} loanRangeCounts={loanRangeCounts}  />
                 </Col>
                 <Col md={9}>
                     {filteredCustomers.map(customer => (
