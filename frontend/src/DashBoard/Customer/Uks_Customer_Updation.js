@@ -182,6 +182,10 @@ function Uks_Customer_Updation() {
             alert('Error Account Deactivation');
         }
     };
+    const handleApplyLoan = () => {
+        // Navigate to the desired route with customerId in state
+        navigate('/uks/customer/apply/loan', { state: { customerId, uksId } });
+    };
     if (!customerDetails) {
         return <div>Loading...</div>;
     }
@@ -214,6 +218,7 @@ function Uks_Customer_Updation() {
                                 </div>
                             </Col>
                             <Col lg={3} className='customer-prf-download' >
+
                                 <span>
                                     <a href="" onClick={handleProfileDownload} style={{ marginRight: "15px", textDecoration: 'none' }}>
                                         Profile Download
@@ -233,6 +238,18 @@ function Uks_Customer_Updation() {
                             <hr style={{ margin: "5px", width: "98%" }} />
                         </Row>
                         <Row className="Row1 view-row-size">
+                            <div>
+                                <Button
+                                    onClick={handleApplyLoan}
+                                    style={{ backgroundColor: 'green', borderColor: 'green' }}
+                                >
+                                    Direct Apply Loan to DSA
+                                </Button>
+                            </div>
+                        </Row>
+
+                        <Row className="Row1 view-row-size">
+
                             <Col className='basic-col-width' lg={2}>
                                 <span className="customer-sentence" style={{ color: 'red' }}>Block Status</span>
                             </Col>

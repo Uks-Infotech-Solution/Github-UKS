@@ -31,19 +31,21 @@ function Applied_Loan() {
   const indexOfFirstLoan = indexOfLastLoan - rowsPerPage;
   const currentLoans = appliedLoan.slice(indexOfFirstLoan, indexOfLastLoan);
 
-  const paginate = pageNumber => setCurrentPage(pageNumber);
+  const paginate = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
 
   const handleRowsPerPageChange = (selectedRowsPerPage) => {
     setRowsPerPage(parseInt(selectedRowsPerPage));
-    setCurrentPage(1);
+    setCurrentPage(1); // Reset to page 1 when rows per page changes
   };
+
   useEffect(() => {
     const fetchLoanDetails = async () => {
       try {
         const response = await axios.get(`https://uksinfotechsolution.in:8000/api/customer/${customerId}/loans`);
         if (response.status === 200) {
           setAppliedLoan(response.data.data);
-          // console.log(response.data.data);
           setLoading(false);
 
           // Fetch address details for each DSA
@@ -70,7 +72,6 @@ function Applied_Loan() {
       fetchLoanDetails();
     }
   }, [customerId]);
-
 
   const handleFilterOptionChange = (option) => {
     setFilterOption(option);
@@ -127,13 +128,15 @@ function Applied_Loan() {
   // Filter appliedLoan based on filterOption and filterValue
   const filteredLoans = appliedLoan.filter((loan) => {
     if (filterOption === 'District') {
-      return dsaAddress[loan.dsaId]?.district.toLowerCase().includes(filterValue.toLowerCase());
+      return dsaAddress[loan.dsaId]?.district?.toLowerCase().includes(filterValue.toLowerCase()) || !dsaAddress[loan.dsaId];
     }
     if (filterOption === 'Area') {
-      return dsaAddress[loan.dsaId]?.area.toLowerCase().includes(filterValue.toLowerCase());
+      return dsaAddress[loan.dsaId]?.area?.toLowerCase().includes(filterValue.toLowerCase()) || !dsaAddress[loan.dsaId];
     }
     return true;
   });
+
+  const totalPages = Math.ceil(filteredLoans.length / rowsPerPage);
 
   return (
     <>
@@ -186,8 +189,6 @@ function Applied_Loan() {
                   <th className='dsa-table-head'>DSA No</th>
                   <th className='dsa-table-head'>DSA Name</th>
                   <th className='dsa-table-head'>Company Name</th>
-                  {/* <th className='dsa-table-head'>District</th> */}
-                  {/* <th className='dsa-table-head'>Area</th> */}
                   <th className='dsa-table-head'>View</th>
                 </tr>
               </thead>
@@ -197,7 +198,7 @@ function Applied_Loan() {
                     <td colSpan="9" className="text-center">No Record Found</td>
                   </tr>
                 ) : (
-                  filteredLoans.map((loan, index) => (
+                  currentLoans.map((loan, index) => (
                     <tr key={loan._id}>
                       <td>{indexOfFirstLoan + index + 1}</td>
                       <td>UKS-Application-0{loan.applicationNumber}</td>
@@ -207,45 +208,47 @@ function Applied_Loan() {
                       <td>UKS-DSA-0{loan.dsaNumber}</td>
                       <td>{loan.dsaName}</td>
                       <td>{loan.dsaCompanyName}</td>
-                      {/* <td>{dsaAddress[loan.dsaId]?.district}</td> */}
-                      {/* <td>{dsaAddress[loan.dsaId]?.area}</td> */}
                       <td>
                         <GrView
-                          size={15}
+                          size={16}
+                          style={{ cursor: 'pointer' }}
                           onClick={() => handleViewClick(loan._id, loan.dsaId, loan.customerId)}
-                          style={{ cursor: 'pointer', color: '#2492eb' }}
                         />
                       </td>
                     </tr>
-                  )))}
+                  ))
+                )}
               </tbody>
             </Table>
           </div>
-          <div className="pagination-container">
-            <div className="pagination">
-              <span style={{ marginRight: '10px' }}>Rows per page: </span>
-              <DropdownButton
-                id="rowsPerPageDropdown"
-                title={`${rowsPerPage}`}
-                onSelect={handleRowsPerPageChange}
-                style={{ marginRight: '10px' }}
-              >
-                <Dropdown.Item eventKey="5">5</Dropdown.Item>
-                <Dropdown.Item eventKey="10">10</Dropdown.Item>
-                <Dropdown.Item eventKey="15">15</Dropdown.Item>
-                <Dropdown.Item eventKey="20">20</Dropdown.Item>
-              </DropdownButton>
-              <MdKeyboardArrowLeft
-                onClick={() => paginate(currentPage === 1 ? currentPage : currentPage - 1)}
-                size={20}
-                style={{ cursor: 'pointer', marginRight: '5px' }}
-              />
-              <span style={{ color: 'blue' }}>Page {currentPage}</span>
-              <MdKeyboardArrowRight
-                onClick={() => paginate(currentPage === Math.ceil(appliedLoan.length / rowsPerPage) ? currentPage : currentPage + 1)}
-                size={20}
-                style={{ cursor: 'pointer', marginLeft: '5px' }}
-              />
+          <div className="pagination-controls">
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '10px' }}>
+              <span style={{ display: 'flex', alignItems: 'center', marginLeft: '20px' }}>
+                <span style={{ marginRight: '10px' }}>Rows per page:</span>
+                <FormControl
+                  as="select"
+                  value={rowsPerPage}
+                  onChange={(e) => handleRowsPerPageChange(e.target.value)}
+                  style={{ width: '80px', height: '30px', borderRadius: '4px' }}
+                >
+                  <option value="5">5</option>
+                  <option value="10">10</option>
+                  <option value="15">15</option>
+                </FormControl>
+              </span>
+              <span style={{ display: 'flex', alignItems: 'center', marginRight: '20px' }}>
+                <span>{indexOfFirstLoan + 1}-{Math.min(indexOfLastLoan, filteredLoans.length)} of {filteredLoans.length}</span>
+                <MdKeyboardArrowLeft
+                  size={30}
+                  style={{ cursor: currentPage > 1 ? 'pointer' : 'not-allowed', opacity: currentPage > 1 ? 1 : 0.5 }}
+                  onClick={() => currentPage > 1 && paginate(currentPage - 1)}
+                />
+                <MdKeyboardArrowRight
+                  size={30}
+                  style={{ cursor: currentPage < totalPages ? 'pointer' : 'not-allowed', opacity: currentPage < totalPages ? 1 : 0.5 }}
+                  onClick={() => currentPage < totalPages && paginate(currentPage + 1)}
+                />
+              </span>
             </div>
           </div>
         </div>

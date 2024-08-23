@@ -2,13 +2,12 @@ import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import './CustomerFilter.css';
 
-function CustomerFilter({ onFilter, loanRangeCounts }) {
-    const [location, setLocation] = useState('');
+function CustomerFilter({ onFilter, loanRangeCounts = {}, locations = [] }) {
+    const [location, setLocation] = useState([]);
     const [selectedRanges, setSelectedRanges] = useState([]);
     const [typeOfLoan, setTypeOfLoan] = useState('');
     const [showMore, setShowMore] = useState(false);
 
-    // Define loan ranges with correct min and max values
     const loanRanges = [
         { label: "0-3 Lakhs", min: 0, max: 300000 },
         { label: "3-6 Lakhs", min: 300000, max: 600000 },
@@ -36,8 +35,17 @@ function CustomerFilter({ onFilter, loanRangeCounts }) {
         });
     };
 
+    const handleLocationChange = (loc) => {
+        setLocation(prevSelected => {
+            if (prevSelected.includes(loc)) {
+                return prevSelected.filter(l => l !== loc);
+            } else {
+                return [...prevSelected, loc];
+            }
+        });
+    };
+
     const handleFilter = () => {
-        // Convert range labels to actual range objects
         const selectedRangeObjects = selectedRanges.map(label => {
             const range = loanRanges.concat(moreLoanRanges).find(r => r.label === label);
             return range || { min: 0, max: Infinity };
@@ -45,20 +53,29 @@ function CustomerFilter({ onFilter, loanRangeCounts }) {
 
         onFilter({ location, selectedRanges: selectedRangeObjects, typeOfLoan });
     };
+console.log(locations);
 
     return (
         <div className="filter-box">
             <h4>Filter By</h4>
+
+            {/* Location Filter */}
             <Form.Group>
                 <Form.Label>Location</Form.Label>
-                <Form.Control
-                    type="text"
-                    placeholder="Enter location"
-                    value={location}
-                    onChange={(e) => setLocation(e.target.value)}
-                />
+                {locations.map(loc => (
+                    <div key={loc} className="checkbox-container">
+                        <input
+                            type="checkbox"
+                            id={loc}
+                            checked={location.includes(loc)}
+                            onChange={() => handleLocationChange(loc)}
+                        />
+                        <label htmlFor={loc}>{loc}</label>
+                    </div>
+                ))}
             </Form.Group>
 
+            {/* Loan Required Filter */}
             <Form.Group>
                 <Form.Label>Loan Required</Form.Label>
                 {loanRanges.map(range => (
@@ -97,6 +114,7 @@ function CustomerFilter({ onFilter, loanRangeCounts }) {
                 </Button>
             </Form.Group>
 
+            {/* Type of Loan Filter */}
             <Form.Group>
                 <Form.Label>Type of Loan</Form.Label>
                 <Form.Control
@@ -112,6 +130,7 @@ function CustomerFilter({ onFilter, loanRangeCounts }) {
                 </Form.Control>
             </Form.Group>
 
+            {/* Apply Filter Button */}
             <Button variant="primary" onClick={handleFilter} className="filter-button">
                 Apply Filters
             </Button>

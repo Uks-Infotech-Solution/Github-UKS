@@ -76,6 +76,9 @@ import EnquiryList from './Enquiry_Details_Customer/Enquiry_List';
 import DSA_Enquiry from './Enquiry_Details_DSA/DSA_Enquiry_Form';
 import DSA_EnquiryList from './Enquiry_Details_DSA/DSA_Enquiry_List';
 import Grid_Customer_List from './Outer_Customer_List/Grid_Customer';
+import UKS_Apply_Loan_Customer from './DashBoard/Customer/Uks_Customer_Apply_loan';
+import UKS_Apply_Loan_POPUP from './DashBoard/Customer/UKS_Customer_Popup_Apply_Loan';
+import UKS_POPUP_Apply_Loan from './DashBoard/Customer/UKS_Customer_Popup_Apply_Loan';
 
 function App() {
   return (
@@ -158,6 +161,9 @@ function App() {
             <Route path="/uks/activate/:token" element={<UKS_Activate />} />
             <Route path="/uks/customer/list" element={<Customer_Missing_Details />} />
             <Route path="/uks/customer/detail/view" element={<Uks_Customer_Updation />} />
+            <Route path="/uks/customer/apply/loan" element={<UKS_Apply_Loan_Customer />} />
+            <Route path="/uks/customer/apply/loan/popup" element={<UKS_POPUP_Apply_Loan />} />
+
             <Route path="/uks/loan/appliation" element={<Uks_Loan_Applications />} />
             <Route path="/uks/dsa/pending/list" element={<Dsa_pending_List />} />
             <Route path="/uks/dsa/list" element={<UKS_DSA_List />} />
@@ -204,7 +210,7 @@ function App() {
 
   function IndexWithNavbar({ element }) {
     const location = useLocation();
-    const showNavbar = ['/ldp/finserv','/listOfCustomers','/dsa/login', '/package/activate/:token', '/customer/login', '/uks/register', '/uks/login', '/dsa/register', '/customer/register'].includes(location.pathname);
+    const showNavbar = ['/ldp/finserv','/listof/customers','/dsa/login', '/package/activate/:token', '/customer/login', '/uks/register', '/uks/login', '/dsa/register', '/customer/register'].includes(location.pathname);
     return (
       <>
         {showNavbar && <Index_Navbar />}

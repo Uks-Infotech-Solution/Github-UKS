@@ -2,16 +2,15 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import { Button, Modal, Form, Row, Col, Container } from 'react-bootstrap';
-import './DSA_Loan_Customer.css'; // Import custom CSS for component styling
 import { useNavigate } from 'react-router-dom';
 
-const DSA_Loan_Customer = () => {
+const UKS_POPUP_Apply_Loan = () => {
     const location = useLocation();
-    const { dsaId } = location.state || {};
-    const { customerId } = location.state || {};
+    const { selectedDSAs, customerId, uksId } = location.state || {};
+
+    // console.log(selectedDSAs);
 
     const [customerDetails, setCustomerDetails] = useState(null);
-    const [dsaDetails, setDsaDetails] = useState(null);
     const [application, setApplication] = useState(null);
 
     const [LoanDetails, setLoanDetails] = useState([]);
@@ -24,9 +23,9 @@ const DSA_Loan_Customer = () => {
     const navigate = useNavigate();
     const [showAddressModal, setShowAddressModal] = useState(false);
     // State variables for form inputs
-    const [selectedLoanType, setSelectedLoanType] = useState('');
     const [inputLoanAmount, setInputLoanAmount] = useState('');
     const [formattedLoanAmount, setFormattedLoanAmount] = useState('');
+    let successfulSubmissions = 0;
 
     const [inputLoanDuration, setInputLoanDuration] = useState('');
     const [selectedLoanLevel, setSelectedLoanLevel] = useState('');
@@ -36,33 +35,32 @@ const DSA_Loan_Customer = () => {
     const [documentTypes, setDocumentTypes] = useState([]);
     const [Unsecured_documentTypes, setUnsecured_DocumentTypes] = useState([]);
 
+    const [dsaIndex, setDsaIndex] = useState(0);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [dsaDetails, setDsaDetails] = useState({});
+
+
+    useEffect(() => {
+        handleShowModal();
+    }, []);
+
     useEffect(() => {
         const fetchDSADetails = async () => {
             try {
+                const dsaId = selectedDSAs[dsaIndex].id;
                 const response = await axios.get(`https://uksinfotechsolution.in:8000/api/dsa?dsaId=${dsaId}`);
                 setDsaDetails(response.data);
+                console.log(response.data);
+
             } catch (error) {
                 console.error('Error fetching DSA details:', error);
                 alert("Failed to fetch DSA details");
             }
         };
-        if (dsaId) { fetchDSADetails(); }
-    }, [dsaId]);
-
-    useEffect(() => {
-        const fetchLoanDetails = async () => {
-            try {
-                const response = await axios.get(`https://uksinfotechsolution.in:8000/api/dsa/${dsaId}/loanDetails`);
-                if (response.status === 200) {
-                    setLoanDetails(response.data.loanDetails);
-                }
-            } catch (error) {
-                console.error('Error fetching loan details:', error);
-            }
-        };
-
-        fetchLoanDetails();
-    }, [dsaId]);
+        if (dsaIndex < selectedDSAs.length) {
+            fetchDSADetails();
+        }
+    }, [dsaIndex, selectedDSAs]);
 
     useEffect(() => {
         const fetchCustomerDetails = async () => {
@@ -132,11 +130,11 @@ const DSA_Loan_Customer = () => {
             if (response.data) {
                 // If address is found, show the apply loan modal
                 setShowModal(true);
-            
-        } else {
-            // If address not found, show the address update modal
-            setShowAddressModal(true);
-          }
+
+            } else {
+                // If address not found, show the address update modal
+                setShowAddressModal(true);
+            }
         } catch (error) {
             if (error.response && error.response.status === 404) {
                 // If address not found, show the address update modal
@@ -148,13 +146,13 @@ const DSA_Loan_Customer = () => {
     };
     const handleCloseAddressModal = () => {
         setShowAddressModal(false);
-        navigate('/customer/profile/view', { state: { customerId } });
+        navigate('/uks/customer/detail/view', { state: { customerId,uksId } });
     };
     const handleCloseModal = () => setShowModal(false);
     const handleShowSuccessModal = () => setShowSuccessModal(true);
     const handleCloseSuccessModal = () => {
         setShowSuccessModal(false);
-        navigate('/customer-dashboard', { state: { customerId } });
+        navigate('/uks/customer/list', { state: { uksId } });
     };
 
     const determineLoanLevel = (amount) => {
@@ -164,19 +162,23 @@ const DSA_Loan_Customer = () => {
         return 'Platinum';
     };
     const formatNumber = (value) => {
-        if (!value) return '';
-        const number = parseFloat(value.replace(/,/g, ''));
-        return isNaN(number) ? '' : new Intl.NumberFormat('en-IN').format(number);
-    };
-
-    const handleLoanAmountChange = (e) => {
-        const rawValue = e.target.value.replace(/,/g, '');
-        if (!isNaN(rawValue)) {
-            setInputLoanAmount(rawValue);
-            setFormattedLoanAmount(formatNumber(rawValue));
-            const level = determineLoanLevel(rawValue);
-            setSelectedLoanLevel(level);
+        if (typeof value === 'number') {
+            return new Intl.NumberFormat('en-IN').format(value);
         }
+        return '';
+    };
+    useEffect(() => {
+        const loanAmount = customerDetails?.loanRequired;
+        if (loanAmount) {
+            const event = { target: { value: loanAmount } };
+            handleLoanAmountChange(event);
+        }
+    }, [customerDetails]);
+    const handleLoanAmountChange = (loanAmount) => {
+        setInputLoanAmount(loanAmount);
+        setFormattedLoanAmount(formatNumber(loanAmount));
+        const level = determineLoanLevel(loanAmount);
+        setSelectedLoanLevel(level);
     };
 
 
@@ -193,20 +195,23 @@ const DSA_Loan_Customer = () => {
         setSelectedDocumentOption(event.target.value);
     };
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (dsaId) => {
+        if (isSubmitting) return;
+        setIsSubmitting(true);
         try {
             const response = await axios.post('https://uksinfotechsolution.in:8000/customer/loan/apply', {
                 customerId: customerId,
                 customerName: customerDetails.customerFname,
                 customerNo: customerDetails.customerNo,
                 customerMailId: customerDetails.customermailid,
-                loanType: selectedLoanType,
-                loanAmount: inputLoanAmount,
+                loanType: customerDetails.typeofloan,
+                loanAmount: customerDetails.loanRequired,
                 loanRequiredDays: inputLoanDuration,
                 dsaId: dsaId,
-                dsaName: dsaDetails.dsaName,
-                dsaNumber: dsaDetails.dsaNumber,
-                dsaCompanyName: dsaDetails.dsaCompanyName,
+                dsaName: selectedDSAs.find((dsa) => dsa.id === dsaId).name,
+                dsaNumber: selectedDSAs.find((dsa) => dsa.id === dsaId).dsaNumber,
+                dsaCompanyName: selectedDSAs.find((dsa) => dsa.id === dsaId).dsaCompanyName,
+
                 applyLoanStatus: "Pending",
                 loanLevel: selectedLoanLevel, // Send the selected loan level
                 loanSecured: selectedLoanSecured, // Send secured/unsecured status
@@ -215,59 +220,62 @@ const DSA_Loan_Customer = () => {
             });
 
             if (response.status === 201) {
-                setShowModal(false);
-                handleShowSuccessModal();
-                setApplication(response.data.data); // Make sure the property name matches what is returned by your backend
-                // console.log(response.data); 
-            }  else if (response.status === 200 && response.data.message.includes('Loan with the same details already exists')) {
+                console.log('Loan application submitted successfully');
+                // alert('Successfully submited applications')      
+
+            } else if (response.status === 200 && response.data.message.includes('Loan with the same details already exists')) {
                 // Extract details from the response
+                successfulSubmissions--;
+
                 const { customerName, dsaName } = response.data.data;
                 // Format the alert message
-                const alertMessage = `Already: You applied for the same loan with ${dsaName}`;
+                const alertMessage = `Already: ${customerName} applied for the same loan with ${dsaName}`;
                 // Display the alert with the formatted message
                 alert(alertMessage);
                 // console.log('Existing loan:', response.data.data);
             } else {
                 console.error('Unexpected response:', response);
+                successfulSubmissions--;
+
                 alert("Failed to submit loan application");
             }
         } catch (error) {
             console.error('Error submitting loan application:', error);
+            successfulSubmissions--;
+            alert('Failed to submit applications', error)
+
+        } finally {
+            setIsSubmitting(false);
         }
     };
+    const handleApplyLoan = async () => {
+        if (selectedDSAs.length === 0) return;
 
+
+        for (let i = 0; i < selectedDSAs.length; i++) {
+            const dsaId = selectedDSAs[i].id;
+            //   console.log(dsaId);
+
+            try {
+                await handleSubmit(dsaId);
+                successfulSubmissions++;
+            } catch (error) {
+                console.error('Error submitting loan application:', error);
+            }
+        }
+
+        if (successfulSubmissions === selectedDSAs.length) {
+            handleShowSuccessModal(); // Show success modal when all DSA IDs are processed successfully
+        }
+        else{
+        navigate('/uks/customer/list', { state: { uksId } });
+
+        }
+    };
     return (
         <Container fluid className="dsa-loan-customer-container">
             <div className="dsa-loan-customer-content">
-                <h5 className="section-title">Type of Loan Providing</h5>
-                <hr />
-                <div className="table-responsive">
-                    <table className="table">
-                        <thead>
-                            <tr>
-                                <th>Serial No.</th>
-                                <th>Type of Loan</th>
-                                <th>Required Days</th>
-                                <th>Required Document</th>
-                                <th>Required Type</th>
-                                <th>Required Cibil Score</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {LoanDetails.map((loan, index) => (
-                                <tr key={loan._id || index}>
-                                    <td>{index + 1}</td>
-                                    <td>{loan.typeOfLoan}</td>
-                                    <td>{loan.requiredDays}</td>
-                                    <td>{loan.requiredDocument}</td>
-                                    <td>{loan.requiredType}</td>
-                                    <td>{loan.requiredCibilScore}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-                <div>
+                {/* <div>Confirmation Page
                     <Button
                         variant="success"
                         onClick={handleShowModal}
@@ -275,14 +283,14 @@ const DSA_Loan_Customer = () => {
                     >
                         Apply Loan
                     </Button>
-                </div>
+                </div> */}
                 {/* Address Update Modal */}
                 <Modal show={showAddressModal} onHide={handleCloseAddressModal}>
                     <Modal.Header closeButton>
                         <Modal.Title>Update Address</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                        Please update your address to proceed with the Loan application.
+                        Please update the Customer address to proceed with the Loan application.
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="primary" onClick={handleCloseAddressModal}>
@@ -313,14 +321,7 @@ const DSA_Loan_Customer = () => {
                             <Form.Group as={Row} className="mb-3">
                                 <Form.Label column sm={4}><strong>Loan Applied For:</strong></Form.Label>
                                 <Col sm={8}>
-                                    <select className="form-select" value={selectedLoanType} onChange={(e) => setSelectedLoanType(e.target.value)}>
-                                        <option value="">Select</option>
-                                        {LoanDetails.map((loan, index) => (
-                                            <option key={loan._id || index} value={loan.typeOfLoan}>
-                                                {loan.typeOfLoan}
-                                            </option>
-                                        ))}
-                                    </select>
+                                    <Form.Control type="text" value={customerDetails?.typeofloan} readOnly />
 
                                 </Col>
                             </Form.Group>
@@ -328,12 +329,7 @@ const DSA_Loan_Customer = () => {
                             <Form.Group as={Row} className="mb-3">
                                 <Form.Label column sm={4}><strong>Loan Amount:</strong></Form.Label>
                                 <Col sm={8}>
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Enter Loan Amount"
-                                        value={formattedLoanAmount}
-                                        onChange={handleLoanAmountChange}
-                                    />
+                                    <Form.Control type="text" value={customerDetails?.loanRequired} readOnly />
                                 </Col>
                             </Form.Group>
 
@@ -426,7 +422,7 @@ const DSA_Loan_Customer = () => {
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={handleCloseModal}>Close</Button>
-                        <Button variant="success" onClick={handleSubmit}>Submit</Button>
+                        <Button variant="success" onClick={handleApplyLoan}>Submit</Button>
                     </Modal.Footer>
                 </Modal>
 
@@ -446,4 +442,4 @@ const DSA_Loan_Customer = () => {
     );
 };
 
-export default DSA_Loan_Customer;
+export default UKS_POPUP_Apply_Loan;

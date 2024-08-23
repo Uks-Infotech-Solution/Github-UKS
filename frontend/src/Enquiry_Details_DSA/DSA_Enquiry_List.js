@@ -19,7 +19,7 @@ const DSA_EnquiryList = () => {
   });
   const [showModal, setShowModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1); // Current page state
-  const [rowsPerPage, setRowsPerPage] = useState(5); // Rows per page state
+  const [rowsPerPage, setRowsPerPage] = useState(30); // Rows per page state
 
   const location = useLocation();
   const { uksId } = location.state || {};

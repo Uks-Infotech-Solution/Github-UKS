@@ -39,7 +39,7 @@ function Index_Navbar() {
           <Navbar.Collapse id="offcanvasNavbar">
             <Nav className="justify-content-end flex-grow-1 pe-3 index-navmenu" onSelect={closeNavbar}>
               <Nav.Link as={Link} to="/" className='index-navbt' activeClassName="active" exact onClick={closeNavbar}>Home</Nav.Link>
-              <Nav.Link as={Link} to="/listOfCustomers" className='index-navbt' activeClassName="active" exact onClick={closeNavbar}>Services</Nav.Link>
+              <Nav.Link as={Link} to="/listof/customers" className='index-navbt' activeClassName="active" exact onClick={closeNavbar}>Services</Nav.Link>
               {/* <Nav.Link as={Link} to="/pricing" className='index-navbt' activeClassName="active" exact onClick={closeNavbar}>Pricing</Nav.Link> */}
               <Nav.Link as={Link} to="/dsa/login" className='index-navbt ' activeClassName="active" exact onClick={dsalogin}>DSA Login</Nav.Link>
               <Nav.Link as={Link} to="/customer/login" className='index-navbt ' activeClassName="active" exact onClick={dsalogin}>Cus-Login</Nav.Link>

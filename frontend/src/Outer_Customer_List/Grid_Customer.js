@@ -12,6 +12,7 @@ function Grid_Customer_List() {
     const [customers, setCustomers] = useState([]);
     const [filteredCustomers, setFilteredCustomers] = useState([]);
     const [loanRangeCounts, setLoanRangeCounts] = useState({});
+    const [locations, setLocations] = useState([]);
     const [addressDetails, setAddressDetails] = useState({});
 
     const loanRanges = [
@@ -32,12 +33,13 @@ function Grid_Customer_List() {
     useEffect(() => {
         const fetchCustomers = async () => {
             try {
-                const response = await axios.get('http://localhost:8000/customers');
+                const response = await axios.get('https://uksinfotechsolution.in:8000/customers');
                 const customers = response.data;
                 setCustomers(customers);
                 setFilteredCustomers(customers);
                 const counts = calculateLoanRangeCounts(customers, loanRanges);
                 setLoanRangeCounts(counts);
+                
                 customers.forEach(customer => {
                     fetchAddressDetails(customer._id);
                 });
@@ -59,41 +61,67 @@ function Grid_Customer_List() {
     };
 
     const handleFilter = (filters) => {
-        const { location, selectedRanges, typeOfLoan } = filters;
-        const filtered = customers.filter(customer => {
-            const matchesLocation = location ? customer.addressDetails?.permanentCity?.toLowerCase().includes(location.toLowerCase()) : true;
-            const matchesTypeOfLoan = typeOfLoan ? customer.typeofloan.toLowerCase() === typeOfLoan.toLowerCase() : true;
+        const { selectedLocations, selectedRanges, typeOfLoan } = filters;
 
+        const filtered = customers.filter(customer => {
+            const matchesLocation = selectedLocations.length === 0 || selectedLocations.includes(customer.addressDetails?.permanentDistrict);
+            const matchesTypeOfLoan = typeOfLoan ? customer.typeofloan.toLowerCase() === typeOfLoan.toLowerCase() : true;
             const matchesLoanRange = selectedRanges.length === 0 || selectedRanges.some(range =>
                 customer.loanRequired >= range.min && customer.loanRequired < range.max
             );
 
             return matchesLocation && matchesTypeOfLoan && matchesLoanRange;
         });
+
         setFilteredCustomers(filtered);
     };
 
     const fetchAddressDetails = async (customerId) => {
         try {
-            const response = await axios.get(`http://localhost:8000/view-address`, {
-                params: { customerId: customerId }
+            const response = await axios.get(`https://uksinfotechsolution.in:8000/view-address`, {
+                params: { customerId }
             });
+    
             if (response.data) {
+                console.log('API Response:', response.data);
+    
                 setAddressDetails(prevDetails => ({
                     ...prevDetails,
                     [customerId]: response.data
                 }));
+    
+                setCustomers(prevCustomers => {
+                    const updatedCustomers = prevCustomers.map(customer => 
+                        customer._id === customerId
+                            ? { ...customer, addressDetails: response.data }
+                            : customer
+                    );
+                    console.log('Updated Customers:', updatedCustomers);
+    
+                    // Extract locations from `permanentDistrict`
+                    const updatedLocations = Array.from(
+                        new Set(updatedCustomers
+                            .map(customer => customer.addressDetails?.permanentDistrict) // Use permanentDistrict
+                            .filter(Boolean))
+                    );
+                    console.log('Extracted Locations:', updatedLocations);
+                    setLocations(updatedLocations);
+    
+                    return updatedCustomers;
+                });
             }
         } catch (error) {
             console.error('Error fetching address details:', error);
         }
     };
+    
+    
 
     return (
         <Container fluid>
             <Row>
                 <Col md={3}>
-                    <CustomerFilter onFilter={handleFilter} loanRangeCounts={loanRangeCounts}  />
+                    <CustomerFilter onFilter={handleFilter} loanRangeCounts={loanRangeCounts} locations={locations} />
                 </Col>
                 <Col md={9}>
                     {filteredCustomers.map(customer => (

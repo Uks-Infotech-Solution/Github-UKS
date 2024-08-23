@@ -1441,8 +1441,6 @@ app.get('/dsa/customer/applied/loan/:dsaId', async (req, res) => {
 
 app.post('/customer/loan/apply', async (req, res) => {
     try {
-        // console.log(req.body);
-
         const {
             customerId,
             customerName,
@@ -1461,7 +1459,28 @@ app.post('/customer/loan/apply', async (req, res) => {
             documentType,
             documentOption
         } = req.body;
-        // Create a new instance of AppliedLoanStatus
+
+        // Check if a loan with the same customerId, dsaId, loanType, and loanAmount already exists
+        const existingLoan = await LoanApplication.findOne({
+            customerId,
+            dsaId,
+            loanType,
+            loanAmount
+        });
+
+        if (existingLoan) {
+            console.log("existing loan");
+
+            // If a matching loan is found, respond with the existing loan data
+            return res.status(200).json({
+                success: true,
+                data: existingLoan,
+                message: 'Loan with the same details already exists'
+            });
+            
+        }
+
+        // Create a new instance of LoanApplication
         const newAppliedLoanStatus = new LoanApplication({
             customerId,
             customerName,
@@ -1487,7 +1506,8 @@ app.post('/customer/loan/apply', async (req, res) => {
         // Respond with the saved data
         res.status(201).json({
             success: true,
-            data: savedLoanApplication
+            data: savedLoanApplication,
+            message: 'Loan application submitted successfully'
         });
     } catch (error) {
         console.error('Error submitting loan application:', error);
@@ -1497,6 +1517,7 @@ app.post('/customer/loan/apply', async (req, res) => {
         });
     }
 });
+
 
 // server.js or routes file
 

@@ -36,7 +36,6 @@ function Uks_Loan_Applications() {
 
         const initialCheckedItems = {};
         const addressesData = {};
-        const profilePicturesData = {};
 
         for (const customer of customersData) {
           initialCheckedItems[customer._id] = false;
@@ -49,29 +48,10 @@ function Uks_Loan_Applications() {
           } catch (error) {
             console.error(`Error fetching address for customer ${customer._id}:`, error);
           }
-
-          try {
-            const profileResponse = await axios.get(`https://uksinfotechsolution.in:8000/api/profile/view-profile-picture?customerId=${customer.customerId}`, {
-              responseType: 'arraybuffer',
-            });
-            const contentType = profileResponse.headers['content-type'];
-
-            if (contentType && contentType.startsWith('image')) {
-              const base64Image = `data:${contentType};base64,${btoa(
-                String.fromCharCode(...new Uint8Array(profileResponse.data))
-              )}`;
-              profilePicturesData[customer._id] = base64Image;
-            } else {
-              console.error('Response is not an image');
-            }
-          } catch (err) {
-            console.error('Error retrieving profile picture:', err);
-          }
         }
 
         setCheckedItems(initialCheckedItems);
         setAddresses(addressesData);
-        setProfilePictures(profilePicturesData);
         setLoading(false);
       } catch (err) {
         console.error('Error fetching customers:', err);
@@ -183,20 +163,20 @@ function Uks_Loan_Applications() {
       <Container fluid className={`Customer-basic-view-container ${isSidebarExpanded ? 'sidebar-expanded' : ''}`}>
         <Container className='Customer-table-container-second'>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <span className='Customer-table-container-second-head'>Applied Customers List</span>
+            <span className='Customer-table-container-second-head'>Customer- Loan Applied List</span>
             <span style={{ display: 'flex', alignItems: 'center', position: 'relative' }}>
-              <IoFilterSharp
+              {/* <IoFilterSharp
                 size={30}
                 style={{ paddingRight: "10px", cursor: 'pointer' }}
                 onClick={() => setShowFilterDropdown(!showFilterDropdown)}
-              />
+              /> */}
               <LiaSortAlphaDownSolid
                 size={30}
                 style={{ paddingRight: "10px", cursor: 'pointer' }}
                 onClick={handleSort}
               />
 
-              {showFilterDropdown && (
+              {/* {showFilterDropdown && (
                 <div ref={filterDropdownRef} className="filter-dropdown" style={{ width: "400px", display: 'flex', alignItems: 'center', right: 0, top: '100%', zIndex: 1, marginRight: "0px" }}>
                   <FormControl
                     type="text"
@@ -215,33 +195,26 @@ function Uks_Loan_Applications() {
                     <Dropdown.Item eventKey="Area">Area</Dropdown.Item>
                   </DropdownButton>
                 </div>
-              )}
+              )} */}
             </span>
           </div>
           <div className="table-responsive">
             <Table striped bordered hover className='dsa-table-line'>
               <thead>
                 <tr>
-                  {/* <th>
-                    <input
-                      type="checkbox"
-                      checked={allChecked}
-                      onChange={(e) => {
-                        setAllChecked(e.target.checked);
-                        handleAllChecked(e);
-                      }}
-                    />
-                  </th> */}
                   <th className='Customer-Table-head'>SI.No</th>
                   <th className='Customer-Table-head'>Application No</th>
                   <th className='Customer-Table-head'>Customer No</th>
                   <th className='Customer-Table-head'>Name</th>
-                  <th className='Customer-Table-head'>District</th>
-                  <th className='Customer-Table-head'>Area</th>
+                  {/* <th className='Customer-Table-head'>District</th>
+                  <th className='Customer-Table-head'>Area</th> */}
                   <th className='Customer-Table-head'>Type of Loan</th>
                   <th className='Customer-Table-head'>Amount</th>
                   <th className='Customer-Table-head'>Required Days</th>
-
+                  <th className='Customer-Table-head'>DSA No</th>
+                  <th className='Customer-Table-head'>DSA Name</th>
+                  <th className='Customer-Table-head'>Company Name</th>
+                  <th className='Customer-Table-head'>Applied Date</th>
                   <th className='Customer-Table-head'>Status</th>
 
                   <th className='Customer-Table-head'>View</th>
@@ -249,55 +222,56 @@ function Uks_Loan_Applications() {
                 </tr>
               </thead>
               <tbody>
-              {currentCustomers.map((customer, index) => {
-                const customerAddress = addresses[customer._id];
-                return (
-                <tr key={customer._id}>
-                  {/* <td >
-          <input
-            type='checkbox'
-            className='customer-list-checkbox'
-            checked={checkedItems[customer._id]}
-            onChange={(e) => handleCheckboxChange(e, customer._id)}
-          />
-        </td> */}
-                  <td>{indexOfFirstCustomer + index + 1}</td>
-                  <td>UKS-Application-00{customer.applicationNumber}</td>
-                  <td style={{ width: '100px' }}>
-                    {customer.customerNo ? `UKS-CU-${customer.customerNo.toString().padStart(3, '0')}` : 'N/A'}
-                  </td>
-                  <td style={{ display: 'flex', paddingTop: '0px' }}>
-                    {profilePictures[customer._id] ? (
-                      <div style={{
-                        backgroundImage: `url(${profilePictures[customer._id]})`,
-                        backgroundSize: 'cover',
-                        borderRadius: '50%',
-                        height: '30px',
-                        width: '30px',
-                        marginRight: '10px',
-                        marginLeft: '3px'
-                      }}></div>
-                    ) : (
-                      <FaUserCircle size={32} className='navbar-profile-icon' style={{ marginRight: '10px' }} />
-                    )}
-                    <span style={{ textAlign: 'center' }}>{customer.customerName}</span>
-                  </td>
-                  {addresses[customer._id] && (
-                    <>
-                      <td>{addresses[customer._id].aadharDistrict || 'No District'}</td>
-                      <td>{addresses[customer._id].aadharCity || 'No City'}</td>
-                    </>
-                  )}
-                  <td>{customer.loanType}</td>
-                  <td>{customer.loanAmount}</td>
-                  <td>{customer.loanRequiredDays}</td>
-                  <td>{customer.applyLoanStatus}</td>
-                  <td>
-                    <GrView onClick={() => handleEditClick(customer._id)} style={{ cursor: 'pointer', color: '#2492eb' }} />
-                  </td>
-                </tr>
- );
-})}
+                {currentCustomers.map((customer, index) => {
+                  const customerAddress = addresses[customer._id];
+                  return (
+                    <tr key={customer._id}>
+                      <td>{indexOfFirstCustomer + index + 1}</td>
+                      <td>UKS-Application-00{customer.applicationNumber}</td>
+                      <td style={{ width: '100px' }}>
+                        {customer.customerNo ? `UKS-CUS-${customer.customerNo.toString().padStart(3, '0')}` : 'N/A'}
+                      </td>
+                      <td style={{ display: 'flex', paddingTop: '0px' }}>
+                        {/* {profilePictures[customer._id] ? (
+                          <div style={{
+                            backgroundImage: `url(${profilePictures[customer._id]})`,
+                            backgroundSize: 'cover',
+                            borderRadius: '50%',
+                            height: '30px',
+                            width: '30px',
+                            marginRight: '10px',
+                            marginLeft: '3px'
+                          }}></div>
+                        ) : (
+                          <FaUserCircle size={32} className='navbar-profile-icon' style={{ marginRight: '10px' }} />
+                        )} */}
+                        <span style={{ textAlign: 'center' }}>{customer.customerName}</span>
+                      </td>
+                      {/* {addresses[customer._id] && (
+                        <>
+                          <td>{addresses[customer._id].aadharDistrict || 'No District'}</td>
+                          <td>{addresses[customer._id].aadharCity || 'No City'}</td>
+                        </>
+                      )} */}
+                      <td>{customer.loanType}</td>
+                      <td>{customer.loanAmount}</td>
+                      <td>{customer.loanRequiredDays}</td>
+                      <td>UKS-DSA-0{customer.dsaNumber}</td>
+                      <td>{customer.dsaName}</td>
+                      <td>{customer.dsaCompanyName}</td>
+                      <td>{new Date(customer.timestamp).toLocaleDateString('en-GB', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric',
+                      })}</td>
+
+                      <td>{customer.applyLoanStatus}</td>
+                      <td>
+                        <GrView onClick={() => handleEditClick(customer._id)} style={{ cursor: 'pointer', color: '#2492eb' }} />
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
 
             </Table>

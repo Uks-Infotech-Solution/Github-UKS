@@ -21,8 +21,8 @@ function DsaTable() {
   const [filterValue, setFilterValue] = useState('');
   const [showFilterDropdown, setShowFilterDropdown] = useState(false);
   const [sortingOrder, setSortingOrder] = useState('asc');
-  const [currentPage, setCurrentPage] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [currentPage, setCurrentPage] = useState(1); // Current page state
+  const [rowsPerPage, setRowsPerPage] = useState(30); // Rows per page state
   const filterDropdownRef = useRef(null);
   const { isSidebarExpanded } = useSidebar();
 
@@ -52,8 +52,10 @@ function DsaTable() {
       const addressPromises = response.data.dsa.map(dsa => {
         if (!fetchedAddressIdsRef.current.has(dsa._id)) {
           fetchedAddressIdsRef.current.add(dsa._id);
-          return axios.get(`https://uksinfotechsolution.in:8000/api/dsa/address?dsaId=${dsa._id}`);
-        }
+          return axios.get(`https://uksinfotechsolution.in:8000/api/dsa/address?dsaId=${dsa._id}`)
+            .then(response => response.data)
+            .catch(() => ({}) /* Return an empty object if the DSA address is not available */)
+        } // Remove the semicolon here
         return Promise.resolve(null); // Skip if already fetched
       });
 
@@ -62,7 +64,7 @@ function DsaTable() {
       addressResponses.forEach((addressResponse, index) => {
         if (addressResponse) {
           const dsaId = response.data.dsa[index]._id;
-          const permanentAddress = addressResponse?.data?.permanentAddress || '-';
+          const permanentAddress = addressResponse?.permanentAddress || '-';
           addresses[dsaId] = permanentAddress;
         }
       });
@@ -147,18 +149,15 @@ function DsaTable() {
   };
 
 
-  // Filter appliedLoan based on filterOption and filterValue
-  // Filter appliedLoan based on filterOption and filterValue
   const filteredDsas = dsaData.filter((dsa) => {
-  if (filterOption === 'District') {
-    return dsaAddress[dsa._id]?.district;
-  }
-  if (filterOption === 'Area') {
-    return dsaAddress[dsa._id]?.area;
-  }
-  return true;
-}).filter(dsa => dsa.isActive);
-
+    if (filterOption === 'District') {
+      return dsaAddress[dsa._id]?.district?.toLowerCase().includes(filterValue.toLowerCase()) || !dsaAddress[dsa._id];
+    }
+    if (filterOption === 'Area') {
+      return dsaAddress[dsa._id]?.area?.toLowerCase().includes(filterValue.toLowerCase()) || !dsaAddress[dsa._id];
+    }
+    return true;
+  }).filter(dsa => dsa.isActive);
 
   return (
     <>
@@ -304,16 +303,9 @@ function DsaTable() {
                 <Dropdown.Item eventKey="15">15</Dropdown.Item>
                 <Dropdown.Item eventKey="20">20</Dropdown.Item>
               </DropdownButton>
-              <MdKeyboardArrowLeft
-                size={25}
-                onClick={() => currentPage > 1 && paginate(currentPage - 1)}
-              />
-              <span>Page {currentPage}</span>
-              <MdKeyboardArrowRight
-                size={25}
-                onClick={() => paginate(currentPage + 1)}
-                disabled={indexOfLastDsa >= dsaData.length}
-              />
+              <MdKeyboardArrowLeft size={25} onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1} />
+              <span>Page {currentPage} of {Math.ceil(dsaData.length / rowsPerPage)}</span>
+              <MdKeyboardArrowRight size={25} onClick={() => paginate(currentPage + 1)} disabled={indexOfLastDsa >= dsaData.length} />
             </div>
           </div>
         </div>
