@@ -111,6 +111,7 @@ function App() {
 
           <Route path="/*" element={<OtherPages />} />
           {/* <Route path="/customer/updatecustomer" element={<UpdateCustomer />} /> */}
+          <Route path="/listof/customers" element={<IndexWithNavbar element={<Grid_Customer_List />} />} />
 
         </Routes>
       </SidebarProvider>
@@ -201,7 +202,6 @@ function App() {
         </AuthenticatedLayout>
         <Routes>
           <Route path="/uks/login" element={<DashbordUserLogin />} />
-          <Route path="/listof/customers" element={<Grid_Customer_List />} />
 
         </Routes>
       </>
@@ -210,7 +210,9 @@ function App() {
 
   function IndexWithNavbar({ element }) {
     const location = useLocation();
-    const showNavbar = ['/ldp/finserv','/listof/customers','/dsa/login', '/package/activate/:token', '/customer/login', '/uks/register', '/uks/login', '/dsa/register', '/customer/register'].includes(location.pathname);
+
+    const showNavbar = ['/ldp/finserv','/listof/customers','/dsa/login', '/package/activate/:token', '/customer/login', '/uks/register', '/uks/login',
+       '/dsa/register', '/customer/register'].includes(location.pathname);
     return (
       <>
         {showNavbar && <Index_Navbar />}

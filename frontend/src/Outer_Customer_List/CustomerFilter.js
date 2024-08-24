@@ -2,21 +2,23 @@ import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import './CustomerFilter.css';
 
-function CustomerFilter({ onFilter, loanRangeCounts = {}, locations = [] }) {
+function CustomerFilter({ onFilter, loanRangeCounts = {}, locations = [], locationCounts = {}, loanTypes = [], loanTypeCounts }) {
     const [location, setLocation] = useState([]);
     const [selectedRanges, setSelectedRanges] = useState([]);
     const [typeOfLoan, setTypeOfLoan] = useState('');
     const [showMore, setShowMore] = useState(false);
+    const [showMoreLocations, setShowMoreLocations] = useState(false);
+    // console.log(loanTypeCounts);
 
     const loanRanges = [
         { label: "0-3 Lakhs", min: 0, max: 300000 },
         { label: "3-6 Lakhs", min: 300000, max: 600000 },
         { label: "6-10 Lakhs", min: 600000, max: 1000000 },
         { label: "10-15 Lakhs", min: 1000000, max: 1500000 },
+        { label: "15-25 Lakhs", min: 1500000, max: 2500000 }
     ];
 
     const moreLoanRanges = [
-        { label: "15-25 Lakhs", min: 1500000, max: 2500000 },
         { label: "25-50 Lakhs", min: 2500000, max: 5000000 },
         { label: "50-75 Lakhs", min: 5000000, max: 7500000 },
         { label: "75-100 Lakhs", min: 7500000, max: 10000000 },
@@ -51,18 +53,35 @@ function CustomerFilter({ onFilter, loanRangeCounts = {}, locations = [] }) {
             return range || { min: 0, max: Infinity };
         });
 
-        onFilter({ location, selectedRanges: selectedRangeObjects, typeOfLoan });
+        onFilter({
+            selectedLocations: location,
+            selectedRanges: selectedRangeObjects,
+            typeOfLoan
+        });
     };
-console.log(locations);
+    const handleTypeOfLoanChange = (loanType) => {
+        setTypeOfLoan(prevSelected => {
+            if (prevSelected.includes(loanType)) {
+                return prevSelected.filter(l => l !== loanType);
+            } else {
+                return [...prevSelected, loanType];
+            }
+        });
+    };
+    console.log(locations);
 
     return (
         <div className="filter-box">
-            <h4>Filter By</h4>
-
+            <h4 >All Filters</h4>
+            <hr />
+            {/* Location Filter */}
             {/* Location Filter */}
             <Form.Group>
-                <Form.Label>Location</Form.Label>
-                {locations.map(loc => (
+                <Form.Label className="Filter-head">Location</Form.Label>
+                <br />
+                <br />
+
+                {locations.slice(0, 6).map(loc => (
                     <div key={loc} className="checkbox-container">
                         <input
                             type="checkbox"
@@ -70,14 +89,44 @@ console.log(locations);
                             checked={location.includes(loc)}
                             onChange={() => handleLocationChange(loc)}
                         />
-                        <label htmlFor={loc}>{loc}</label>
+                        <label htmlFor={loc}>
+                            {loc} ({locationCounts[loc] || 0})
+                        </label>
                     </div>
                 ))}
+
+                {locations.length > 6 && (
+                    <div>
+                        <Button
+                            variant="link"
+                            onClick={() => setShowMoreLocations(!showMoreLocations)}
+                        >
+                            {showMoreLocations ? "View Less" : "View More"}
+                        </Button>
+                        {showMoreLocations && locations.slice(6).map(loc => (
+                            <div key={loc} className="checkbox-container">
+                                <input
+                                    type="checkbox"
+                                    id={loc}
+                                    checked={location.includes(loc)}
+                                    onChange={() => handleLocationChange(loc)}
+                                />
+                                <label htmlFor={loc}>
+                                    {loc} ({locationCounts[loc] || 0})
+                                </label>
+                            </div>
+                        ))}
+                    </div>
+                )}
             </Form.Group>
 
             {/* Loan Required Filter */}
+            <br />
+
             <Form.Group>
-                <Form.Label>Loan Required</Form.Label>
+                <Form.Label className="Filter-head">Loan Required</Form.Label>
+                <br />
+                <br />
                 {loanRanges.map(range => (
                     <div key={range.label} className="checkbox-container">
                         <input
@@ -113,21 +162,27 @@ console.log(locations);
                     {showMore ? "View Less" : "View More"}
                 </Button>
             </Form.Group>
+            <br />
 
             {/* Type of Loan Filter */}
             <Form.Group>
-                <Form.Label>Type of Loan</Form.Label>
-                <Form.Control
-                    as="select"
-                    value={typeOfLoan}
-                    onChange={(e) => setTypeOfLoan(e.target.value)}
-                >
-                    <option value="">Select Loan Type</option>
-                    <option value="Home Loan">Home Loan</option>
-                    <option value="Personal Loan">Personal Loan</option>
-                    <option value="Car Loan">Car Loan</option>
-                    <option value="Education Loan">Education Loan</option>
-                </Form.Control>
+                <Form.Label className="Filter-head">Type of Loan</Form.Label>
+                <br />
+                <br />
+
+                {loanTypes.map((loanType, index) => (
+                    <div key={index} className="checkbox-container">
+                        <input
+                            type="checkbox"
+                            id={loanType}
+                            checked={typeOfLoan.includes(loanType)}
+                            onChange={() => handleTypeOfLoanChange(loanType)}
+                        />
+                        <label htmlFor={loanType}>
+                            {loanType} ({loanTypeCounts[loanType] || 0})
+                        </label>
+                    </div>
+                ))}
             </Form.Group>
 
             {/* Apply Filter Button */}

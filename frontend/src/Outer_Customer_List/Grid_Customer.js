@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Col, Container, Row } from "react-bootstrap";
+import { Col, Container, Row, DropdownButton, Dropdown } from "react-bootstrap";
 import axios from "axios";
 import { FaRegAddressCard } from "react-icons/fa6";
 import './Grid_Customer_List.css';
@@ -7,6 +7,7 @@ import { FcDebt } from "react-icons/fc";
 import { RiMoneyRupeeCircleLine } from "react-icons/ri";
 import { SlLocationPin } from "react-icons/sl";
 import CustomerFilter from './CustomerFilter'; // Import the filter component
+import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md'; // Import pagination icons
 
 function Grid_Customer_List() {
     const [customers, setCustomers] = useState([]);
@@ -14,6 +15,8 @@ function Grid_Customer_List() {
     const [loanRangeCounts, setLoanRangeCounts] = useState({});
     const [locations, setLocations] = useState([]);
     const [addressDetails, setAddressDetails] = useState({});
+    const [currentPage, setCurrentPage] = useState(1);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
 
     const loanRanges = [
         { label: "0-3 Lakhs", min: 0, max: 300000 },
@@ -27,7 +30,6 @@ function Grid_Customer_List() {
         { label: "1-5 Cr", min: 10000000, max: 50000000 },
         { label: "5-15 Cr", min: 50000000, max: 150000000 },
         { label: "15-50 Cr", min: 150000000, max: 5000000000 }
-
     ];
 
     useEffect(() => {
@@ -39,7 +41,7 @@ function Grid_Customer_List() {
                 setFilteredCustomers(customers);
                 const counts = calculateLoanRangeCounts(customers, loanRanges);
                 setLoanRangeCounts(counts);
-                
+
                 customers.forEach(customer => {
                     fetchAddressDetails(customer._id);
                 });
@@ -52,10 +54,34 @@ function Grid_Customer_List() {
         fetchCustomers();
     }, []);
 
+    const uniqueLoanTypes = [...new Set(customers.map(customer => customer.typeofloan))];
+
+    const calculateLoanTypeCounts = (customers) => {
+        const counts = {};
+        customers.forEach(customer => {
+            const loanType = customer.typeofloan;
+            if (loanType) {
+                counts[loanType] = (counts[loanType] || 0) + 1;
+            }
+        });
+        return counts;
+    };
+
     const calculateLoanRangeCounts = (customers, ranges) => {
         const counts = {};
         ranges.forEach(range => {
             counts[range.label] = customers.filter(customer => customer.loanRequired >= range.min && customer.loanRequired < range.max).length;
+        });
+        return counts;
+    };
+
+    const calculateLocationCounts = (customers) => {
+        const counts = {};
+        customers.forEach(customer => {
+            const location = customer.addressDetails?.permanentDistrict;
+            if (location) {
+                counts[location] = (counts[location] || 0) + 1;
+            }
         });
         return counts;
     };
@@ -65,7 +91,7 @@ function Grid_Customer_List() {
 
         const filtered = customers.filter(customer => {
             const matchesLocation = selectedLocations.length === 0 || selectedLocations.includes(customer.addressDetails?.permanentDistrict);
-            const matchesTypeOfLoan = typeOfLoan ? customer.typeofloan.toLowerCase() === typeOfLoan.toLowerCase() : true;
+            const matchesTypeOfLoan = typeOfLoan.length === 0 || typeOfLoan.some((loanType) => customer.typeofloan.toLowerCase() === loanType.toLowerCase());
             const matchesLoanRange = selectedRanges.length === 0 || selectedRanges.some(range =>
                 customer.loanRequired >= range.min && customer.loanRequired < range.max
             );
@@ -74,6 +100,7 @@ function Grid_Customer_List() {
         });
 
         setFilteredCustomers(filtered);
+        setCurrentPage(1); // Reset to first page when filters change
     };
 
     const fetchAddressDetails = async (customerId) => {
@@ -81,32 +108,27 @@ function Grid_Customer_List() {
             const response = await axios.get(`https://uksinfotechsolution.in:8000/view-address`, {
                 params: { customerId }
             });
-    
+
             if (response.data) {
-                console.log('API Response:', response.data);
-    
                 setAddressDetails(prevDetails => ({
                     ...prevDetails,
                     [customerId]: response.data
                 }));
-    
+
                 setCustomers(prevCustomers => {
-                    const updatedCustomers = prevCustomers.map(customer => 
+                    const updatedCustomers = prevCustomers.map(customer =>
                         customer._id === customerId
                             ? { ...customer, addressDetails: response.data }
                             : customer
                     );
-                    console.log('Updated Customers:', updatedCustomers);
-    
-                    // Extract locations from `permanentDistrict`
+
                     const updatedLocations = Array.from(
                         new Set(updatedCustomers
-                            .map(customer => customer.addressDetails?.permanentDistrict) // Use permanentDistrict
+                            .map(customer => customer.addressDetails?.permanentDistrict)
                             .filter(Boolean))
                     );
-                    console.log('Extracted Locations:', updatedLocations);
                     setLocations(updatedLocations);
-    
+
                     return updatedCustomers;
                 });
             }
@@ -114,17 +136,37 @@ function Grid_Customer_List() {
             console.error('Error fetching address details:', error);
         }
     };
-    
-    
+
+    const paginate = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
+
+    const handleRowsPerPageChange = (selectedRowsPerPage) => {
+        setRowsPerPage(selectedRowsPerPage);
+        setCurrentPage(1); // Reset to first page
+    };
+
+    // Pagination calculation
+    const indexOfLastCustomer = currentPage * rowsPerPage;
+    const indexOfFirstCustomer = indexOfLastCustomer - rowsPerPage;
+    const currentCustomers = filteredCustomers.slice(indexOfFirstCustomer, indexOfLastCustomer);
 
     return (
         <Container fluid>
             <Row>
                 <Col md={3}>
-                    <CustomerFilter onFilter={handleFilter} loanRangeCounts={loanRangeCounts} locations={locations} />
+                    <CustomerFilter
+                        onFilter={handleFilter}
+                        loanRangeCounts={calculateLoanRangeCounts(customers, loanRanges)}
+                        locationCounts={calculateLocationCounts(customers)}
+                        locations={locations}
+                        customers={customers}
+                        loanTypes={uniqueLoanTypes}
+                        loanTypeCounts={calculateLoanTypeCounts(customers)}
+                    />
                 </Col>
                 <Col md={9}>
-                    {filteredCustomers.map(customer => (
+                    {currentCustomers.map(customer => (
                         <Row key={customer._id} className="outerlist-card">
                             <Col>
                                 <Row>
@@ -132,7 +174,7 @@ function Grid_Customer_List() {
                                         <div className="outerlist-header">
                                             <div className="outerlist-name">
                                                 {customer.title} {customer.customerFname} {customer.customerLname}
-                                                <span className="outerlist-customerNo"> (UKS-CUS-0{customer.customerNo})</span>
+                                                <span className="outerlist-customerNo">  (UKS-CUS-0{customer.customerNo})</span>
                                             </div>
                                             <div className="outerlist-details">
                                                 {customer.customerType}
@@ -160,14 +202,41 @@ function Grid_Customer_List() {
                             </Col>
                         </Row>
                     ))}
+                    <div className="pagination-container">
+
+                        <div className="pagination">
+                            <span style={{ marginRight: '10px' }}>Rows per page:  </span>
+
+                            <DropdownButton
+                                id="rowsPerPageDropdown"
+                                title={`${rowsPerPage}`}
+                                onSelect={handleRowsPerPageChange}
+                                className='table-row-per-button'
+                            >
+                                <Dropdown.Item eventKey="5">5</Dropdown.Item>
+                                <Dropdown.Item eventKey="10">10</Dropdown.Item>
+                                <Dropdown.Item eventKey="15">15</Dropdown.Item>
+                                <Dropdown.Item eventKey="20">20</Dropdown.Item>
+                            </DropdownButton>
+                            <MdKeyboardArrowLeft
+                                size={25}
+                                onClick={() => currentPage > 1 && paginate(currentPage - 1)}
+                            />
+                            <span>Page {currentPage} of {Math.ceil(filteredCustomers.length / rowsPerPage)}</span>
+              <MdKeyboardArrowRight size={25} onClick={() => paginate(currentPage + 1)} disabled={indexOfLastCustomer >= filteredCustomers.length} />
+
+
+                        </div>
+
+                    </div>
                 </Col>
             </Row>
         </Container>
     );
 }
 
-export default Grid_Customer_List;
-
 const formatLoanAmount = (amount) => {
-    return amount.toLocaleString('en-IN');
-}
+    return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};
+
+export default Grid_Customer_List;

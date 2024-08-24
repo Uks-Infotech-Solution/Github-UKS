@@ -11,13 +11,13 @@ import { useSidebar } from '../../Customer/Navbar/SidebarContext';
 
 function Uks_Loan_Applications() {
   const location = useLocation();
+  const { uksId } = location.state || {};
   const navigate = useNavigate();
   const [applications, setApplications] = useState([]);
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [checkedItems, setCheckedItems] = useState({});
   const [addresses, setAddresses] = useState({});
-  const [profilePictures, setProfilePictures] = useState({});
   const [filterOption, setFilterOption] = useState('District');
   const [filterValue, setFilterValue] = useState('');
   const [showFilterDropdown, setShowFilterDropdown] = useState(false);
@@ -114,21 +114,8 @@ function Uks_Loan_Applications() {
       console.error('Selected customer not found');
       return;
     }
+      navigate('/applied/customer/view', { state: { loanId: selectedCustomer._id, applicationNumber: selectedCustomer.applicationNumber, uksId } });
 
-    try {
-      const currentDate = new Date().toISOString();
-      const payload = {
-        customerId: selectedCustomer.customerId,
-        loanId: selectedCustomer._id,
-        applicationNumber: selectedCustomer.applicationNumber,
-        date: currentDate,
-      };
-
-      await axios.post('https://uksinfotechsolution.in:8000/dsa/customer/apply/view/count', payload);
-      navigate('/applied/customer/view', { state: { loanId: selectedCustomer._id, applicationNumber: selectedCustomer.applicationNumber } });
-    } catch (error) {
-      console.error('Error storing data:', error.response ? error.response.data : error.message);
-    }
   };
 
   const handleRowsPerPageChange = (selectedRowsPerPage) => {
