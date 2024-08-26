@@ -860,6 +860,14 @@ function Dsa_Profile_View() {
                                 <Col className='basic-col-width' lg={2}><span className="customer-sentence">Gender</span></Col>
                                 <Col><div className="box customer-data-font">{customerDetails.gender}</div></Col>
                             </Row>
+                            <Row className="Row1 view-row-size">
+                                <Col className='basic-col-width' lg={2}><span className="customer-sentence">Type Of Loan</span></Col>
+                                <Col><div className="box customer-data-font">{customerDetails.typeofloan}</div></Col>
+                            </Row>
+                            <Row className="Row1 view-row-size">
+                                <Col className='basic-col-width' lg={2}><span className="customer-sentence">Loan Required</span></Col>
+                                <Col><div className="box customer-data-font">{customerDetails.loanRequired}</div></Col>
+                            </Row>
                             {/* {packages?.some(pkg => pkg.packageStatus === 'Active') && (
                                 <>
                                     <Row className="Row1 view-row-size">
@@ -1086,7 +1094,7 @@ function Dsa_Profile_View() {
                                 </Row>
                             )}
                             <Row>
-                                <p className="profile-aadhar-per-head">Loan Processing Details</p>
+                                <p style={{ fontWeight: 'bold' }}>Loan Processing Details</p>
 
                                 <Row className='Row1 view-row-size'>
                                     <Col lg={3}>

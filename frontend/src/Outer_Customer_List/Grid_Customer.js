@@ -8,6 +8,7 @@ import { RiMoneyRupeeCircleLine } from "react-icons/ri";
 import { SlLocationPin } from "react-icons/sl";
 import CustomerFilter from './CustomerFilter'; // Import the filter component
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md'; // Import pagination icons
+import { useNavigate } from 'react-router-dom';
 
 function Grid_Customer_List() {
     const [customers, setCustomers] = useState([]);
@@ -17,7 +18,7 @@ function Grid_Customer_List() {
     const [addressDetails, setAddressDetails] = useState({});
     const [currentPage, setCurrentPage] = useState(1);
     const [rowsPerPage, setRowsPerPage] = useState(10);
-
+    const navigate = useNavigate(); // Initialize useNavigate
     const loanRanges = [
         { label: "0-3 Lakhs", min: 0, max: 300000 },
         { label: "3-6 Lakhs", min: 300000, max: 600000 },
@@ -66,7 +67,9 @@ function Grid_Customer_List() {
         });
         return counts;
     };
-
+    const handleMoreClick = (customerId) => {
+        navigate('/customer/view', { state: { customerId } });
+    };
     const calculateLoanRangeCounts = (customers, ranges) => {
         const counts = {};
         ranges.forEach(range => {
@@ -153,8 +156,8 @@ function Grid_Customer_List() {
 
     return (
         <Container fluid>
-            <Row>
-                <Col md={3}>
+            <Row style={{ padding: '10px' }}>
+                <Col md={2}>
                     <CustomerFilter
                         onFilter={handleFilter}
                         loanRangeCounts={calculateLoanRangeCounts(customers, loanRanges)}
@@ -165,7 +168,7 @@ function Grid_Customer_List() {
                         loanTypeCounts={calculateLoanTypeCounts(customers)}
                     />
                 </Col>
-                <Col md={9}>
+                <Col md={5}>
                     {currentCustomers.map(customer => (
                         <Row key={customer._id} className="outerlist-card">
                             <Col>
@@ -180,7 +183,7 @@ function Grid_Customer_List() {
                                                 {customer.customerType}
                                             </div>
                                             <div className="outerlist-more-link">
-                                                <a href="#">More</a>
+                                                <a href="#" onClick={() => handleMoreClick(customer._id)}>More</a>
                                             </div>
                                         </div>
                                         <div className="outerlist-address">
@@ -203,10 +206,8 @@ function Grid_Customer_List() {
                         </Row>
                     ))}
                     <div className="pagination-container">
-
                         <div className="pagination">
                             <span style={{ marginRight: '10px' }}>Rows per page:  </span>
-
                             <DropdownButton
                                 id="rowsPerPageDropdown"
                                 title={`${rowsPerPage}`}
@@ -223,12 +224,10 @@ function Grid_Customer_List() {
                                 onClick={() => currentPage > 1 && paginate(currentPage - 1)}
                             />
                             <span>Page {currentPage} of {Math.ceil(filteredCustomers.length / rowsPerPage)}</span>
-              <MdKeyboardArrowRight size={25} onClick={() => paginate(currentPage + 1)} disabled={indexOfLastCustomer >= filteredCustomers.length} />
-
-
+                            <MdKeyboardArrowRight size={25} onClick={() => paginate(currentPage + 1)} disabled={indexOfLastCustomer >= filteredCustomers.length} />
                         </div>
-
                     </div>
+                    
                 </Col>
             </Row>
         </Container>

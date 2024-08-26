@@ -79,6 +79,7 @@ import Grid_Customer_List from './Outer_Customer_List/Grid_Customer';
 import UKS_Apply_Loan_Customer from './DashBoard/Customer/Uks_Customer_Apply_loan';
 import UKS_Apply_Loan_POPUP from './DashBoard/Customer/UKS_Customer_Popup_Apply_Loan';
 import UKS_POPUP_Apply_Loan from './DashBoard/Customer/UKS_Customer_Popup_Apply_Loan';
+import Outer_Customer_View from './Outer_Customer_List/Customer_View';
 
 function App() {
   return (
@@ -111,7 +112,10 @@ function App() {
 
           <Route path="/*" element={<OtherPages />} />
           {/* <Route path="/customer/updatecustomer" element={<UpdateCustomer />} /> */}
+
+          {/* OUTER CUSTOMER LIST */}
           <Route path="/listof/customers" element={<IndexWithNavbar element={<Grid_Customer_List />} />} />
+          <Route path="/customer/view" element={<IndexWithNavbar element={<Outer_Customer_View />} />} />
 
         </Routes>
       </SidebarProvider>
@@ -211,7 +215,7 @@ function App() {
   function IndexWithNavbar({ element }) {
     const location = useLocation();
 
-    const showNavbar = ['/ldp/finserv','/listof/customers','/dsa/login', '/package/activate/:token', '/customer/login', '/uks/register', '/uks/login',
+    const showNavbar = ['/ldp/finserv','/listof/customers','/customer/view','/dsa/login', '/package/activate/:token', '/customer/login', '/uks/register', '/uks/login',
        '/dsa/register', '/customer/register'].includes(location.pathname);
     return (
       <>
